@@ -1,0 +1,22 @@
+name: Alpaca Paper Trader
+
+on:
+  schedule:
+    # Mon-Fri, every 30 min from 9:30 AM to 4:00 PM ET (14:30-20:00 UTC)
+    - cron: '*/30 14-19 * * 1-5'
+  workflow_dispatch:  # allow manual trigger
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run trader
+        run: python3 bot/trader.py
+        env:
+          APCA_ACCESS_TOKEN: ${{ secrets.APCA_ACCESS_TOKEN }}
+          ALPACA_BOT_DIR: ${{ github.workspace }}
+          TZ: America/New_York

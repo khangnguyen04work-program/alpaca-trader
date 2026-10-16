@@ -1,0 +1,27 @@
+name: Alpaca Daily Journal
+
+on:
+  schedule:
+    # Mon-Fri at 4:30 PM ET (20:30 UTC)
+    - cron: '30 20 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  journal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run journal
+        run: python3 bot/trader.py --journal
+        env:
+          APCA_ACCESS_TOKEN: ${{ secrets.APCA_ACCESS_TOKEN }}
+          ALPACA_BOT_DIR: ${{ github.workspace }}
+          TZ: America/New_York
+      - name: Upload journal
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal
+          path: runs/journal-*.md

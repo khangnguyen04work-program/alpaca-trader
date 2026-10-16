@@ -1,0 +1,228 @@
+{
+  "source": "The Candlestick Trading Bible - Sanyog Raut",
+  "market_regimes": {
+    "trending": {
+      "definition": "Series of HH/HL (uptrend) or LH/LL (downtrend)",
+      "trading_approach": "Enter at end of retracement (pullback to key level), not during the retracement",
+      "entry_rule": "Wait for signal at S/R, trendline, or 21MA after pullback",
+      "avoid": "Buying/selling during the retracement - gets stopped out by professionals"
+    },
+    "ranging": {
+      "definition": "Price horizontal between definable S/R with >=2 touches each",
+      "strategies": [
+        "Buy at support / sell at resistance boundaries",
+        "Wait for breakout, then enter or wait for pullback after breakout",
+        "Trade false breakout at boundaries"
+      ],
+      "avoid": "Choppy markets with no identifiable S/R"
+    }
+  },
+  "candlestick_patterns": {
+    "bullish_pin_bar_hammer": {
+      "anatomy": "open/high/close roughly equal, small body, long lower tail >=2x body",
+      "psychology": "Sellers pushed down but buyers rejected strongly - bullish rejection",
+      "trade_direction": "buy",
+      "quality_factors": [
+        "Occurs at support level",
+        "Longer tail = more powerful",
+        "In uptrend context"
+      ],
+      "entry_aggressive": "At close of the pin bar",
+      "entry_conservative": "After 50% retracement of pin bar range",
+      "stop_loss": "Below the long tail (beyond the wick)",
+      "profit_target": "Next resistance level or support flip",
+      "confluence_requirement": "1-2 factors: trend direction + S/R or 21MA rejection"
+    },
+    "bearish_pin_bar_shooting_star": {
+      "anatomy": "open/low/close roughly equal, small body, long upper tail >=2x body",
+      "psychology": "Buyers pushed up but sellers rejected strongly - bearish rejection",
+      "trade_direction": "sell",
+      "quality_factors": [
+        "Occurs at resistance level",
+        "Longer tail = more powerful",
+        "In downtrend context"
+      ],
+      "entry_aggressive": "At close of the pin bar",
+      "entry_conservative": "After 50% retracement of pin bar range",
+      "stop_loss": "Above the long tail (beyond the wick)",
+      "profit_target": "Next support level or resistance flip",
+      "confluence_requirement": "1-2 factors: trend direction + S/R or 21MA rejection"
+    },
+    "bullish_engulfing_bar": {
+      "anatomy": "2 candles: small bearish candle fully engulfed by larger bullish candle",
+      "psychology": "Sellers lost control, buyers overwhelmed - capitulation bottom",
+      "trade_direction": "buy",
+      "nison_criteria": [
+        "Market in clearly definable uptrend/downtrend",
+        "First body entirely engulfed by second",
+        "Second body opposite color of first"
+      ],
+      "entry": "Immediately after the engulfing bar closes",
+      "stop_loss": "Below the engulfing pattern low",
+      "profit_target": "Next key level (S/R, MA, or Fibonacci)",
+      "min_risk_reward": 2.0,
+      "confluence": [
+        "Trend alignment",
+        "Key level (S/R/MA/Fib 50-61%)"
+      ]
+    },
+    "bearish_engulfing_bar": {
+      "anatomy": "2 candles: small bullish candle fully engulfed by larger bearish candle",
+      "psychology": "Buyers lost control, sellers overwhelmed - top reversal",
+      "trade_direction": "sell",
+      "entry": "Immediately after the engulfing bar closes",
+      "stop_loss": "Above the engulfing pattern high",
+      "profit_target": "Next key level",
+      "min_risk_reward": 2.0
+    },
+    "bullish_inside_bar": {
+      "anatomy": "Mother candle + baby candle fully inside mother's range, bullish breakout",
+      "psychology": "Consolidation/indecision before continuation in downtrend",
+      "trade_direction": "buy",
+      "entry": "After breakout of the inside bar pattern (not on horizontal level breakout)",
+      "stop_loss": "Below the mother candle low",
+      "profit_target": "Next resistance level",
+      "tips": [
+        "Trade bigger timeframes (daily/4H)",
+        "Must form at key level",
+        "Avoid beginners using lower TFs"
+      ]
+    },
+    "bearish_inside_bar": {
+      "anatomy": "Mother candle + baby candle inside mother's range, bearish breakout",
+      "trade_direction": "sell",
+      "entry": "After breakout of the inside bar pattern",
+      "stop_loss": "Above the mother candle high",
+      "profit_target": "Next support level"
+    },
+    "inside_bar_false_breakout": {
+      "anatomy": "Price breaks out of inside bar then reverses and closes back inside mother range",
+      "psychology": "Big players hunting stops / grabbing liquidity",
+      "direction_rules": {
+        "bullish_in_downtrend": "bullish reversal signal",
+        "bearish_in_uptrend": "bearish reversal signal",
+        "with_trend": "continuation pattern"
+      },
+      "entry": "After close of the break bar (the bar that broke out then closed back inside)",
+      "stop_loss": "Beyond the break bar",
+      "profit_target": "Next S/R level",
+      "key_levels": [
+        "S/R levels",
+        "Fibonacci 50%/61%",
+        "21 MA",
+        "Trendlines"
+      ]
+    },
+    "morning_star": {
+      "anatomy": "3 candles: bearish body + small indecision candle + bullish body closing above midpoint of first",
+      "trade_direction": "buy",
+      "context": "At bottom of downtrend near support = powerful bullish reversal"
+    },
+    "evening_star": {
+      "anatomy": "3 candles: bullish body + small indecision candle + large bearish body gapping lower",
+      "trade_direction": "sell",
+      "context": "At top of uptrend = bearish reversal"
+    },
+    "doji": {
+      "anatomy": "Open equals close (within 5% of range). Indecision/equality.",
+      "variants": {
+        "dragonfly_doji": "Bullish doji with long lower tail near support",
+        "gravestone_doji": "Bearish doji with long upper tail near resistance"
+      },
+      "use": "Signal that prior trend is losing strength. Take profits or combine with other analysis. Not an entry signal alone."
+    }
+  },
+  "confluence_factors": [
+    {
+      "name": "Trend direction",
+      "weight": "high",
+      "rule": "Trade with the trend; signal against trend requires higher-TF level confirmation"
+    },
+    {
+      "name": "Support/Resistance levels",
+      "weight": "high",
+      "rule": "Broken level flips role: resistance becomes support, support becomes resistance"
+    },
+    {
+      "name": "Moving averages (8/21 SMA)",
+      "weight": "medium",
+      "rule": "21MA = dynamic support in uptrend, dynamic resistance in downtrend. 200 SMA = trend filter."
+    },
+    {
+      "name": "Fibonacci retracement (50%/61.8%)",
+      "weight": "medium",
+      "rule": "Major moves retrace to 50%/61%. Signal at these levels = high probability"
+    },
+    {
+      "name": "Trend lines",
+      "weight": "medium",
+      "rule": "Connect >=2 swing points on 4H/daily. Catches trades horizontal S/R misses."
+    },
+    {
+      "name": "Bollinger Bands",
+      "weight": "medium",
+      "rule": "Range markets only: rejection from band + horizontal level = confirmation"
+    },
+    {
+      "name": "Supply/Demand zones",
+      "weight": "high",
+      "rule": "Institutional order zones. Quality: fast move away + good R:R + bigger timeframe"
+    }
+  ],
+  "entry_exit_summary": [
+    {
+      "pattern": "Pin bar (aggressive)",
+      "entry": "At close of pin bar",
+      "stop": "Beyond long tail",
+      "target": "Next S/R level"
+    },
+    {
+      "pattern": "Pin bar (conservative)",
+      "entry": "At 50% retrace of pin bar range",
+      "stop": "Beyond tail",
+      "target": "Next S/R level"
+    },
+    {
+      "pattern": "Engulfing bar",
+      "entry": "Immediately after close",
+      "stop": "Below/above engulfing candle",
+      "target": "Next S/R level",
+      "min_rrr": 2.0
+    },
+    {
+      "pattern": "Inside bar with trend",
+      "entry": "After breakout of inside bar range",
+      "stop": "Beyond mother candle",
+      "target": "Next S/R level"
+    },
+    {
+      "pattern": "Inside bar false breakout",
+      "entry": "At close of break bar after reversal",
+      "stop": "Beyond break bar",
+      "target": "Next S/R level"
+    },
+    {
+      "pattern": "Range breakout/pullback",
+      "entry": "On pullback to flipped level with signal",
+      "stop": "Beyond the level",
+      "target": "Next major level"
+    }
+  ],
+  "money_management": {
+    "risk_per_trade": {
+      "experienced": "2% of equity",
+      "beginner": "1% of equity"
+    },
+    "min_risk_reward_ratio": 2.0,
+    "preferred_risk_reward_ratio": 3.0,
+    "position_sizing_rule": "Think in dollars risked, not pips",
+    "stop_loss_type": "Always hard stop loss order placed with entry. Never mental stops.",
+    "expectation_math": "At 3:1 R:R, 30% win rate is profitable (7 losses x 1R + 3 wins x 3R = +2R)",
+    "cardinal_rules": [
+      "Never risk money you cannot afford to lose",
+      "Set stop and target at entry, then leave the trade",
+      "Start small, build account slowly",
+      "Accept losing trades as part of the system"
+    ]
+  }
+}
