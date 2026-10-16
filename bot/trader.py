@@ -322,13 +322,13 @@ def calc_confidence_mult(pattern_type, strength, confluence_count, rrr, htf_tren
     if htf_trend and htf_trend != "unknown" and htf_trend == trend_dir:
         mult += 0.5
 
-    return max(0.25, min(mult, 5.0))  # clamp 0.25x - 5.0x
+    return max(0.25, min(mult, 2.0))  # cash-only: max 2x base risk
 
 
 def calc_position_size(account, risk_pct, confidence_mult=1.0):
-    equity = float(account.get("equity", 5000))
+    """Cash-only position sizing. Never exceeds available cash."""
     cash = float(account.get("cash", 5000))
-    max_risk = equity * (risk_pct / 100) * confidence_mult
+    max_risk = cash * (risk_pct / 100) * confidence_mult
     return min(max_risk, cash), max_risk
 
 
@@ -530,6 +530,12 @@ def analyze_and_trade(symbol):
         elif pattern_type in ("bearish_pin_bar", "bearish_engulfing", "evening_star", "bearish_inside_bar"):
             side = "sell"
         else:
+            _save_signal(signals_path, sig_record)
+            continue
+
+        # Cash-only account: skip sell orders (no short selling / margin)
+        if side == "sell":
+            log("  skip SELL — cash-only account (no margin)", "CASH")
             _save_signal(signals_path, sig_record)
             continue
 
