@@ -290,10 +290,45 @@ def check_confluence(candle, bars, idx, sr_levels, sma_vals, htf_trend=None):
 
 # ─── Risk & Trade Logic ──────────────────────────────────────────────────────
 
-def calc_position_size(account, risk_pct):
+def calc_confidence_mult(pattern_type, strength, confluence_count, rrr, htf_trend, trend_dir):
+    """Calculate position-size multiplier based on signal confidence.
+    
+    Base 1.0 = standard 2% risk.
+    Weak signals (< 2 confluence, low RRR) → 0.5x
+    Normal (2-3 confluence, RRR 1.5-2) → 1.0x
+    Strong (4+ confluence, high RRR, HTF aligned) → 3.0x
+    Very strong (5 confluence, RRR > 3, trends aligned) → 5.0x
+    """
+    mult = 1.0
+
+    # Pattern strength
+    mult += strength * 1.0  # 0.0-1.0 contribution
+
+    # Confluence depth
+    if confluence_count >= 5:
+        mult += 1.5
+    elif confluence_count >= 4:
+        mult += 0.8
+    elif confluence_count >= 3:
+        mult += 0.3
+
+    # RRR bonus
+    if rrr >= 3.0:
+        mult += 1.0
+    elif rrr >= 2.0:
+        mult += 0.3
+
+    # HTF trend alignment
+    if htf_trend and htf_trend != "unknown" and htf_trend == trend_dir:
+        mult += 0.5
+
+    return max(0.25, min(mult, 5.0))  # clamp 0.25x - 5.0x
+
+
+def calc_position_size(account, risk_pct, confidence_mult=1.0):
     equity = float(account.get("equity", 5000))
     cash = float(account.get("cash", 5000))
-    max_risk = equity * (risk_pct / 100)
+    max_risk = equity * (risk_pct / 100) * confidence_mult
     return min(max_risk, cash), max_risk
 
 
@@ -495,12 +530,7 @@ def analyze_and_trade(symbol):
             _save_signal(signals_path, sig_record)
             continue
 
-        pos_value, _ = calc_position_size(account, MAX_RISK_PCT)
-        qty = max(1, int(pos_value / candle["close"]))
-        if qty < 1:
-            _save_signal(signals_path, sig_record)
-            continue
-
+        # Risk management (needed for confidence multiplier)
         stop, _ = estimate_stop_loss(candle, pattern_type, trend_dir, bars, si)
         target = estimate_profit_target(candle, pattern_type, bars, si, all_sr, MIN_RRR)
 
@@ -508,7 +538,24 @@ def analyze_and_trade(symbol):
         reward_ps = (target - candle["close"]) if side == "buy" else (candle["close"] - target)
         rrr = reward_ps / risk_ps if risk_ps > 0 else 0
 
-        log(f"  {side.upper()} {qty} @ ${candle['close']:.2f} stop ${stop:.2f} target ${target:.2f} RRR {rrr:.2f}", "TRADE")
+        # Confidence-based position sizing
+        confidence_mult = calc_confidence_mult(
+            pattern_type, signal["strength"], cc, rrr, htf_trend, trend_dir
+        )
+        pos_value, _ = calc_position_size(account, MAX_RISK_PCT, confidence_mult)
+        qty = max(1, int(pos_value / candle["close"]))
+
+        log(f"  Conf mult: {confidence_mult:.1f}x | Risk: ${pos_value:.0f} | {side.upper()} {qty} @ ${candle['close']:.2f} stop ${stop:.2f} target ${target:.2f} RRR {rrr:.2f}", "TRADE")
+
+        # Store confidence info in signal record
+        sig_record["confidence_mult"] = round(confidence_mult, 2)
+        sig_record["risk_amount"] = round(pos_value, 2)
+        sig_record["rrr"] = round(rrr, 2)
+        sig_record["qty"] = qty
+
+        if qty < 1:
+            _save_signal(signals_path, sig_record)
+            continue
 
         if rrr < MIN_RRR:
             log(f"  skip RRR {rrr:.2f} < {MIN_RRR}", "TRADE")
