@@ -1,0 +1,3222 @@
+[
+  {
+    "symbol": "SPY",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.71,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "price": 778.1,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "price": 778.01,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "morning_star",
+    "strength": 0.5,
+    "confluence": 1,
+    "factors": [
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "price": 541.15,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 1,
+    "factors": [
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 543.45,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "evening_star",
+    "strength": 0.31,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 533.69,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 347.86,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "doji",
+    "strength": 0.33,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 347.86,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "price": 348.97,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "evening_star",
+    "strength": 0.08,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 343.65,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "price": 258.58,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.71,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "price": 778.1,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "price": 778.01,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "morning_star",
+    "strength": 0.5,
+    "confluence": 1,
+    "factors": [
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "price": 541.15,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 1,
+    "factors": [
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 543.45,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "evening_star",
+    "strength": 0.31,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 533.69,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 347.86,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "doji",
+    "strength": 0.33,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 347.86,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "price": 348.97,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "evening_star",
+    "strength": 0.08,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "price": 343.65,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "price": 258.58,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 767.17,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_engulfing",
+    "strength": 23.21,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "morning_star",
+    "strength": 1.3,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 0.99,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.82,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.23,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bearish_engulfing",
+    "strength": 2.56,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 363.8102,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 361.7,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.39,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "doji",
+    "strength": 0.31,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.2744,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.91,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.895,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 736.49,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.06,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 344.8,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "morning_star",
+    "strength": 0.09,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_engulfing",
+    "strength": 13.75,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 343.2,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 340.41,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "morning_star",
+    "strength": 1.54,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 345.39,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.9,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_engulfing",
+    "strength": 3.06,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.8,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 529.75,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 538.34,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 767.17,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_engulfing",
+    "strength": 23.21,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "morning_star",
+    "strength": 1.3,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 0.99,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.82,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.23,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bearish_engulfing",
+    "strength": 2.56,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 363.8102,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 361.7,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.39,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "doji",
+    "strength": 0.31,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.2744,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.91,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.895,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 736.49,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.06,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 344.8,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "morning_star",
+    "strength": 0.09,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_engulfing",
+    "strength": 13.75,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 343.2,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 340.41,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "morning_star",
+    "strength": 1.54,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 345.39,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.9,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_engulfing",
+    "strength": 3.06,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.8,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 529.75,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 538.34,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 767.17,
+    "traded": false,
+    "confidence_mult": 2.8,
+    "risk_amount": 422.35,
+    "rrr": 0.97,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_engulfing",
+    "strength": 23.21,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false,
+    "confidence_mult": 5.0,
+    "risk_amount": 754.2,
+    "rrr": 0.7,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "morning_star",
+    "strength": 1.3,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false,
+    "confidence_mult": 3.1,
+    "risk_amount": 467.6,
+    "rrr": 0.7,
+    "qty": 1
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7,
+    "traded": false,
+    "confidence_mult": 2.0,
+    "risk_amount": 301.67,
+    "rrr": 0.95,
+    "qty": 1
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false,
+    "confidence_mult": 2.0,
+    "risk_amount": 301.67,
+    "rrr": 0.69,
+    "qty": 1
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 0.99,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.82,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.23,
+    "traded": false,
+    "confidence_mult": 1.82,
+    "risk_amount": 273.85,
+    "rrr": 1.06,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bearish_engulfing",
+    "strength": 2.56,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 363.8102,
+    "traded": false,
+    "confidence_mult": 3.86,
+    "risk_amount": 582.19,
+    "rrr": 0.67,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 361.7,
+    "traded": false,
+    "confidence_mult": 1.99,
+    "risk_amount": 299.78,
+    "rrr": 1.2,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.39,
+    "traded": false,
+    "confidence_mult": 2.3,
+    "risk_amount": 346.92,
+    "rrr": 0.73,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false,
+    "confidence_mult": 4.0,
+    "risk_amount": 603.33,
+    "rrr": 0.82,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "doji",
+    "strength": 0.31,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.2744,
+    "traded": false,
+    "confidence_mult": 2.8,
+    "risk_amount": 422.33,
+    "rrr": 0.92,
+    "qty": 1
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.91,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.895,
+    "traded": false,
+    "confidence_mult": 2.21,
+    "risk_amount": 333.84,
+    "rrr": 0.68,
+    "qty": 1
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 736.49,
+    "traded": false,
+    "confidence_mult": 2.3,
+    "risk_amount": 346.93,
+    "rrr": 0.93,
+    "qty": 1
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.06,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 344.8,
+    "traded": false,
+    "confidence_mult": 3.06,
+    "risk_amount": 461.14,
+    "rrr": 0.73,
+    "qty": 1
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false,
+    "confidence_mult": 4.0,
+    "risk_amount": 603.37,
+    "rrr": 1.11,
+    "qty": 1
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "morning_star",
+    "strength": 0.09,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false,
+    "confidence_mult": 3.09,
+    "risk_amount": 465.53,
+    "rrr": 1.03,
+    "qty": 1
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_engulfing",
+    "strength": 13.75,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 343.2,
+    "traded": false,
+    "confidence_mult": 5.0,
+    "risk_amount": 754.21,
+    "rrr": 0.71,
+    "qty": 2
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 340.41,
+    "traded": false,
+    "confidence_mult": 3.3,
+    "risk_amount": 497.78,
+    "rrr": 0.8,
+    "qty": 1
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "morning_star",
+    "strength": 1.54,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 345.39,
+    "traded": false,
+    "confidence_mult": 4.54,
+    "risk_amount": 684.13,
+    "rrr": 0.81,
+    "qty": 1
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false,
+    "confidence_mult": 4.0,
+    "risk_amount": 603.37,
+    "rrr": 1.02,
+    "qty": 1
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.9,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false,
+    "confidence_mult": 3.9,
+    "risk_amount": 587.65,
+    "rrr": 1.11,
+    "qty": 1
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_engulfing",
+    "strength": 3.06,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.8,
+    "traded": false,
+    "confidence_mult": 5.0,
+    "risk_amount": 754.22,
+    "rrr": 0.71,
+    "qty": 2
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 529.75,
+    "traded": false,
+    "confidence_mult": 2.0,
+    "risk_amount": 301.69,
+    "rrr": 1.11,
+    "qty": 1
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 538.34,
+    "traded": false,
+    "confidence_mult": 3.3,
+    "risk_amount": 497.78,
+    "rrr": 0.69,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 767.17,
+    "traded": false,
+    "confidence_mult": 2.8,
+    "risk_amount": 422.5,
+    "rrr": 0.97,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_engulfing",
+    "strength": 23.21,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false,
+    "confidence_mult": 5.0,
+    "risk_amount": 754.47,
+    "rrr": 0.7,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "morning_star",
+    "strength": 1.3,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 770.41,
+    "traded": false,
+    "confidence_mult": 3.1,
+    "risk_amount": 467.77,
+    "rrr": 0.7,
+    "qty": 1
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7,
+    "traded": false,
+    "confidence_mult": 2.0,
+    "risk_amount": 301.77,
+    "rrr": 0.95,
+    "qty": 1
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false,
+    "confidence_mult": 2.0,
+    "risk_amount": 301.77,
+    "rrr": 0.69,
+    "qty": 1
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 0.99,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.7363,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.82,
+    "confluence": 2,
+    "factors": [
+      "htf_uptrend",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.23,
+    "traded": true,
+    "confidence_mult": 1.82,
+    "risk_amount": 273.94,
+    "rrr": 1.06,
+    "qty": 1,
+    "order_id": "65e19c59-2c43-4b76-8ddb-602c16294daa",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bearish_engulfing",
+    "strength": 2.56,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 363.8102,
+    "traded": false,
+    "confidence_mult": 3.86,
+    "risk_amount": 582.39,
+    "rrr": 0.67,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 361.7,
+    "traded": true,
+    "confidence_mult": 1.99,
+    "risk_amount": 299.88,
+    "rrr": 1.2,
+    "qty": 1,
+    "order_id": "4863f88c-b42b-4c6a-b08a-1bebe6efe3e3",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.39,
+    "traded": false,
+    "confidence_mult": 2.3,
+    "risk_amount": 347.03,
+    "rrr": 0.73,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false,
+    "confidence_mult": 4.0,
+    "risk_amount": 603.53,
+    "rrr": 0.82,
+    "qty": 1
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "doji",
+    "strength": 0.31,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.49,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.2744,
+    "traded": false,
+    "confidence_mult": 2.8,
+    "risk_amount": 422.47,
+    "rrr": 0.92,
+    "qty": 1
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.91,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.895,
+    "traded": false,
+    "confidence_mult": 2.21,
+    "risk_amount": 333.92,
+    "rrr": 0.68,
+    "qty": 1
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 736.49,
+    "traded": false,
+    "confidence_mult": 2.3,
+    "risk_amount": 347.02,
+    "rrr": 0.93,
+    "qty": 1
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.06,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 344.8,
+    "traded": false,
+    "confidence_mult": 3.06,
+    "risk_amount": 461.23,
+    "rrr": 0.73,
+    "qty": 1
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": true,
+    "confidence_mult": 4.0,
+    "risk_amount": 603.49,
+    "rrr": 1.11,
+    "qty": 1,
+    "order_id": "55e9e383-421a-4c40-a55d-572d64c649eb",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "morning_star",
+    "strength": 0.09,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 345.5,
+    "traded": false,
+    "confidence_mult": 3.09,
+    "risk_amount": 465.62,
+    "rrr": 1.03,
+    "qty": 1,
+    "error": "order_failed"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_engulfing",
+    "strength": 13.75,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 343.2,
+    "traded": false,
+    "confidence_mult": 5.0,
+    "risk_amount": 754.36,
+    "rrr": 0.71,
+    "qty": 2
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 340.41,
+    "traded": false,
+    "confidence_mult": 3.3,
+    "risk_amount": 497.87,
+    "rrr": 0.8,
+    "qty": 1
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "morning_star",
+    "strength": 1.54,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 345.39,
+    "traded": false,
+    "confidence_mult": 4.54,
+    "risk_amount": 684.25,
+    "rrr": 0.81,
+    "qty": 1
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": true,
+    "confidence_mult": 4.0,
+    "risk_amount": 603.48,
+    "rrr": 1.02,
+    "qty": 1,
+    "order_id": "dbd0b668-5d1b-4161-a582-bcd8aad44bad",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.9,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.86,
+    "traded": false,
+    "confidence_mult": 3.9,
+    "risk_amount": 587.76,
+    "rrr": 1.11,
+    "qty": 1,
+    "error": "order_failed"
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_engulfing",
+    "strength": 3.06,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.8,
+    "traded": false,
+    "confidence_mult": 5.0,
+    "risk_amount": 754.37,
+    "rrr": 0.71,
+    "qty": 2
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 2,
+    "factors": [
+      "near_support_resistance",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 529.75,
+    "traded": true,
+    "confidence_mult": 2.0,
+    "risk_amount": 301.75,
+    "rrr": 1.11,
+    "qty": 1,
+    "order_id": "d6d8b5fe-d2bc-450b-a26f-0dface4dae74",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 538.34,
+    "traded": false,
+    "confidence_mult": 3.3,
+    "risk_amount": 497.89,
+    "rrr": 0.69,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 771.37,
+    "traded": false,
+    "confidence_mult": 2.0,
+    "risk_amount": 170.26,
+    "rrr": 0.71,
+    "qty": 1
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 771.37,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.86,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.2,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 216.7097,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 0.46,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 216.7097,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bearish_engulfing",
+    "strength": 1.44,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.4808,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.3,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_engulfing",
+    "strength": 0.26,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.3,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.74,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.3,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.39,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_engulfing",
+    "strength": 0.64,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.39,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "evening_star",
+    "strength": 0.23,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 733.6294,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_engulfing",
+    "strength": 1.47,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 733.3908,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "evening_star",
+    "strength": 0.7,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 341.19,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.67,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 340.8001,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.34,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "evening_star",
+    "strength": 0.28,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 343.6501,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 343.59,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.72,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 343.59,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.75,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.4,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "evening_star",
+    "strength": 0.52,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.18,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.27,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.2501,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.8,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 537.4,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_engulfing",
+    "strength": 7.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 537,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "evening_star",
+    "strength": 0.08,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 536.35,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 536.6,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.98,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 536.65,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 771.37,
+    "traded": false
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 771.37,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.86,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 217.2,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 216.7097,
+    "traded": false
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 0.46,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 216.7097,
+    "traded": false
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bearish_engulfing",
+    "strength": 1.44,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 362.4808,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.3,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_engulfing",
+    "strength": 0.26,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.3,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.74,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.3,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.39,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_engulfing",
+    "strength": 0.64,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 734.39,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "evening_star",
+    "strength": 0.23,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 733.6294,
+    "traded": false
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_engulfing",
+    "strength": 1.47,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 733.3908,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "evening_star",
+    "strength": 0.7,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 341.19,
+    "traded": false
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.67,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 340.8001,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 344.34,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "evening_star",
+    "strength": 0.28,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 343.6501,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 343.59,
+    "traded": false
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.72,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 343.59,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.75,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.4,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "evening_star",
+    "strength": 0.52,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.18,
+    "traded": false
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.27,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 253.2501,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.8,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 537.4,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_engulfing",
+    "strength": 7.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 537,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "evening_star",
+    "strength": 0.08,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 536.35,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 536.6,
+    "traded": false
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.98,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 536.65,
+    "traded": false
+  }
+]
