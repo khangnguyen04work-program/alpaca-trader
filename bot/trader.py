@@ -225,33 +225,52 @@ def identify_support_resistance_levels(bars, num_levels=3):
 
 def check_confluence(candle, bars, idx, sr_levels, sma_vals):
     factors = []
-    if len(bars) < max(MA_PERIODS) + 5:
-        return factors, "unknown"
 
+    # Trend direction from last 3-5 bars (works with as few as 3 bars)
     recent = bars[max(0, idx - 5):idx + 1]
-    up_trend = sum(1 for i in range(1, len(recent)) if recent[i]["close"] > recent[i-1]["close"])
-    down_trend = len(recent) - 1 - up_trend
-    trend_dir = "uptrend" if up_trend > down_trend else ("downtrend" if down_trend > up_trend else "ranging")
+    if len(recent) >= 3:
+        up_trend = sum(1 for i in range(1, len(recent)) if recent[i]["close"] > recent[i-1]["close"])
+        down_trend = len(recent) - 1 - up_trend
+        trend_dir = "uptrend" if up_trend > down_trend else ("downtrend" if down_trend > up_trend else "ranging")
+    else:
+        trend_dir = "unknown"
 
+    # Support/Resistance level proximity
     if any(abs(candle["close"] - lvl) / lvl * 100 < 1.0 for lvl in sr_levels if lvl > 0):
         factors.append("near_support_resistance")
 
+    # Moving average proximity (use whichever MAs we have data for)
     for ma_period in MA_PERIODS:
-        if sma_vals and idx >= ma_period and sma_vals[idx] is not None:
+        if sma_vals and len(sma_vals) > ma_period and sma_vals[idx] is not None:
             ma = sma_vals[idx]
             if ma > 0 and abs(candle["close"] - ma) / ma * 100 < 1.5:
                 factors.append(f"near_{ma_period}ma")
                 break
+        elif ma_period <= len(bars):
+            # Try computing SMA on the fly with available data
+            closes = [b["close"] for b in bars]
+            if len(closes) >= ma_period:
+                ma = sum(closes[-ma_period:]) / ma_period
+                if ma > 0 and abs(candle["close"] - ma) / ma * 100 < 1.5:
+                    factors.append(f"near_{ma_period}ma")
+                    break
 
-    if candle["bullish"] and trend_dir == "downtrend":
-        factors.append("countertrend_reversal")
-    elif not candle["bullish"] and trend_dir == "uptrend":
-        factors.append("countertrend_reversal")
+    # Trend alignment (works with any bars)
+    if len(recent) >= 3:
+        if candle["bullish"] and trend_dir == "downtrend":
+            factors.append("countertrend_reversal")
+        elif not candle["bullish"] and trend_dir == "uptrend":
+            factors.append("countertrend_reversal")
+        else:
+            factors.append("trend_aligned")
     else:
-        factors.append("trend_aligned")
+        # Single-candle: strong body indicates direction
+        if candle["body_pct"] > 60:
+            factors.append("strong_body")
 
+    # Bollinger Bands (only if enough data)
     bb_sma, bb_up, bb_low = compute_bollinger_bands(bars)
-    if bb_up and idx >= 19 and bb_up[idx] is not None:
+    if bb_up and idx >= min(19, len(bars) - 2) and bb_up[idx] is not None:
         if abs(candle["high"] - bb_up[idx]) / bb_up[idx] * 100 < 1.5:
             factors.append("touching_upper_band")
         elif abs(candle["low"] - bb_low[idx]) / bb_low[idx] * 100 < 1.5:
