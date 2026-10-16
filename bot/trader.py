@@ -74,6 +74,7 @@ TF_STRUCTURE = CONFIG["strategy"]["timeframes"]["structure"]
 TF_CONTEXT = CONFIG["strategy"]["timeframes"]["context"]
 TF_ENTRY = CONFIG["strategy"]["timeframes"]["entry"]
 CONFIDENCE_MULT_MAX = CONFIG["strategy"].get("confidence_mult_max", 2.0)
+MAX_TRADES_PER_SYMBOL = CONFIG["strategy"].get("max_trades_per_symbol_day", 3)
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -84,10 +85,13 @@ def log(msg, section="TRADER"):
 
 # ─── Data Fetching ───────────────────────────────────────────────────────────
 
-def fetch_bars(symbol, days=15, timeframe="1Day"):
-    """Fetch OHLC bars for given timeframe. Returns raw API bars list."""
-    end = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
-    start = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+def fetch_bars(symbol, days=15, timeframe="1Day", include_today=False):
+    """Fetch OHLC bars for given timeframe.
+    include_today=False → end at yesterday (correct for 1Week/1Day: today's bar incomplete)
+    include_today=True  → include today (correct for 15Min: bars close every 15 min)"""
+    now_utc = datetime.now(timezone.utc)
+    end = now_utc.strftime("%Y-%m-%d") if include_today else (now_utc - timedelta(days=1)).strftime("%Y-%m-%d")
+    start = (now_utc - timedelta(days=days)).strftime("%Y-%m-%d")
 
     result = run_alpaca(["data", "bars", "--symbol", symbol,
                          "--start", start, "--end", end,
@@ -97,7 +101,7 @@ def fetch_bars(symbol, days=15, timeframe="1Day"):
 
     # Shorter range fallback for higher timeframes
     for d in [min(days, 10), 7, 5, 3]:
-        s = (datetime.now(timezone.utc) - timedelta(days=d)).strftime("%Y-%m-%d")
+        s = (now_utc - timedelta(days=d)).strftime("%Y-%m-%d")
         result = run_alpaca(["data", "bars", "--symbol", symbol,
                              "--start", s, "--end", end,
                              "--timeframe", timeframe])
@@ -350,13 +354,19 @@ def estimate_profit_target(candle, pattern_type, bars=None, idx=None, sr_levels=
     return round(candle["close"] - dist, 2)
 
 
-def place_order(symbol, side, qty, order_type="market", tif="day", limit_price=None, stop_price=None):
+def place_order(symbol, side, qty, order_type="market", tif="day",
+                limit_price=None, stop_price=None, client_order_id=None):
+    """Place a paper order. client_order_id gives Alpaca-side idempotency:
+    a duplicate order with the same id is rejected (422) — prevents runaway
+    re-buys when the same 15Min signal is re-scanned every 2 minutes."""
     args = ["order", "submit", "--symbol", symbol, "--side", side,
             "--qty", str(qty), "--type", order_type, "--time-in-force", tif]
     if limit_price:
         args.extend(["--limit-price", str(limit_price)])
     if stop_price:
         args.extend(["--stop-price", str(stop_price)])
+    if client_order_id:
+        args.extend(["--client-order-id", client_order_id])
     log(f"Order: --symbol {symbol} --side {side} --qty {qty} --type {order_type}", "ORDER")
     result = run_alpaca(args)
     if result:
@@ -446,7 +456,11 @@ def analyze_and_trade(symbol):
         entry_days = 3
     else:
         entry_days = 5
-    entry_bars_raw = fetch_bars(symbol, days=entry_days, timeframe=TF_ENTRY)
+    # Include today: a 15Min bar closes every 15 min — yesterday-end would be 24h stale.
+    # Pre-market fallback: if today has no bars yet, use yesterday's completed bars.
+    entry_bars_raw = fetch_bars(symbol, days=entry_days, timeframe=TF_ENTRY, include_today=True)
+    if not entry_bars_raw or len(entry_bars_raw) < 3:
+        entry_bars_raw = fetch_bars(symbol, days=entry_days, timeframe=TF_ENTRY, include_today=False)
 
     if not entry_bars_raw or len(entry_bars_raw) < 3:
         log(f"Not enough {TF_ENTRY} data for {symbol}", "ANALYSIS")
@@ -586,7 +600,28 @@ def analyze_and_trade(symbol):
             _save_signal(signals_path, sig_record)
             continue
 
-        result = place_order(symbol, side, qty, ORDER_TYPE, TIF)
+        # ── Anti-runaway guards ─────────────────────────────────────────
+        # 1) Daily trade cap per symbol: prevents pyramiding the whole
+        #    account into one symbol across repeated bar scans.
+        try:
+            existing = json.loads(signals_path.read_text()) if signals_path.exists() else []
+        except Exception:
+            existing = []
+        traded_today = sum(1 for s in existing
+                           if s.get("symbol") == symbol and s.get("traded"))
+        if traded_today >= MAX_TRADES_PER_SYMBOL:
+            log(f"  skip — daily cap {traded_today}/{MAX_TRADES_PER_SYMBOL} trades for {symbol}", "RISK")
+            sig_record["skipped"] = "daily_cap"
+            _save_signal(signals_path, sig_record)
+            continue
+
+        # 2) Idempotent client_order_id: same (symbol, pattern, bar) re-scanned
+        #    on the next 2-min run gets REJECTED by Alpaca (422 duplicate).
+        raw_id = f"bot-{symbol}-{pattern_type}-{candle['time']}"
+        client_order_id = "".join(c if c.isalnum() or c in "-_." else "-" for c in raw_id)[:128]
+
+        result = place_order(symbol, side, qty, ORDER_TYPE, TIF,
+                             client_order_id=client_order_id)
         if result:
             sig_record["traded"] = True
             sig_record["order_id"] = result.get("id", "")

@@ -2,14 +2,19 @@ name: Alpaca Paper Trader
 
 on:
   schedule:
-    # Market hours — every 2 min (9:30AM-4PM ET = 13:30-20:00 UTC)
-    # 210 runs/day x 21.65d x 15s = 1137 min (STAYS UNDER 2000 LIMIT)
+    # ─── Market hours: every 2 min, Mon–Fri 9:30AM–4PM ET (13:30–20:00 UTC) ───
     - cron: '*/2 13-19 * * 1-5'
-    # Pre-market analysis — every 10 min (4AM-9:30AM ET = 08:00-13:25 UTC)
-    - cron: '*/10 8-12 * * 1-5'
-    # After-hours — every 10 min (4PM-8PM ET = 20:00-23:59 UTC)
-    - cron: '*/10 0,20-23 * * 1-5'
+    # ─── Pre-market: every 15 min, 8:00–9:30AM ET (12:00–13:29 UTC) ───
+    - cron: '*/15 12-13 * * 1-5'
+    # ─── After-hours: every 15 min, 4:00–8:00PM ET (20:00–23:59 UTC) ───
+    - cron: '*/15 20-23 * * 1-5'
   workflow_dispatch:
+
+# Never allow overlapping runs — a slow run (rate-limited API) would otherwise
+# run in parallel with the next cron trigger and place duplicate orders.
+concurrency:
+  group: alpaca-trader
+  cancel-in-progress: true
 
 jobs:
   trade:

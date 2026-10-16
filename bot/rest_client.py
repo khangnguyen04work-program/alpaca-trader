@@ -161,6 +161,7 @@ def rest_call(args, quiet=True):
                 elif a == '--time-in-force' and i+1 < len(args): tif = args[i+1]
                 elif a == '--limit-price' and i+1 < len(args): kwargs['limit_price'] = args[i+1]
                 elif a == '--stop-price' and i+1 < len(args): kwargs['stop_price'] = args[i+1]
+                elif a == '--client-order-id' and i+1 < len(args): kwargs['client_order_id'] = args[i+1]
             if symbol and side and qty:
                 return submit_order(symbol, side, qty, order_type, tif, **kwargs)
             return {"_error": "missing required order params"}

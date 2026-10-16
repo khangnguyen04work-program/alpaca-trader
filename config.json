@@ -12,6 +12,7 @@
     "order_type": "market",
     "required_confluence_factors": 1,
     "confidence_mult_max": 3.0,
+    "max_trades_per_symbol_day": 3,
     "timeframes": {
       "structure": "1Week",
       "context": "1Day",
