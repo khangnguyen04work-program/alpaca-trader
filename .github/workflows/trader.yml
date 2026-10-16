@@ -2,12 +2,12 @@ name: Alpaca Paper Trader
 
 on:
   schedule:
-    # Market hours — every 5 min for best entry timing (9:30AM-4PM ET = 13:30-20:00 UTC)
-    - cron: '*/5 13-19 * * 1-5'
-    # Pre-market analysis — every 15 min (4AM-9:30AM ET = 08:00-13:25 UTC)
-    - cron: '*/15 8-12 * * 1-5'
-    # After-hours analysis — every 15 min (4PM-8PM ET = 20:00-00:00 UTC)
-    - cron: '*/15 0,20-23 * * 1-5'
+    # Market hours — every 1 MINUTE (9:30AM-4PM ET = 13:30-20:00 UTC)
+    - cron: '* 13-19 * * 1-5'
+    # Pre-market analysis — every 10 min (4AM-9:30AM ET = 08:00-13:25 UTC)
+    - cron: '*/10 8-12 * * 1-5'
+    # After-hours — every 10 min (4PM-8PM ET = 20:00-23:59 UTC)
+    - cron: '*/10 0,20-23 * * 1-5'
   workflow_dispatch:
 
 jobs:
