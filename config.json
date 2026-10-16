@@ -21,7 +21,7 @@
     "timeframes": {
       "structure": "1Week",
       "context": "1Day",
-      "entry": "4Hour"
+      "entry": "15Min"
     }
   },
   "moving_averages": [8, 21]

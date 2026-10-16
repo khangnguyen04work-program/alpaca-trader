@@ -437,7 +437,15 @@ def analyze_and_trade(symbol):
     # Phase 1: Higher TF — Market structure
     weekly = fetch_bars(symbol, days=90, timeframe=TF_STRUCTURE)
     daily = fetch_bars(symbol, days=30, timeframe=TF_CONTEXT)
-    entry_bars_raw = fetch_bars(symbol, days=5, timeframe=TF_ENTRY)
+
+    # Adaptive days for entry timeframe: 1Day needs fewer bars than 15Min
+    if "15" in TF_ENTRY or "5" in TF_ENTRY:
+        entry_days = 1
+    elif "Hour" in TF_ENTRY or "60" in TF_ENTRY:
+        entry_days = 3
+    else:
+        entry_days = 5
+    entry_bars_raw = fetch_bars(symbol, days=entry_days, timeframe=TF_ENTRY)
 
     if not entry_bars_raw or len(entry_bars_raw) < 3:
         log(f"Not enough {TF_ENTRY} data for {symbol}", "ANALYSIS")
