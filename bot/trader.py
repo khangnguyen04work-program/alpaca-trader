@@ -73,6 +73,7 @@ ORDER_TYPE = CONFIG["strategy"]["order_type"]
 TF_STRUCTURE = CONFIG["strategy"]["timeframes"]["structure"]
 TF_CONTEXT = CONFIG["strategy"]["timeframes"]["context"]
 TF_ENTRY = CONFIG["strategy"]["timeframes"]["entry"]
+CONFIDENCE_MULT_MAX = CONFIG["strategy"].get("confidence_mult_max", 2.0)
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -322,7 +323,7 @@ def calc_confidence_mult(pattern_type, strength, confluence_count, rrr, htf_tren
     if htf_trend and htf_trend != "unknown" and htf_trend == trend_dir:
         mult += 0.5
 
-    return max(0.25, min(mult, 2.0))  # cash-only: max 2x base risk
+    return max(0.25, min(mult, CONFIDENCE_MULT_MAX))  # cash-only: max 2x base risk
 
 
 def calc_position_size(account, risk_pct, confidence_mult=1.0):
