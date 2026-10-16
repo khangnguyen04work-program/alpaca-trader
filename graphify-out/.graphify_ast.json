@@ -1,0 +1,1653 @@
+{
+  "nodes": [
+    {
+      "id": "bot_rest_client",
+      "label": "rest_client.py",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_headers",
+      "label": "_headers()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L25",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_has_credentials",
+      "label": "has_credentials()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L36",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_request",
+      "label": "_request()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L40",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_get_account",
+      "label": "get_account()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L64",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_get_clock",
+      "label": "get_clock()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L68",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_get_positions",
+      "label": "get_positions()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L72",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_get_bars",
+      "label": "get_bars()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L79",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_get_orders",
+      "label": "get_orders()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L88",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_submit_order",
+      "label": "submit_order()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L97",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_cancel_order",
+      "label": "cancel_order()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L114",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_doctor_check",
+      "label": "doctor_check()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L118",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_rest_call",
+      "label": "rest_call()",
+      "file_type": "code",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L126",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_rationale_1",
+      "label": "REST API client for Alpaca Trading API. Fallback when the Alpaca CLI is not…",
+      "file_type": "rationale",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_rest_client_rationale_127",
+      "label": "CLI-style dispatcher for REST API. Accepts same arg list as CLI (e.g.…",
+      "file_type": "rationale",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L127",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader",
+      "label": "trader.py",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rest_call",
+      "label": "_rest_call()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L28",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_run_alpaca",
+      "label": "run_alpaca()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L39",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_log",
+      "label": "log()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L80",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_fetch_bars",
+      "label": "fetch_bars()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L87",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_classify_candle",
+      "label": "classify_candle()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L111",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_detect_pin_bar",
+      "label": "detect_pin_bar()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L129",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_detect_engulfing_bar",
+      "label": "detect_engulfing_bar()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L141",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_detect_inside_bar",
+      "label": "detect_inside_bar()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L152",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_detect_doji",
+      "label": "detect_doji()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L163",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_detect_morning_evening_star",
+      "label": "detect_morning_evening_star()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L172",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_compute_sma",
+      "label": "compute_sma()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L189",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_compute_bollinger_bands",
+      "label": "compute_bollinger_bands()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L202",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_identify_support_resistance_levels",
+      "label": "identify_support_resistance_levels()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L222",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_check_confluence",
+      "label": "check_confluence()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L230",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_calc_confidence_mult",
+      "label": "calc_confidence_mult()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L294",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_calc_position_size",
+      "label": "calc_position_size()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L329",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_estimate_stop_loss",
+      "label": "estimate_stop_loss()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L336",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_estimate_profit_target",
+      "label": "estimate_profit_target()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L346",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_place_order",
+      "label": "place_order()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L353",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_is_market_session",
+      "label": "is_market_session()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L371",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_is_after_market_close",
+      "label": "is_after_market_close()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L376",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_save_signal",
+      "label": "_save_signal()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L382",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_determine_market_regime",
+      "label": "determine_market_regime()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L399",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_analyze_and_trade",
+      "label": "analyze_and_trade()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L431",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_run_journal",
+      "label": "run_journal()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L602",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "bot/trader.py",
+      "source_location": "L721",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_2",
+      "label": "Alpaca Autonomous Trader — Candlestick Trading Bible strategies. Runs as a…",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_40",
+      "label": "Run an alpaca command. CLI binary preferred, falls back to REST API.",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L40",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_88",
+      "label": "Fetch OHLC bars for given timeframe. Returns raw API bars list.",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L88",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_295",
+      "label": "Calculate position-size multiplier based on signal confidence. Base 1.0 =…",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L295",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_330",
+      "label": "Cash-only position sizing. Never exceeds available cash.",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L330",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_400",
+      "label": "Analyze weekly/daily bars to determine market structure. Returns: regime…",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L400",
+      "_origin": "ast"
+    },
+    {
+      "id": "bot_trader_rationale_432",
+      "label": "Full top-down multi-timeframe analysis per the book. 1. Weekly/daily: market…",
+      "file_type": "rationale",
+      "source_file": "bot/trader.py",
+      "source_location": "L432",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "bot_rest_client",
+      "target": "base64",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "json",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "urllib_request",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "urllib_parse",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_headers",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_has_credentials",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_request",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_get_account",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_get_clock",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_get_positions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L72",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_get_bars",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_get_orders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_submit_order",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_cancel_order",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_doctor_check",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L118",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client",
+      "target": "bot_rest_client_rest_call",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L126",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_request",
+      "target": "bot_rest_client_headers",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_get_account",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_get_clock",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_get_positions",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_get_bars",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_get_orders",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_submit_order",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_cancel_order",
+      "target": "bot_rest_client_request",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L115",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_doctor_check",
+      "target": "bot_rest_client_get_account",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L119",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_get_account",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L137",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_get_clock",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L139",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_get_positions",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L141",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_get_orders",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_cancel_order",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L150",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_submit_order",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L165",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rest_call",
+      "target": "bot_rest_client_get_bars",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L175",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rationale_1",
+      "target": "bot_rest_client",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_rationale_127",
+      "target": "bot_rest_client_rest_call",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/rest_client.py",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "json",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "math",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "subprocess",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "sys",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "time",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "collections",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "datetime",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "pathlib",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_rest_call",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_run_alpaca",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_log",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_fetch_bars",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_classify_candle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_detect_pin_bar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L129",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_detect_engulfing_bar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L141",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_detect_inside_bar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L152",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_detect_doji",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L163",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_detect_morning_evening_star",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_compute_sma",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L189",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_compute_bollinger_bands",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L202",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_identify_support_resistance_levels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L222",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_check_confluence",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L230",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_calc_confidence_mult",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L294",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_calc_position_size",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L329",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_estimate_stop_loss",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L336",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_estimate_profit_target",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L346",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_place_order",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L353",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_is_market_session",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L371",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_is_after_market_close",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L376",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_save_signal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L382",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_determine_market_regime",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L399",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_analyze_and_trade",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L431",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_run_journal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L602",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_trader_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L721",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_run_alpaca",
+      "target": "bot_trader_log",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_run_alpaca",
+      "target": "bot_trader_rest_call",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_fetch_bars",
+      "target": "bot_trader_run_alpaca",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_check_confluence",
+      "target": "bot_trader_compute_bollinger_bands",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L282",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_place_order",
+      "target": "bot_trader_log",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L360",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_place_order",
+      "target": "bot_trader_run_alpaca",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L361",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_determine_market_regime",
+      "target": "bot_trader_classify_candle",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L405",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_determine_market_regime",
+      "target": "bot_trader_identify_support_resistance_levels",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L424",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_log",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L436",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_fetch_bars",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L439",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_determine_market_regime",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L456",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_classify_candle",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L468",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_compute_sma",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L472",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_identify_support_resistance_levels",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L474",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_run_alpaca",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L478",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_detect_pin_bar",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L487",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_detect_doji",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L487",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_detect_engulfing_bar",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L491",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_detect_inside_bar",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L491",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_detect_morning_evening_star",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L494",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_check_confluence",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L509",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_save_signal",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L526",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_is_market_session",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L552",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_estimate_stop_loss",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L558",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_estimate_profit_target",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L559",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_calc_confidence_mult",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L566",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_calc_position_size",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L569",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_analyze_and_trade",
+      "target": "bot_trader_place_order",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L589",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_run_journal",
+      "target": "bot_trader_log",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L603",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_run_journal",
+      "target": "bot_trader_run_alpaca",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L617",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_main",
+      "target": "bot_trader_run_journal",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L723",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_main",
+      "target": "bot_trader_log",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L726",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_main",
+      "target": "bot_trader_is_market_session",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L755",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_main",
+      "target": "bot_trader_is_after_market_close",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L757",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_main",
+      "target": "bot_trader_analyze_and_trade",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L766",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_2",
+      "target": "bot_trader",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_40",
+      "target": "bot_trader_run_alpaca",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_88",
+      "target": "bot_trader_fetch_bars",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_295",
+      "target": "bot_trader_calc_confidence_mult",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L295",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_330",
+      "target": "bot_trader_calc_position_size",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L330",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_400",
+      "target": "bot_trader_determine_market_regime",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L400",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader_rationale_432",
+      "target": "bot_trader_analyze_and_trade",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L432",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_trader",
+      "target": "bot_rest_client",
+      "relation": "imports_from",
+      "context": "submodule_import",
+      "confidence": "EXTRACTED",
+      "source_file": "bot/trader.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "bot_rest_client_request",
+      "target": "json",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "bot/rest_client.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "failed_sources": [],
+  "extracted_sources": [
+    "/home/khangnguyen/Projects/alpaca-trader/book/candlestick-bible-rules.json",
+    "/home/khangnguyen/Projects/alpaca-trader/bot/rest_client.py",
+    "/home/khangnguyen/Projects/alpaca-trader/bot/trader.py",
+    "/home/khangnguyen/Projects/alpaca-trader/config.json"
+  ]
+}

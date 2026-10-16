@@ -1,0 +1,223 @@
+{
+  "communities": {
+    "0": [
+      "bot_trader",
+      "bot_trader_check_confluence",
+      "bot_trader_compute_bollinger_bands",
+      "bot_trader_estimate_stop_loss",
+      "bot_trader_rationale_2",
+      "collections",
+      "datetime",
+      "math",
+      "pathlib",
+      "subprocess",
+      "sys",
+      "time"
+    ],
+    "1": [
+      "bot_trader_fetch_bars",
+      "bot_trader_is_after_market_close",
+      "bot_trader_is_market_session",
+      "bot_trader_log",
+      "bot_trader_main",
+      "bot_trader_place_order",
+      "bot_trader_rationale_40",
+      "bot_trader_rationale_88",
+      "bot_trader_rest_call",
+      "bot_trader_run_alpaca",
+      "bot_trader_run_journal"
+    ],
+    "2": [
+      "bot_trader_analyze_and_trade",
+      "bot_trader_compute_sma",
+      "bot_trader_detect_doji",
+      "bot_trader_detect_engulfing_bar",
+      "bot_trader_detect_inside_bar",
+      "bot_trader_detect_morning_evening_star",
+      "bot_trader_detect_pin_bar",
+      "bot_trader_estimate_profit_target",
+      "bot_trader_rationale_432",
+      "bot_trader_save_signal"
+    ],
+    "3": [
+      "base64",
+      "bot_rest_client",
+      "bot_rest_client_has_credentials",
+      "bot_rest_client_rationale_1",
+      "os",
+      "urllib_parse",
+      "urllib_request"
+    ],
+    "4": [
+      "bot_rest_client_cancel_order",
+      "bot_rest_client_get_bars",
+      "bot_rest_client_get_orders",
+      "bot_rest_client_rationale_127",
+      "bot_rest_client_rest_call",
+      "bot_rest_client_submit_order"
+    ],
+    "5": [
+      "bot_rest_client_get_clock",
+      "bot_rest_client_get_positions",
+      "bot_rest_client_headers",
+      "bot_rest_client_request",
+      "json"
+    ],
+    "6": [
+      "bot_trader_classify_candle",
+      "bot_trader_determine_market_regime",
+      "bot_trader_identify_support_resistance_levels",
+      "bot_trader_rationale_400"
+    ],
+    "7": [
+      "bot_rest_client_doctor_check",
+      "bot_rest_client_get_account"
+    ],
+    "8": [
+      "bot_trader_calc_confidence_mult",
+      "bot_trader_rationale_295"
+    ],
+    "9": [
+      "bot_trader_calc_position_size",
+      "bot_trader_rationale_330"
+    ]
+  },
+  "cohesion": {
+    "0": 0.18181818181818182,
+    "1": 0.23636363636363636,
+    "2": 0.2,
+    "3": 0.2857142857142857,
+    "4": 0.3333333333333333,
+    "5": 0.4,
+    "6": 0.5,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0
+  },
+  "gods": [
+    {
+      "id": "bot_trader_analyze_and_trade",
+      "label": "analyze_and_trade()",
+      "degree": 23
+    },
+    {
+      "id": "bot_rest_client_request",
+      "label": "_request()",
+      "degree": 10
+    },
+    {
+      "id": "bot_rest_client_rest_call",
+      "label": "rest_call()",
+      "degree": 9
+    },
+    {
+      "id": "bot_trader_run_alpaca",
+      "label": "run_alpaca()",
+      "degree": 8
+    },
+    {
+      "id": "bot_trader_log",
+      "label": "log()",
+      "degree": 6
+    },
+    {
+      "id": "bot_trader_main",
+      "label": "main()",
+      "degree": 6
+    },
+    {
+      "id": "bot_trader_determine_market_regime",
+      "label": "determine_market_regime()",
+      "degree": 5
+    },
+    {
+      "id": "bot_rest_client_get_account",
+      "label": "get_account()",
+      "degree": 4
+    },
+    {
+      "id": "bot_trader_fetch_bars",
+      "label": "fetch_bars()",
+      "degree": 4
+    },
+    {
+      "id": "bot_trader_place_order",
+      "label": "place_order()",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "cancel_order()",
+      "target": "_request()",
+      "source_files": [
+        "bot/rest_client.py",
+        "bot/rest_client.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 5 → community 4"
+    },
+    {
+      "source": "get_account()",
+      "target": "_request()",
+      "source_files": [
+        "bot/rest_client.py",
+        "bot/rest_client.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 5 → community 7"
+    },
+    {
+      "source": "rest_call()",
+      "target": "get_account()",
+      "source_files": [
+        "bot/rest_client.py",
+        "bot/rest_client.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 7 → community 4"
+    },
+    {
+      "source": "analyze_and_trade()",
+      "target": "run_alpaca()",
+      "source_files": [
+        "bot/trader.py",
+        "bot/trader.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 1 → community 2"
+    },
+    {
+      "source": "analyze_and_trade()",
+      "target": "classify_candle()",
+      "source_files": [
+        "bot/trader.py",
+        "bot/trader.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 6 → community 2"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `analyze_and_trade()` connect `Community 2` to `Community 0`, `Community 1`, `Community 6`, `Community 8`, `Community 9`?",
+      "why": "High betweenness centrality (0.119) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `rest_call()` connect `Community 4` to `Community 3`, `Community 5`, `Community 7`?",
+      "why": "High betweenness centrality (0.037) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `run_alpaca()` connect `Community 1` to `Community 0`, `Community 2`?",
+      "why": "High betweenness centrality (0.037) - this node is a cross-community bridge."
+    }
+  ]
+}
