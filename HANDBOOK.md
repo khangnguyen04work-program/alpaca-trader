@@ -182,7 +182,14 @@ With aggressive settings (5% base, 3.0× mult, 8 symbols, 15Min entry):
 
 - `runs/journal-YYYY-MM-DD.md` — daily post-market report
 - `runs/signals-YYYY-MM-DD.json` — every signal detected (structured)
-- Both auto-upload after journal run
+- **Committed back to the repo automatically** at 4:30 PM — permanent in git history
+- Artifact copies also uploaded per-run (but expire after 90 days — repo copy is the permanent one)
+
+**In 3 years, read journals from the repo:**
+```bash
+cd ~/Projects/alpaca-trader && git pull
+ls runs/journal-*.md
+```
 
 ### Cost
 
