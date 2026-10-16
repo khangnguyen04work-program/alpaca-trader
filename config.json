@@ -12,7 +12,7 @@
     "MSFT"
   ],
   "strategy": {
-    "min_risk_reward_ratio": 1.5,
+    "min_risk_reward_ratio": 1.0,
     "max_risk_per_trade_pct": 3.0,
     "confirmation_mode": "off",
     "time_in_force": "day",
