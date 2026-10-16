@@ -533,11 +533,20 @@ def analyze_and_trade(symbol):
             _save_signal(signals_path, sig_record)
             continue
 
-        # Cash-only account: skip sell orders (no short selling / margin)
+        # Cash-only: allow sell only if we already own shares (exit a position)
         if side == "sell":
-            log("  skip SELL — cash-only account (no margin)", "CASH")
-            _save_signal(signals_path, sig_record)
-            continue
+            # Check if we own this symbol
+            pos_check = run_alpaca(["position", "list"])
+            owned = False
+            if isinstance(pos_check, list):
+                for p in pos_check:
+                    if p.get("symbol") == symbol and float(p.get("qty", 0) or 0) > 0:
+                        owned = True
+                        break
+            if not owned:
+                log("  skip SELL — don't own shares to sell", "CASH")
+                _save_signal(signals_path, sig_record)
+                continue
 
         if not is_market_session():
             log("  market closed — analysis only", "MARKET")
