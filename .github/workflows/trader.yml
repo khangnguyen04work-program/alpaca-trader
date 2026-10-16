@@ -2,8 +2,8 @@ name: Alpaca Paper Trader
 
 on:
   schedule:
-    # Mon-Fri, every 30 min from 9:30 AM to 4:00 PM ET (14:30-20:00 UTC)
-    - cron: '*/30 14-19 * * 1-5'
+    # Mon-Fri, every 15 min from 9:30 AM to 4:00 PM ET (13:30-20:00 UTC)
+    - cron: '*/15 13-19 * * 1-5'
   workflow_dispatch:  # allow manual trigger
 
 jobs:

@@ -1,14 +1,15 @@
 {
   "alpaca_cli": "/home/khangnguyen/go/bin/alpaca",
-  "run_dir": "/home/khangnguyen/.hermes/cache/scratch/alpaca-bot",
-  "log_dir": "/home/khangnguyen/.hermes/cache/scratch/alpaca-bot/runs",
   "paper_env": true,
   "symbols": [
     "SPY",
+    "NVDA",
+    "TSLA",
+    "META",
     "AAPL",
-    "MSFT",
     "GOOG",
-    "AMZN"
+    "AMZN",
+    "MSFT"
   ],
   "strategy": {
     "min_risk_reward_ratio": 1.5,
@@ -16,15 +17,12 @@
     "confirmation_mode": "off",
     "time_in_force": "day",
     "order_type": "market",
-    "required_confluence_factors": 2
+    "required_confluence_factors": 2,
+    "timeframes": {
+      "structure": "1Week",
+      "context": "1Day",
+      "entry": "4Hour"
+    }
   },
-  "moving_averages": [8, 21],
-  "confluence": {
-    "trend": true,
-    "horizontal_sr": true,
-    "moving_averages": true,
-    "fibonacci": true,
-    "bollinger_bands": true,
-    "trend_lines": true
-  }
+  "moving_averages": [8, 21]
 }

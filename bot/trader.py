@@ -70,6 +70,9 @@ MAX_RISK_PCT = CONFIG["strategy"]["max_risk_per_trade_pct"]
 MIN_CONFLUENCE = CONFIG["strategy"]["required_confluence_factors"]
 TIF = CONFIG["strategy"]["time_in_force"]
 ORDER_TYPE = CONFIG["strategy"]["order_type"]
+TF_STRUCTURE = CONFIG["strategy"]["timeframes"]["structure"]
+TF_CONTEXT = CONFIG["strategy"]["timeframes"]["context"]
+TF_ENTRY = CONFIG["strategy"]["timeframes"]["entry"]
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -80,25 +83,25 @@ def log(msg, section="TRADER"):
 
 # ─── Data Fetching ───────────────────────────────────────────────────────────
 
-def fetch_bars(symbol, days=15):
-    """Fetch daily OHLC bars for the last N days."""
+def fetch_bars(symbol, days=15, timeframe="1Day"):
+    """Fetch OHLC bars for given timeframe. Returns raw API bars list."""
     end = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
     start = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
 
     result = run_alpaca(["data", "bars", "--symbol", symbol,
                          "--start", start, "--end", end,
-                         "--timeframe", "1Day"])
-    if result and "bars" in result and len(result["bars"]) >= 3:
+                         "--timeframe", timeframe])
+    if result and "bars" in result and len(result["bars"]) >= 2:
         return result["bars"]
 
-    for d in [10, 7, 5, 3]:
+    # Shorter range fallback for higher timeframes
+    for d in [min(days, 10), 7, 5, 3]:
         s = (datetime.now(timezone.utc) - timedelta(days=d)).strftime("%Y-%m-%d")
         result = run_alpaca(["data", "bars", "--symbol", symbol,
                              "--start", s, "--end", end,
-                             "--timeframe", "1Day"])
+                             "--timeframe", timeframe])
         if result and "bars" in result and len(result["bars"]) >= 2:
             return result["bars"]
-
     return []
 
 
@@ -223,7 +226,7 @@ def identify_support_resistance_levels(bars, num_levels=3):
     return [lvl for lvl, _ in sorted(touches.items(), key=lambda x: -x[1])[:num_levels]]
 
 
-def check_confluence(candle, bars, idx, sr_levels, sma_vals):
+def check_confluence(candle, bars, idx, sr_levels, sma_vals, htf_trend=None):
     factors = []
 
     # Trend direction from last 3-5 bars (works with as few as 3 bars)
@@ -234,6 +237,12 @@ def check_confluence(candle, bars, idx, sr_levels, sma_vals):
         trend_dir = "uptrend" if up_trend > down_trend else ("downtrend" if down_trend > up_trend else "ranging")
     else:
         trend_dir = "unknown"
+
+    # Higher-TF alignment (weekly/daily context)
+    if htf_trend and htf_trend != "unknown" and htf_trend != "ranging":
+        factors.append(f"htf_{htf_trend}")
+        if htf_trend == trend_dir:
+            factors.append("trends_aligned")
 
     # Support/Resistance level proximity
     if any(abs(candle["close"] - lvl) / lvl * 100 < 1.0 for lvl in sr_levels if lvl > 0):
@@ -349,29 +358,84 @@ def _save_signal(path, record):
         json.dump(records, f, indent=2)
 
 
+# ─── Top-Down Timeframe Analysis ─────────────────────────────────────────────
+
+def determine_market_regime(bars):
+    """Analyze weekly/daily bars to determine market structure.
+    Returns: regime (trending_up/trending_down/ranging/choppy), sr_levels, trend_dir"""
+    if not bars or len(bars) < 2:
+        return "unknown", [], "unknown"
+
+    classified = [classify_candle(b) for b in bars]
+
+    # Trend direction from closes
+    closes = [b["close"] for b in classified]
+    up = sum(1 for i in range(1, len(closes)) if closes[i] > closes[i-1])
+    down = len(closes) - 1 - up
+
+    if up > down + 1:
+        trend_dir = "uptrend"
+    elif down > up + 1:
+        trend_dir = "downtrend"
+    else:
+        trend_dir = "ranging"
+
+    # Regime based on volatility vs trend consistency
+    volatility = max(closes) - min(closes)
+    avg_move = sum(abs(closes[i] - closes[i-1]) for i in range(1, len(closes))) / (len(closes)-1) if len(closes) > 1 else 0
+    regime = "trending" if abs(up - down) >= 2 else ("ranging" if avg_move > 0 else "choppy")
+
+    sr_levels = identify_support_resistance_levels(classified)
+
+    return regime, sr_levels, trend_dir
+
+
 # ─── Analysis & Trading ──────────────────────────────────────────────────────
 
 def analyze_and_trade(symbol):
-    log(f"Analyzing {symbol}...", "ANALYSIS")
+    """Full top-down multi-timeframe analysis per the book.
+    1. Weekly/daily: market structure, regime, S/R levels
+    2. 4H: entry signals at key levels
+    3. Trade only when all timeframes align."""
+    log(f"Top-down analysis of {symbol}...", "ANALYSIS")
 
-    bars_raw = fetch_bars(symbol, days=15)
-    if not bars_raw or len(bars_raw) < 3:
-        log(f"Not enough data for {symbol}", "ANALYSIS")
+    # Phase 1: Higher TF — Market structure
+    weekly = fetch_bars(symbol, days=90, timeframe=TF_STRUCTURE)
+    daily = fetch_bars(symbol, days=30, timeframe=TF_CONTEXT)
+    entry_bars_raw = fetch_bars(symbol, days=5, timeframe=TF_ENTRY)
+
+    if not entry_bars_raw or len(entry_bars_raw) < 3:
+        log(f"Not enough {TF_ENTRY} data for {symbol}", "ANALYSIS")
         return
 
-    bars = [classify_candle(b) for b in bars_raw]
+    # Determine market regime from weekly first, fall back to daily
+    regime, htf_sr, htf_trend = determine_market_regime(weekly)
+    if regime == "unknown" or not htf_sr:
+        regime, htf_sr, htf_trend = determine_market_regime(daily)
+
+    log(f"  Regime: {regime} | Higher-TF trend: {htf_trend} | S/R: {htf_sr}", "STRUCTURE")
+
+    # Skip choppy markets (per the book: "never trade in choppy/unidentifiable markets")
+    if regime == "choppy":
+        log(f"  Choppy market — skipping {symbol}", "ANALYSIS")
+        return
+
+    # Phase 2: Entry TF — candlestick patterns
+    bars = [classify_candle(b) for b in entry_bars_raw]
 
     sma_vals = {}
     for period in MA_PERIODS:
         sma_vals[period] = compute_sma(bars, period)
 
     sr_levels = identify_support_resistance_levels(bars)
+    # Merge with higher-TF levels
+    all_sr = list(set(sr_levels + htf_sr))
 
     account = run_alpaca(["account", "get"])
     if not account:
         log("Cannot get account status", "FATAL")
         return
-    log(f"Account: ${account['equity']} cash ${account['cash']} BP ${account['buying_power']}", "ACCOUNT")
+    log(f"  Account: ${account['equity']} cash ${account['cash']} BP ${account['buying_power']}", "ACCOUNT")
 
     signals = []
     for i in range(max(0, len(bars) - 5), len(bars)):
@@ -388,17 +452,17 @@ def analyze_and_trade(symbol):
             signals.append((i, sig))
 
     if not signals:
-        log(f"No patterns for {symbol}", "ANALYSIS")
+        log(f"  No patterns on {TF_ENTRY} for {symbol}", "ANALYSIS")
         return
 
-    log(f"Found {len(signals)} pattern(s)", "ANALYSIS")
+    log(f"  Found {len(signals)} pattern(s) on {TF_ENTRY}", "ANALYSIS")
 
     for si, signal in signals:
         pattern_type = signal["type"]
         candle = signal["candle"]
 
         all_sma = sma_vals.get(MA_PERIODS[0], [None] * len(bars))
-        factors, trend_dir = check_confluence(candle, bars, si, sr_levels, all_sma)
+        factors, trend_dir = check_confluence(candle, bars, si, all_sr, all_sma, htf_trend)
         cc = len(factors)
 
         today = datetime.now().strftime("%Y-%m-%d")
@@ -407,6 +471,7 @@ def analyze_and_trade(symbol):
             "symbol": symbol, "pattern": pattern_type,
             "strength": round(signal["strength"], 2), "confluence": cc,
             "factors": factors, "trend_dir": trend_dir,
+            "htf_trend": htf_trend, "regime": regime,
             "price": candle["close"], "traded": False
         }
 
@@ -437,7 +502,7 @@ def analyze_and_trade(symbol):
             continue
 
         stop, _ = estimate_stop_loss(candle, pattern_type, trend_dir, bars, si)
-        target = estimate_profit_target(candle, pattern_type, bars, si, sr_levels, MIN_RRR)
+        target = estimate_profit_target(candle, pattern_type, bars, si, all_sr, MIN_RRR)
 
         risk_ps = (candle["close"] - stop) if side == "buy" else (stop - candle["close"])
         reward_ps = (target - candle["close"]) if side == "buy" else (candle["close"] - target)
