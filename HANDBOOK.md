@@ -12,12 +12,30 @@
 **Total files:** 4 code files, 34 documentation files
 **Graph analysis:** 61 nodes, 114 edges, 10 functional communities
 
-### Architecture
+### Architecture — SINGLE BRAIN (GitHub Actions only)
+
+> **Note:** Laptop systemd timers were disabled on 2026-10-16 to prevent
+> duplicate orders. GitHub Actions is the single source of truth.
+> The laptop retains `bin/alpaca` CLI + project folder for manual
+> debugging, config edits, and pushing code updates only.
 
 ```
-GitHub Actions (every 15 min, Mon-Fri 9:30-4PM ET)
+GITHUB ACTIONS (cloud) — the ONLY trading brain
+    │  cron workflows:
+    │  • trader (every 2 min, market hours)
+    │  • journal (4:30 PM ET daily)
+    │  • weekend analysis (every 15 min, Sat-Sun)
     │
+    │  Runs 24/7 regardless of laptop state
+    │  Uses: bot/rest_client.py (REST API)
     ▼
+ALPACA PAPER API
+    Account: $5,000 cash · Buy-only · No margin
+```
+
+### Decision Pipeline (inside trader.py)
+
+```
 trader.py ─── main() ─── analyze_and_trade(symbol)
     │                         │
     │                    ┌────┴────┐
@@ -150,8 +168,9 @@ With aggressive settings (5% base, 3.0× mult, 8 symbols, 15Min entry):
 
 | Workflow | Trigger | What it does |
 |----------|---------|-------------|
-| `trader.yml` | Every 15 min, 9:00AM–4:00PM ET, Mon–Fri | Analyzes + trades |
+| `trader.yml` | Every 2 min during market hours (9:30AM–4PM ET), Mon–Fri + 10-min pre/after-hours | Analyzes + trades |
 | `journal.yml` | 4:30PM ET, Mon–Fri | Writes daily retrospective |
+| `weekend.yml` | Every 15 min, Sat–Sun 6AM–6PM ET | Market structure analysis |
 
 ### Secrets Required
 
@@ -167,7 +186,7 @@ With aggressive settings (5% base, 3.0× mult, 8 symbols, 15Min entry):
 
 ### Cost
 
-GitHub Actions free tier: **2,000 minutes/month** for private repos. This bot uses ~20-30 minutes/month.
+GitHub Actions free tier: **2,000 minutes/month** for private repos. This bot uses ~1,596 minutes/month (80%), with 404 minutes of headroom at the conservative 15s/run estimate.
 
 ---
 
@@ -178,8 +197,9 @@ GitHub Actions free tier: **2,000 minutes/month** for private repos. This bot us
 | `bot/trader.py` | **Main engine** — analysis, trading, journal | 760+ |
 | `bot/rest_client.py` | **REST API fallback** (no CLI binary needed) | 200+ |
 | `config.json` | **Configuration** — symbols, risk, timeframes | 25 |
-| `.github/workflows/trader.yml` | CI cron — trades every 15 min | 22 |
+| `.github/workflows/trader.yml` | CI cron — trades every 2 min market hours + 10-min pre/after | 26 |
 | `.github/workflows/journal.yml` | CI cron — journal at 4:30 PM | 24 |
+| `.github/workflows/weekend.yml` | CI cron — weekend analysis every 15 min | 22 |
 | `README.md` | Setup guide | — |
 
 ### Data Flow (from graph analysis)
