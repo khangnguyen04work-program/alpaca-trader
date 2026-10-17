@@ -180,7 +180,9 @@ The bot also trades **BTC/USD and ETH/USD around the clock** — nights, weekend
 | Base risk | 3% (config `crypto_risk_pct`) — lower than equities due to volatility |
 | Time-in-force | GTC (crypto never closes; `day` would kill overnight orders) |
 | Quantity | **Fractional** (e.g. 0.002606 BTC — never force whole coins) |
-| Schedule | `crypto.yml`: every 30 min, 24/7/365 |
+| Schedule | `crypto.yml`: every 30 min, 24/7/365 (runs never stop — stops stay monitored) |
+| **Entry window** | NEW buys only: weekdays **17:00→08:00 ET**, **Sat/Sun all day**. Config: `crypto_entry_start_hour: 17`, `crypto_entry_end_hour: 8`, `crypto_weekend_all_day: true`. Set start==end to disable the window. |
+| Exits outside window | Stop-loss/take-profit and sell-signal exits are **never gated** — risk-reducing actions run 24/7 |
 | Data endpoint | `v1beta3/crypto/us/bars` (different from stocks) |
 | Incomplete bars | Last bar dropped if still forming (crypto never closes, so the last bar is always live) |
 | Market-hours gate | **Bypassed** — the `is_market_session()` check applies to equities only |

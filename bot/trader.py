@@ -78,6 +78,9 @@ MAX_TRADES_PER_SYMBOL = CONFIG["strategy"].get("max_trades_per_symbol_day", 3)
 CRYPTO_SYMBOLS = CONFIG.get("crypto_symbols", [])
 CRYPTO_RISK_PCT = CONFIG["strategy"].get("crypto_risk_pct", 3.0)
 CRYPTO_TIF = CONFIG["strategy"].get("crypto_time_in_force", "gtc")
+CRYPTO_ENTRY_START = CONFIG["strategy"].get("crypto_entry_start_hour", 0)
+CRYPTO_ENTRY_END = CONFIG["strategy"].get("crypto_entry_end_hour", 24)
+CRYPTO_WEEKEND_ALL_DAY = CONFIG["strategy"].get("crypto_weekend_all_day", True)
 EXIT_SL_PCT = CONFIG["strategy"].get("stop_loss_pct", 2.5)
 EXIT_TP_PCT = CONFIG["strategy"].get("take_profit_pct", 4.0)
 EXIT_SL_CRYPTO_PCT = CONFIG["strategy"].get("crypto_stop_loss_pct", 3.5)
@@ -567,6 +570,22 @@ def determine_market_regime(bars):
 
 # ─── Analysis & Trading ──────────────────────────────────────────────────────
 
+def crypto_entry_allowed(now=None):
+    """ET wall-clock gate for opening NEW crypto positions.
+    Default: weekdays only 17:00→08:00 (window crosses midnight); Sat/Sun all day.
+    Exits are NEVER gated by this — stop-loss/take-profit and sell signals that
+    close a position stay active around the clock. Set start==end to disable."""
+    now = now or datetime.now()
+    if now.weekday() >= 5 and CRYPTO_WEEKEND_ALL_DAY:
+        return True
+    start, end = CRYPTO_ENTRY_START, CRYPTO_ENTRY_END
+    if start == end:
+        return True  # no restriction
+    if start < end:
+        return start <= now.hour < end
+    return now.hour >= start or now.hour < end  # crosses midnight
+
+
 _TODAY_ORDERS_CACHE = None
 
 def _today_orders_index():
@@ -741,7 +760,9 @@ def analyze_and_trade(symbol):
             owned = False
             if isinstance(pos_check, list):
                 for p in pos_check:
-                    if p.get("symbol") == symbol and float(p.get("qty", 0) or 0) > 0:
+                    # positions for crypto come back as BTCUSD — normalize both sides
+                    if _norm_sym(p.get("symbol", "")) == _norm_sym(symbol) \
+                       and float(p.get("qty", 0) or 0) > 0:
                         owned = True
                         break
             if not owned:
@@ -752,6 +773,15 @@ def analyze_and_trade(symbol):
         # Crypto trades 24/7 — the equity market-hours gate does not apply
         if not crypto and not is_market_session():
             log("  market closed — analysis only", "MARKET")
+            _save_signal(signals_path, sig_record)
+            continue
+
+        # Crypto entry window: NEW buys only inside the configured ET hours
+        # (weekdays 17:00→08:00, all weekend). Exits — stop-loss/take-profit
+        # and sell signals — are never gated; they stay active 24/7.
+        if crypto and side == "buy" and not crypto_entry_allowed():
+            log(f"  outside crypto entry window ({CRYPTO_ENTRY_START:02d}:00–{CRYPTO_ENTRY_END:02d}:00 ET weekdays) — analysis only", "WINDOW")
+            sig_record["skipped"] = "outside_entry_window"
             _save_signal(signals_path, sig_record)
             continue
 

@@ -6,6 +6,8 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
+# Runs fire 24/7 so stop-losses stay monitored around the clock, but NEW entries
+# are gated inside trader.py to: weekdays 17:00-08:00 ET, all weekend.
 # Crypto and equity runs share one Alpaca account — serialize all trading
 concurrency:
   group: alpaca-trader
