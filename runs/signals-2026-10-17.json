@@ -711,5 +711,29 @@
     "rrr": 0.93,
     "qty": "0.214987",
     "error": "order_failed"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2403.6,
+    "traded": true,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-17T17:30:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 343.56,
+    "rrr": 0.93,
+    "qty": "0.214986",
+    "order_id": "2b8b4216-8891-45bb-b509-ba1d79cbd467",
+    "order_status": "pending_new"
   }
 ]
