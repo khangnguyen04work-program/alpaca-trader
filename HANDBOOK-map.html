@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    color: var(--foreground);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 12px;
+    line-height: 1.45;
+    width: 860px;
+  }
+  .title { font-size: 16px; font-weight: 700; letter-spacing: 0.12em; }
+  .sub { color: var(--muted-foreground); font-size: 11px; margin: 4px 0 14px; }
+  .flow { display: flex; align-items: stretch; gap: 0; }
+  .box {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: var(--card);
+    width: 255px;
+    flex: none;
+  }
+  .box h3 { margin: 0 0 8px; font-size: 11px; letter-spacing: 0.1em; color: var(--foreground); }
+  .arrow {
+    display: flex; align-items: center; justify-content: center;
+    width: 47px; flex: none;
+    color: var(--muted-foreground); font-size: 16px;
+  }
+  .row { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed var(--border); }
+  .row:last-child { border-bottom: none; }
+  .row .k { color: var(--foreground); }
+  .row .v { color: var(--muted-foreground); text-align: right; }
+  .muted { color: var(--muted-foreground); }
+  .step { display: flex; gap: 8px; padding: 2px 0; }
+  .step .n { color: var(--muted-foreground); width: 14px; flex: none; text-align: right; }
+  .accent { color: var(--accent, var(--foreground)); }
+  .guards { display: flex; gap: 8px; margin-top: 14px; }
+  .guard {
+    border: 1px solid var(--border); border-left: 3px solid var(--accent, var(--foreground));
+    border-radius: 6px; padding: 7px 9px; width: 164px; flex: none;
+  }
+  .guard b { display: block; font-size: 10px; letter-spacing: 0.08em; }
+  .guard span { color: var(--muted-foreground); font-size: 10px; }
+  .cols { display: flex; gap: 12px; margin-top: 14px; }
+  .col { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: var(--card); }
+  .col.a { width: 430px; flex: none; }
+  .col.b { width: 418px; flex: none; }
+  .col h3 { margin: 0 0 8px; font-size: 11px; letter-spacing: 0.1em; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { text-align: left; padding: 3px 6px 3px 0; border-bottom: 1px dashed var(--border); font-size: 11px; }
+  th { color: var(--muted-foreground); font-weight: 400; }
+  .foot { margin-top: 14px; color: var(--muted-foreground); font-size: 10px; }
+</style>
+</head>
+<body>
+  <div class="title">ALPACA AUTONOMOUS TRADER</div>
+  <div class="sub">paper account · ~$5,000 cash · buy-only · single brain: GitHub Actions · exits first, entries second</div>
+
+  <div class="flow">
+    <section class="box">
+      <h3>GITHUB ACTIONS — THE ONLY BRAIN</h3>
+      <div class="row"><span class="k">crypto.yml</span><span class="v">every 30 min · 24/7/365</span></div>
+      <div class="row"><span class="k">trader.yml</span><span class="v">every 2 min · market hours</span></div>
+      <div class="row"><span class="k">weekend.yml</span><span class="v">every 15 min · Sat–Sun</span></div>
+      <div class="row"><span class="k">journal.yml</span><span class="v">4:30 PM ET · commits repo</span></div>
+      <div class="row"><span class="k muted">concurrency</span><span class="v">one group · queue, never cancel</span></div>
+    </section>
+    <div class="arrow">→</div>
+    <section class="box">
+      <h3>bot/trader.py — DECISION PIPELINE</h3>
+      <div class="step"><span class="n">1</span><span>manage_open_positions() — exits</span></div>
+      <div class="step"><span class="n">2</span><span>1Week + 1Day bars → regime, S/R</span></div>
+      <div class="step"><span class="n">3</span><span>15Min bars → candle patterns</span></div>
+      <div class="step"><span class="n">4</span><span>check_confluence() → ≥1 factor</span></div>
+      <div class="step"><span class="n">5</span><span>confidence mult 0.25–3.0×</span></div>
+      <div class="step"><span class="n">6</span><span>size from cash, RRR ≥ 0.5</span></div>
+      <div class="step"><span class="n">7</span><span>guards → place order (buy only)</span></div>
+    </section>
+    <div class="arrow">→</div>
+    <section class="box">
+      <h3>ALPACA PAPER API</h3>
+      <div class="row"><span class="k">equities</span><span class="v">8 symbols · integer qty · DAY</span></div>
+      <div class="row"><span class="k">crypto</span><span class="v">BTC ETH · fractional · GTC</span></div>
+      <div class="row"><span class="k">account</span><span class="v">cash-only · no margin</span></div>
+      <div class="row"><span class="k">server guards</span><span class="v">422 dupes · order history</span></div>
+    </section>
+  </div>
+
+  <div class="guards">
+    <div class="guard"><b>1 · IDEMPOTENT IDs</b><span>same signal can never order twice (422)</span></div>
+    <div class="guard"><b>2 · INSTANCE DEDUP</b><span>file + server order history</span></div>
+    <div class="guard"><b>3 · DAILY CAP</b><span>3 buys/symbol · rolling 24h · orders-based</span></div>
+    <div class="guard"><b>4 · QUEUED RUNS</b><span>no cycle ever cancelled mid-order</span></div>
+    <div class="guard"><b>5 · AUTO EXITS</b><span>eq −2.5/+4% · crypto −3.5/+6%</span></div>
+  </div>
+
+  <div class="cols">
+    <section class="col a">
+      <h3>TWO LOOPS, ONE ACCOUNT</h3>
+      <table>
+        <tr><th></th><th>EQUITY LOOP</th><th>CRYPTO LOOP</th></tr>
+        <tr><td class="muted">symbols</td><td>SPY NVDA TSLA META AAPL GOOG AMZN MSFT</td><td>BTC/USD · ETH/USD</td></tr>
+        <tr><td class="muted">hours</td><td>Mon–Fri 9:30–16:00 ET</td><td>24/7/365</td></tr>
+        <tr><td class="muted">cadence</td><td>2 min</td><td>30 min</td></tr>
+        <tr><td class="muted">risk base</td><td>5% of cash (max $750)</td><td>3% of cash (max $450)</td></tr>
+        <tr><td class="muted">features</td><td>same pipeline, DAY orders</td><td>fractional qty, GTC, live-bar drop</td></tr>
+      </table>
+    </section>
+    <section class="col b">
+      <h3>AUDIT TRAIL (FOR YEAR-3 REVIEW)</h3>
+      <div class="row"><span class="k">runs/journal-*.md</span><span class="v">daily P&L, mistakes, lessons</span></div>
+      <div class="row"><span class="k">runs/signals-*.json</span><span class="v">every signal + decision</span></div>
+      <div class="row"><span class="k">git history</span><span class="v">bot commits daily (keeps cron alive)</span></div>
+      <div class="row"><span class="k">GitHub Actions</span><span class="v">full logs per run</span></div>
+      <div class="row"><span class="k">laptop</span><span class="v">dev console only — no timers</span></div>
+    </section>
+  </div>
+
+  <div class="foot">read: HANDBOOK.md in the repo · bot: github.com/khangnguyen04work-program/alpaca-trader · strategies: The Candlestick Trading Bible (Raut)</div>
+</body>
+</html>
