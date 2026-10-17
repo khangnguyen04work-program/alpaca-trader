@@ -125,7 +125,8 @@ def fetch_bars(symbol, days=15, timeframe="1Day", include_today=False):
                 "--start", start, "--end", end, "--timeframe", timeframe]
     else:
         args = ["data", "bars", "--symbol", symbol,
-                "--start", start, "--end", end, "--timeframe", timeframe]
+                "--start", start, "--end", end, "--timeframe", timeframe,
+                "--feed", "iex"]  # free-plan entitlement; SIP is 403 with API keys
 
     result = run_alpaca(args)
     if result and "bars" in result:
@@ -146,7 +147,8 @@ def fetch_bars(symbol, days=15, timeframe="1Day", include_today=False):
                        "--start", s, "--end", end, "--timeframe", timeframe]
         else:
             args_fb = ["data", "bars", "--symbol", symbol,
-                       "--start", s, "--end", end, "--timeframe", timeframe]
+                       "--start", s, "--end", end, "--timeframe", timeframe,
+                       "--feed", "iex"]
         result = run_alpaca(args_fb)
         if result and "bars" in result:
             bars = result["bars"]

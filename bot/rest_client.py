@@ -81,11 +81,13 @@ def get_positions():
 
 def get_bars(symbol, start, end, timeframe="1Day"):
     path = f"/v2/stocks/{symbol}/bars"
-    q = {"start": start, "end": end, "timeframe": timeframe}
+    # feed=iex: free paper accounts are not entitled to SIP on this endpoint
+    # (HTTP 403 "subscription does not permit querying recent SIP data" — bitten
+    # when auth switched from the CLI's OAuth bearer to raw API keys). IEX is
+    # the feed free accounts receive; harmless if SIP were also allowed.
+    q = {"start": start, "end": end, "timeframe": timeframe, "feed": "iex"}
     r = _request("GET", DATA_BASE, path, query=q)
-    if isinstance(r, dict) and "_error" not in r:
-        return r
-    return None
+    return r  # keep error dicts visible — run_alpaca logs the real message
 
 
 def get_crypto_bars(symbols, start, end, timeframe="15Min"):
@@ -101,7 +103,7 @@ def get_crypto_bars(symbols, start, end, timeframe="15Min"):
             for v in raw.values():
                 return {"bars": v}
         return {"bars": raw if isinstance(raw, list) else []}
-    return None
+    return r  # keep error dicts visible to run_alpaca's logging
 
 
 def get_orders(params=None):
