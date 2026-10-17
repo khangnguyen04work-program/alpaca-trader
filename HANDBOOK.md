@@ -209,6 +209,11 @@ cd ~/Projects/alpaca-trader && git pull
 ls runs/journal-*.md
 ```
 
+**⚠️ Before pushing local changes:** the bot commits journals daily from the cloud, so your local repo is always behind. Always `git pull` first (`pull.rebase` is pre-configured on this repo). If a pull conflicts on today's `journal-*.md`, the **cloud version is canonical** — resolve with:
+```bash
+git checkout --theirs runs/journal-YYYY-MM-DD.md && git add runs/ && git rebase --continue && git push
+```
+
 ### Cost
 
 GitHub Actions free tier: **2,000 minutes/month** for private repos. This bot uses ~1,596 minutes/month (80%), with 404 minutes of headroom at the conservative 15s/run estimate.
