@@ -235,7 +235,14 @@ COMMITTED files, so file-only guards would silently reset between runs.
 
 | Name | Value | Where to get it |
 |------|-------|-----------------|
-| `APCA_ACCESS_TOKEN` | Bearer token | `grep access_token ~/.config/alpaca/profiles/paper.yaml` |
+| `APCA_API_KEY_ID` | Paper API key | Alpaca dashboard → the paper account → API Keys |
+| `APCA_API_SECRET_KEY` | API secret | same page — **primary auth; never expires** |
+
+*(The legacy `APCA_ACCESS_TOKEN` OAuth secret was removed 2026-10-17 when the account was migrated — `rest_client` prefers the key pair so a stale token can never shadow rotated keys.)*
+
+**Data feeds:** stock bars are requested with `feed=iex` — the free plan cannot query SIP data through raw API keys (HTTP 403 `subscription does not permit querying recent SIP data`). Crypto bars come from `v1beta3/crypto/us/bars` (no feed parameter). Both are wired into `fetch_bars()` for the CLI and REST paths.
+
+**Account locks (broker-side):** the paper account itself runs `no_shorting: true` + `max_margin_multiplier: 1` (`alpaca account config set ...`), so buying power equals cash — even a buggy order cannot borrow or short. Re-apply after any account migration.
 
 ### Artifacts
 
