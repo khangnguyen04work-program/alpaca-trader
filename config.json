@@ -16,6 +16,7 @@
     "confirmation_mode": "off",
     "time_in_force": "day",
     "crypto_time_in_force": "gtc",
+    "crypto_fee_rate": 0.0025,
     "crypto_entry_mode": "market_complement",
     "crypto_entry_start_hour": 16,
     "crypto_entry_start_minute": 0,

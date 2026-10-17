@@ -8,6 +8,7 @@ Supports Alpaca CLI (local) or REST API (GitHub Actions).
 import json
 import math
 import os
+import re
 import subprocess
 import sys
 import time
@@ -85,6 +86,8 @@ CRYPTO_SYMBOLS = CONFIG.get("crypto_symbols", [])
 CRYPTO_RISK_PCT = CONFIG["strategy"].get("crypto_risk_pct", 3.0)
 CRYPTO_TIF = CONFIG["strategy"].get("crypto_time_in_force", "gtc")
 CRYPTO_ENTRY_MODE = CONFIG["strategy"].get("crypto_entry_mode", "market_complement")
+CRYPTO_FEE_RATE = CONFIG["strategy"].get("crypto_fee_rate", 0.0025)  # taker fee, charged in asset
+                                                                    # (observed: 0.2499%/side)
 CRYPTO_ENTRY_START = CONFIG["strategy"].get("crypto_entry_start_hour", 0)
 CRYPTO_ENTRY_START_MIN = CONFIG["strategy"].get("crypto_entry_start_minute", 0)
 CRYPTO_ENTRY_END = CONFIG["strategy"].get("crypto_entry_end_hour", 24)
@@ -461,34 +464,56 @@ def _norm_sym(symbol):
     return symbol.replace("/", "")
 
 
-def _close_position(sym):
-    """Close one position via the most reliable backend available.
-    CLI first (laptop), REST second (GitHub Actions). Verified by re-reading
-    the position list — a 204 from the API is not proof the fill happened."""
-    closed_via = None
-    try:
-        if os.path.isfile(ALPACA_CLI):
-            r = subprocess.run([ALPACA_CLI, "position", "close",
-                                "--symbol-or-asset-id", sym, "--quiet"],
-                               capture_output=True, text=True, timeout=30)
-            closed_via = "cli" if r.returncode == 0 else None
-        if closed_via is None:
-            res = run_alpaca(["position", "close", "--symbol-or-asset-id", sym])
-            closed_via = "rest" if res is not None and "_error" not in (res or {}) else None
-    except Exception as e:
-        log(f"  close error for {sym}: {e}", "EXIT")
+def _position_qty(sym):
+    """Current held quantity for a symbol (0 if none)."""
+    for p in (run_alpaca(["position", "list"]) or []):
+        if isinstance(p, dict) and _norm_sym(p.get("symbol", "")) == _norm_sym(sym):
+            try:
+                return float(p.get("qty", 0) or 0)
+            except (TypeError, ValueError):
+                return 0.0
+    return 0.0
 
-    # Verify: the position should disappear from the list
+
+def _close_position(sym, reason="manual", qty=None, plpc=None):
+    """Exit a position with a full-size MARKET order (captures the order id so
+    the journal can attribute realized P&L to its exit reason), records the exit
+    in the signals file, then VERIFIES by re-reading the position list — an API
+    204 is not proof of a fill."""
+    is_crypto = _norm_sym(sym) in {_norm_sym(s) for s in CRYPTO_SYMBOLS}
+    if qty is None:
+        qty = _position_qty(sym)
+    if not qty:
+        log(f"  no position quantity for {sym} — nothing to close", "EXIT")
+        return False, None
+    qty_str = f"{abs(qty):.6f}".rstrip('0').rstrip('.') if is_crypto else str(int(abs(qty)))
+    tif = CRYPTO_TIF if is_crypto else TIF
+    cid = f"bot-exit-{reason}-{_norm_sym(sym)}-{datetime.now().strftime('%Y-%m-%dT%H%M')}"
+    order = place_order(sym, "sell", qty_str, ORDER_TYPE, tif, client_order_id=cid)
+    order_id = (order or {}).get("id") if isinstance(order, dict) else None
+
+    # Record the exit so the journal can attribute P&L to its exit reason
+    try:
+        today = datetime.now().strftime("%Y-%m-%d")
+        _save_signal(LOG_DIR / f"signals-{today}.json", {
+            "symbol": sym, "pattern": f"EXIT_{reason.upper()}", "side": "sell",
+            "traded": bool(order_id), "order_id": order_id or "",
+            "price": None,
+            "exit_pct": round(plpc * 100, 2) if plpc is not None else None,
+            "qty": qty_str,
+            "instance": f"EXIT|{reason}|{sym}|{datetime.now().strftime('%Y-%m-%dT%H:%M')}",
+        })
+    except Exception as e:
+        log(f"  could not record exit record: {e}", "EXIT")
+
+    # Verify the position actually went away
     time.sleep(2)
-    after = run_alpaca(["position", "list"]) or []
-    still_open = False
-    if isinstance(after, list):
-        still_open = any(_norm_sym(p.get("symbol", "")) == _norm_sym(sym) for p in after)
+    still_open = _position_qty(sym) > 0
     if still_open:
-        log(f"  close PENDING/FAILED for {sym} (via {closed_via}) — will retry next cycle", "EXIT")
-        return False
-    log(f"  closed {sym} (via {closed_via})", "EXIT")
-    return True
+        log(f"  close PENDING/FAILED for {sym} ({reason}) — will retry next cycle", "EXIT")
+        return False, order_id
+    log(f"  closed {sym} ({reason})", "EXIT")
+    return True, order_id
 
 
 def manage_open_positions():
@@ -513,10 +538,10 @@ def manage_open_positions():
         tp = EXIT_TP_CRYPTO_PCT if is_crypto else EXIT_TP_PCT
         if plpc <= -(sl / 100.0):
             log(f"  ⛔ STOP-LOSS {sym}: {plpc*100:+.2f}% <= -{sl}%", "EXIT")
-            _close_position(sym)
+            _close_position(sym, reason="stop_loss", qty=p.get("qty"), plpc=plpc)
         elif plpc >= (tp / 100.0):
             log(f"  🎯 TAKE-PROFIT {sym}: {plpc*100:+.2f}% >= +{tp}%", "EXIT")
-            _close_position(sym)
+            _close_position(sym, reason="take_profit", qty=p.get("qty"), plpc=plpc)
 
 
 # ─── Market Hours ────────────────────────────────────────────────────────────
@@ -783,6 +808,7 @@ def analyze_and_trade(symbol):
 
         if cc < MIN_CONFLUENCE:
             log(f"  skip (need {MIN_CONFLUENCE} conf)", "SIGNAL")
+            sig_record["skipped"] = "confluence"
             _save_signal(signals_path, sig_record)
             continue
 
@@ -808,12 +834,14 @@ def analyze_and_trade(symbol):
                         break
             if not owned:
                 log("  skip SELL — don't own shares to sell", "CASH")
+                sig_record["skipped"] = "no_position"
                 _save_signal(signals_path, sig_record)
                 continue
 
         # Crypto trades 24/7 — the equity market-hours gate does not apply
         if not crypto and not is_market_session():
             log("  market closed — analysis only", "MARKET")
+            sig_record["skipped"] = "market_closed"
             _save_signal(signals_path, sig_record)
             continue
 
@@ -874,6 +902,7 @@ def analyze_and_trade(symbol):
 
         if rrr < MIN_RRR:
             log(f"  skip RRR {rrr:.2f} < {MIN_RRR}", "TRADE")
+            sig_record["skipped"] = "rrr"
             _save_signal(signals_path, sig_record)
             continue
 
@@ -908,6 +937,202 @@ def analyze_and_trade(symbol):
 
 # ─── Daily Journal ───────────────────────────────────────────────────────────
 
+# ─── Daily Journal (statistical) ────────────────────────────────────────────
+
+def _et_date(ts_utc):
+    """Bucket a UTC API timestamp by its ET calendar date (the trading day).
+    Naive string-prefix matching against ET 'today' mis-buckets every order
+    created between 20:00 ET and midnight (that timestamp already carries the
+    NEXT UTC date) — a silent statistics killer for the 24/7 crypto loop."""
+    try:
+        return datetime.fromisoformat(str(ts_utc)[:19]).replace(
+            tzinfo=timezone.utc).astimezone().strftime("%Y-%m-%d")
+    except Exception:
+        return str(ts_utc)[:10]
+
+
+def _fifo_round_trips(orders):
+    """FIFO-match FILLED orders per symbol into closed round trips + open lots.
+    Quantities come from filled_qty (partial fills handled by quantity, never by
+    order status alone). Returns (trips, open_lots, warnings)."""
+    from collections import defaultdict, deque
+    warnings, fills = [], defaultdict(list)
+    for o in orders:
+        if o.get("status") != "filled":
+            continue
+        try:
+            qty = float(o.get("filled_qty") or 0)
+            px = float(o.get("filled_avg_price") or 0)
+        except (TypeError, ValueError):
+            continue
+        if qty <= 0 or px <= 0:
+            warnings.append(f"fill missing qty/price: {o.get('symbol')} {str(o.get('id',''))[:12]}")
+            continue
+        try:
+            if float(o.get("qty") or 0) > qty + 1e-9:
+                warnings.append(f"partial fill: {o.get('symbol')} {str(o.get('id',''))[:12]} {qty:g}/{o.get('qty')}")
+        except (TypeError, ValueError):
+            pass
+        fills[o.get("symbol", "?")].append({
+            "side": o.get("side"), "qty": qty, "px": px,
+            "t": o.get("filled_at") or o.get("created_at") or "",
+            "id": o.get("id", ""),
+        })
+    trips, open_lots = [], []
+    for sym, fs in fills.items():
+        fs.sort(key=lambda x: x["t"])
+        longs = deque()
+        for f in fs:
+            if f["side"] == "buy":
+                longs.append(dict(f))
+                continue
+            remaining = f["qty"]
+            while remaining > 1e-9 and longs:
+                lot = longs[0]
+                take = min(remaining, lot["qty"])
+                gross = (f["px"] - lot["px"]) * take
+                # Crypto taker fee is charged IN ASSET terms (~0.25% per side): the
+                # position receives less than the order's filled_qty. Fill-to-fill
+                # P&L therefore OVERSTATES results unless the fee is subtracted.
+                fee = CRYPTO_FEE_RATE * (lot["px"] + f["px"]) * take if "/" in sym else 0.0
+                trips.append({
+                    "symbol": sym, "qty": take,
+                    "entry_t": lot["t"], "entry_px": lot["px"], "entry_id": lot["id"],
+                    "exit_t": f["t"], "exit_px": f["px"], "exit_id": f["id"],
+                    "pnl": gross, "fee_est": fee, "pnl_net": gross - fee,
+                    "pnl_pct": ((f["px"] - lot["px"]) / lot["px"] * 100.0) if lot["px"] else 0.0,
+                })
+                lot["qty"] -= take
+                remaining -= take
+                if lot["qty"] <= 1e-9:
+                    longs.popleft()
+            if remaining > 1e-9:
+                warnings.append(f"SELL exceeds long position: {sym} {remaining:g} (short?)")
+        for lot in longs:
+            open_lots.append({"symbol": sym, "qty": lot["qty"], "px": lot["px"],
+                              "t": lot["t"], "id": lot["id"]})
+    return trips, open_lots, warnings
+
+
+def _held_span(t0, t1):
+    try:
+        a = datetime.fromisoformat(str(t0)[:19]); b = datetime.fromisoformat(str(t1)[:19])
+        mins = max(0, int((b - a).total_seconds() // 60))
+        return f"{mins // 60}h{mins % 60:02d}m" if mins >= 60 else f"{mins}m"
+    except Exception:
+        return "?"
+
+
+PERF_PATH_NAME = "PERFORMANCE.md"
+_PERF_RE = re.compile(r"<!-- STATS_JSON\n(.*?)\n-->", re.S)
+
+
+def _load_perf():
+    p = LOG_DIR / PERF_PATH_NAME
+    if p.exists():
+        m = _PERF_RE.search(p.read_text())
+        if m:
+            try:
+                return json.loads(m.group(1))
+            except Exception:
+                pass
+    return {"days": {}, "recent": []}
+
+
+def _update_performance(trips_today, sig_idx, today):
+    """Idempotently fold today's closed trips into the cumulative ledger.
+    Day-level aggregates are REPLACED (not incremented) so re-running the
+    journal the same day can never double-count."""
+    perf = _load_perf()
+    day = {"trips": 0, "wins": 0, "losses": 0, "gross_win": 0.0, "gross_loss": 0.0,
+           "pnl": 0.0, "fees": 0.0, "pnl_net": 0.0, "combos": {}}
+    for t in trips_today:
+        rec = sig_idx.get(t["entry_id"]) or {}
+        pattern = rec.get("pattern") or "unknown"
+        net = t.get("pnl_net", t["pnl"])
+        fee = t.get("fee_est", 0.0)
+        name = f"{t['symbol']}|{pattern}"
+        c = day["combos"].get(name, {"trips": 0, "wins": 0, "losses": 0, "gross_win": 0.0,
+                                     "gross_loss": 0.0, "pnl": 0.0, "fees": 0.0, "pnl_net": 0.0})
+        for target in (c, day):
+            target["trips"] += 1
+            target["pnl"] = round(target["pnl"] + t["pnl"], 4)
+            target["fees"] = round(target["fees"] + fee, 4)
+            target["pnl_net"] = round(target["pnl_net"] + net, 4)
+            if net > 0:
+                target["wins"] += 1; target["gross_win"] = round(target["gross_win"] + net, 4)
+            elif net < 0:
+                target["losses"] += 1; target["gross_loss"] = round(target["gross_loss"] + net, 4)
+        day["combos"][name] = c
+
+    perf.setdefault("days", {})[today] = day
+
+    perf["recent"] = [r for r in perf.get("recent", []) if r.get("date") != today]
+    for t in trips_today:
+        rec = sig_idx.get(t["entry_id"]) or {}
+        perf["recent"].append({"date": today, "symbol": t["symbol"],
+                               "pattern": rec.get("pattern") or "unknown",
+                               "qty": round(t["qty"], 8), "entry_px": t["entry_px"],
+                               "exit_px": t["exit_px"], "pnl": round(t["pnl"], 4)})
+    perf["recent"] = perf["recent"][-300:]
+
+    trips = sum(d["trips"] for d in perf["days"].values())
+    wins = sum(d["wins"] for d in perf["days"].values())
+    losses = sum(d["losses"] for d in perf["days"].values())
+    gross = round(sum(d["pnl"] for d in perf["days"].values()), 4)
+    fees = round(sum(d.get("fees", 0.0) for d in perf["days"].values()), 4)
+    net = round(sum(d.get("pnl_net", d["pnl"]) for d in perf["days"].values()), 4)
+    gw = round(sum(d["gross_win"] for d in perf["days"].values()), 4)
+    gl = round(sum(d["gross_loss"] for d in perf["days"].values()), 4)
+    stats = {
+        "trips": trips, "wins": wins, "losses": losses,
+        "win_rate": round(100 * wins / trips, 1) if trips else 0.0,
+        "gross_pnl": round(gross, 2), "fees_est": round(fees, 2), "net_pnl": round(net, 2),
+        "avg_win": round(gw / wins, 2) if wins else 0.0,
+        "avg_loss": round(gl / losses, 2) if losses else 0.0,
+        "expectancy": round(net / trips, 4) if trips else 0.0,
+        "profit_factor": round(gw / abs(gl), 3) if gl else None,
+        "days_traded": len([d for d in perf["days"].values() if d["trips"] > 0]),
+    }
+
+    by_symbol, by_pattern = {}, {}
+    for d in perf["days"].values():
+        for combo, c in d.get("combos", {}).items():
+            sym, _, pat = combo.partition("|")
+            for bucket, name in ((by_symbol, sym or "?"), (by_pattern, pat or "?")):
+                b = bucket.setdefault(name, {"trips": 0, "wins": 0, "losses": 0,
+                                             "pnl": 0.0, "fees": 0.0, "pnl_net": 0.0})
+                b["trips"] += c["trips"]; b["wins"] += c["wins"]
+                b["losses"] += c["losses"]; b["pnl"] = round(b["pnl"] + c["pnl"], 4)
+                b["fees"] = round(b["fees"] + c.get("fees", 0.0), 4)
+                b["pnl_net"] = round(b["pnl_net"] + c.get("pnl_net", c["pnl"]), 4)
+
+    lines = ["# Cumulative Performance — auto-maintained\n\n",
+             f"_Updated {datetime.now().strftime('%Y-%m-%d %H:%M')} · closed round trips only "
+             f"(FIFO realized P&L, ET trading days)_\n\n"]
+    lines.append("| Metric | Value |\n|--------|-------|\n")
+    for k, label in (("days_traded", "Trading days recorded"), ("trips", "Closed round trips"),
+                     ("wins", "Wins"), ("losses", "Losses"), ("win_rate", "Win rate % (net)"),
+                     ("gross_pnl", "Gross P&L, fill-to-fill $"), ("fees_est", "Estimated fees $"),
+                     ("net_pnl", "NET realized P&L $"), ("avg_win", "Avg win $ (net)"),
+                     ("avg_loss", "Avg loss $ (net)"), ("expectancy", "Expectancy $/trade (net)"),
+                     ("profit_factor", "Profit factor (net)")):
+        lines.append(f"| {label} | {stats[k]} |\n")
+    lines.append("\n## By symbol\n\n| Symbol | Trips | Wins | Losses | Gross $ | Fees $ | Net $ |\n|--------|-------|------|--------|---------|--------|-------|\n")
+    for sym, b in sorted(by_symbol.items(), key=lambda kv: kv[1]['pnl_net'], reverse=True):
+        lines.append(f"| {sym} | {b['trips']} | {b['wins']} | {b['losses']} | {b['pnl']:.2f} | {b.get('fees',0):.2f} | {b['pnl_net']:.2f} |\n")
+    lines.append("\n## By pattern\n\n| Pattern | Trips | Wins | Losses | Gross $ | Fees $ | Net $ |\n|---------|-------|------|--------|---------|--------|-------|\n")
+    for pat, b in sorted(by_pattern.items(), key=lambda kv: kv[1]['pnl_net'], reverse=True):
+        lines.append(f"| {pat} | {b['trips']} | {b['wins']} | {b['losses']} | {b['pnl']:.2f} | {b.get('fees',0):.2f} | {b['pnl_net']:.2f} |\n")
+    lines.append("\n## Last 20 closed trips\n\n| Date | Symbol | Pattern | Qty | Entry | Exit | P&L $ |\n|------|--------|---------|-----|-------|------|-------|\n")
+    for t in perf["recent"][-20:]:
+        lines.append(f"| {t['date']} | {t['symbol']} | {t.get('pattern','?')} | {t['qty']:g} | "
+                     f"{t['entry_px']:g} | {t['exit_px']:g} | {t['pnl']:.2f} |\n")
+    lines.append(f"\n<!-- STATS_JSON\n{json.dumps(perf)}\n-->\n")
+    (LOG_DIR / PERF_PATH_NAME).write_text("".join(lines))
+    return stats
+
+
 def run_journal():
     log("=" * 60, "JOURNAL")
     log("Post-Market Daily Journal", "JOURNAL")
@@ -920,109 +1145,247 @@ def run_journal():
 
     signals_today = []
     if signals_path.exists():
-        with open(signals_path) as f:
-            signals_today = json.load(f)
+        try:
+            with open(signals_path) as f:
+                signals_today = json.load(f)
+        except Exception:
+            signals_today = []
 
-    orders_raw = run_alpaca(["order", "list", "--status", "all", "--limit", "200"])
+    orders_raw = run_alpaca(["order", "list", "--status", "all", "--limit", "500"])
     orders = (orders_raw.get("orders", orders_raw) if isinstance(orders_raw, dict)
               else (orders_raw if isinstance(orders_raw, list) else []))
-    today_orders = [o for o in orders if today in o.get("created_at", "")]
+    truncated = len(orders) >= 500
+    today_orders = [o for o in orders if _et_date(o.get("created_at")) == today]
 
     account = run_alpaca(["account", "get"]) or {}
     positions = run_alpaca(["position", "list"]) or []
     if not isinstance(positions, list):
         positions = []
 
-    filled = [o for o in today_orders if o.get("status") == "filled"]
-    rejected = [o for o in today_orders if o.get("status") == "rejected"]
-    open_ords = [o for o in today_orders if o.get("status") in ("new", "accepted", "open", "held")]
-    expired = [o for o in today_orders if o.get("status") == "expired"]
+    # Realized P&L: FIFO over ALL fetched fills; today's trips bucketed by EXIT date (ET)
+    trips_all, open_lots, warnings = _fifo_round_trips(orders)
+    trips_today = [t for t in trips_all if _et_date(t["exit_t"]) == today]
 
-    total_pl = 0.0
-    trade_details = []
-    for o in filled:
-        side = o.get("side", "")
-        qty = float(o.get("filled_qty", 0) or 0)
-        fp = float(o.get("filled_avg_price", 0) or float(o.get("filled_price", 0) or 0))
-        pl = (fp - fp) * qty  # paper: entry = fill for simplicity
-        total_pl += pl
-        trade_details.append({"id": o.get("id","?")[:12], "symbol": o.get("symbol","?"),
-                              "side": side, "qty": qty, "pl": round(pl,2), "status": "filled"})
-    for o in expired:
-        trade_details.append({"id": o.get("id","?")[:12], "symbol": o.get("symbol","?"),
-                              "side": o.get("side","?"), "qty": o.get("qty",0),
-                              "status": "expired", "pl": 0.0, "note": "expired"})
-    for o in rejected:
-        trade_details.append({"id": o.get("id","?")[:12], "symbol": o.get("symbol","?"),
-                              "side": o.get("side","?"), "qty": o.get("qty",0),
-                              "status": "rejected", "pl": 0.0,
-                              "note": o.get("rejection_reason", "rejected")})
+    sig_idx = {}
+    for s in signals_today:
+        if isinstance(s, dict) and s.get("order_id"):
+            sig_idx[s["order_id"]] = s
+
+    def exit_reason(t):
+        r = sig_idx.get(t["exit_id"]) or {}
+        p = (r.get("pattern") or "")
+        if p.upper().startswith("EXIT_STOP_LOSS"): return "STOP-LOSS"
+        if p.upper().startswith("EXIT_TAKE_PROFIT"): return "TAKE-PROFIT"
+        if p: return f"signal: {p}"
+        return "unknown"
+
+    realized = sum(t["pnl"] for t in trips_today)
+    fees_today = sum(t.get("fee_est", 0.0) for t in trips_today)
+    realized_net = sum(t.get("pnl_net", t["pnl"]) for t in trips_today)
+    wins = [t for t in trips_today if t.get("pnl_net", t["pnl"]) > 0]
+    losses = [t for t in trips_today if t.get("pnl_net", t["pnl"]) < 0]
+    unreal = 0.0
+    for p in positions:
+        try:
+            unreal += float(p.get("unrealized_pl", 0) or 0)
+        except (TypeError, ValueError):
+            pass
+
+    try:
+        cum = _update_performance(trips_today, sig_idx, today)
+    except Exception as e:
+        log(f"performance ledger error: {e}", "JOURNAL")
+        cum = {}
+
+    # ── signal funnel ──
+    f = {"entries_signalled": 0, "entries_traded": 0, "exits_traded": 0, "skipped_rrr": 0,
+         "skipped_confluence": 0, "skipped_cap": 0, "skipped_window": 0,
+         "no_position_to_sell": 0, "market_closed": 0, "exits_monitor": 0}
+    entries_by_symbol = {}
+    for s in signals_today:
+        p = (s.get("pattern") or "")
+        if p.startswith("EXIT_"):
+            f["exits_monitor"] += 1
+            continue
+        if "bullish" in p:
+            f["entries_signalled"] += 1
+            if s.get("traded"):
+                f["entries_traded"] += 1
+                entries_by_symbol[s.get("symbol")] = entries_by_symbol.get(s.get("symbol"), 0) + 1
+        elif s.get("traded"):
+            f["exits_traded"] += 1
+        sk = s.get("skipped")
+        if sk == "rrr": f["skipped_rrr"] += 1
+        elif sk == "confluence": f["skipped_confluence"] += 1
+        elif sk == "daily_cap": f["skipped_cap"] += 1
+        elif sk == "outside_entry_window": f["skipped_window"] += 1
+        elif sk == "no_position": f["no_position_to_sell"] += 1
+        elif sk == "market_closed": f["market_closed"] += 1
+
+    # ── integrity checks ──
+    try:
+        sanity = float(account.get("cash", 0) or 0) + sum(
+            float(p.get("market_value", 0) or 0) for p in positions if isinstance(p, dict))
+        eq = float(account.get("equity", 0) or 0)
+        if abs(sanity - eq) > 1.0:
+            warnings.append(f"cash+positions ${sanity:.2f} != equity ${eq:.2f} (pending fills?)")
+    except Exception:
+        pass
+    if truncated:
+        warnings.append("orders fetch hit the 500-row limit — older history not scanned")
+    try:
+        pos_qty = {_norm_sym(p.get("symbol", "")): float(p.get("qty", 0) or 0)
+                   for p in positions if isinstance(p, dict)}
+        for l in open_lots:
+            got = pos_qty.get(_norm_sym(l["symbol"]))
+            if got is not None and l["qty"] > 0 and abs(got - l["qty"]) > 1e-9:
+                shrink = 100 * (1 - got / l["qty"])
+                warnings.append(f"quantity shrinkage {l['symbol']}: order filled {l['qty']:g} vs position "
+                                f"{got:g} (−{shrink:.3f}% — crypto taker fee charged in asset)")
+    except Exception:
+        pass
+
+    rejected = [o for o in today_orders if o.get("status") == "rejected"]
+    expired = [o for o in today_orders if o.get("status") == "expired"]
+    pending = [o for o in today_orders if o.get("status") in ("new", "accepted", "open", "held", "pending_new", "partially_filled")]
+
+    # ── render ──
+    L = []
+    acct_no = account.get("account_number", "?")
+    L.append(f"# Daily Trading Journal — {today}\n\n")
+    L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ET · account {acct_no} · "
+             f"engine: candlestick top-down (1Week/1Day/15Min) · exits first, entries second_\n\n")
+
+    L.append("## 1. Account\n\n| Metric | Value |\n|--------|-------|\n")
+    for label, key in (("Equity", "equity"), ("Cash", "cash"), ("Buying power", "buying_power"),
+                       ("Previous close baseline", "last_equity")):
+        L.append(f"| {label} | ${account.get(key, '?')} |\n")
+    try:
+        L.append(f"| Daily change vs baseline | ${float(account.get('equity',0)) - float(account.get('last_equity',0)):+.2f} |\n")
+    except Exception:
+        pass
+    L.append(f"| Realized today, gross fill-to-fill | ${realized:+.2f} |\n")
+    L.append(f"| Estimated fees today (crypto {CRYPTO_FEE_RATE*100:.2f}%/side) | ${-fees_today:+.2f} |\n")
+    L.append(f"| Realized today, NET of fees | ${realized_net:+.2f} |\n")
+    L.append(f"| Unrealized on open positions | ${unreal:+.2f} |\n\n")
+
+    L.append("## 2. Closed round trips today (realized)\n\n")
+    if trips_today:
+        L.append("| Symbol | Qty | Entry (time/px) | Exit (time/px) | Held | P&L gross $ | Fee $ | "
+                 "P&L net $ | P&L % | Exit reason | Pattern | Conf | Mult | Risk $ | RRR | Slip % |\n")
+        L.append("|--------|-----|-----------------|----------------|------|-------------|-------|"
+                 "-----------|-------|-------------|---------|------|------|--------|-----|--------|\n")
+        for t in trips_today:
+            er = sig_idx.get(t["entry_id"]) or {}
+            sig_px = er.get("price")
+            slip = f"{(t['entry_px'] - sig_px) / sig_px * 100:+.3f}" if sig_px else "?"
+            L.append(f"| {t['symbol']} | {t['qty']:g} | {str(t['entry_t'])[11:16]}/{t['entry_px']:g} | "
+                     f"{str(t['exit_t'])[11:16]}/{t['exit_px']:g} | {_held_span(t['entry_t'], t['exit_t'])} | "
+                     f"{t['pnl']:+.2f} | {t.get('fee_est',0):.2f} | {t.get('pnl_net', t['pnl']):+.2f} | "
+                     f"{t['pnl_pct']:+.2f} | {exit_reason(t)} | {er.get('pattern','?')} | "
+                     f"{er.get('confluence','?')} | {er.get('confidence_mult','?')} | "
+                     f"{er.get('risk_amount','?')} | {er.get('rrr','?')} | {slip} |\n")
+        wr = 100 * len(wins) / len(trips_today)
+        L.append(f"\n**Today:** {len(trips_today)} closed · {len(wins)}W/{len(losses)}L · win rate {wr:.0f}% · "
+                 f"gross ${realized:+.2f} · fees ${-fees_today:+.2f} · **net ${realized_net:+.2f}**\n\n")
+    else:
+        L.append("*No round trips closed today.*\n\n")
+
+    L.append("## 3. Open positions at close\n\n")
+    if positions:
+        L.append("| Symbol | Qty | Entry px | Mark px | Unrealized $ | % | Market value |\n")
+        L.append("|--------|-----|----------|---------|--------------|---|--------------|\n")
+        for p in positions:
+            L.append(f"| {p.get('symbol')} | {p.get('qty')} | {p.get('avg_entry_price')} | "
+                     f"{p.get('current_price')} | {p.get('unrealized_pl')} | "
+                     f"{float(p.get('unrealized_plpc',0))*100:+.2f} | {p.get('market_value')} |\n")
+        L.append("\n")
+    else:
+        L.append("*No open positions.*\n\n")
+
+    L.append("## 4. Signal funnel (why we did / didn't trade)\n\n")
+    L.append("| Stage | Count |\n|-------|-------|\n")
+    for label, key in (("Entry signals detected", "entries_signalled"),
+                       ("→ entries executed", "entries_traded"),
+                       ("→ skipped: risk/reward below threshold", "skipped_rrr"),
+                       ("→ skipped: insufficient confluence", "skipped_confluence"),
+                       ("→ blocked: daily cap (3/symbol/24h)", "skipped_cap"),
+                       ("→ blocked: outside crypto window", "skipped_window"),
+                       ("Exit signals (bearish on owned)", "exits_traded"),
+                       ("Monitor exits (stop-loss/take-profit)", "exits_monitor"),
+                       ("Skipped: no position to sell", "no_position_to_sell"),
+                       ("Skipped: market closed (equities)", "market_closed")):
+        L.append(f"| {label} | {f[key]} |\n")
+    if entries_by_symbol:
+        L.append("\n**Entries today vs cap:** " + " · ".join(
+            f"{k} {v}/{MAX_TRADES_PER_SYMBOL}" for k, v in sorted(entries_by_symbol.items())) + "\n")
+    L.append("\n")
+
+    L.append("## 5. Orders placed but not filled\n\n")
+    if rejected or expired or pending:
+        L.append("| Symbol | Side | Qty | Status | Reason |\n|--------|------|-----|--------|--------|\n")
+        for o in rejected + expired + pending:
+            L.append(f"| {o.get('symbol')} | {o.get('side')} | {o.get('qty')} | {o.get('status')} | "
+                     f"{(o.get('rejection_reason') or '')[:80]} |\n")
+        L.append("\n")
+    else:
+        L.append("*None — every submitted order filled.*\n\n")
+
+    L.append("## 6. Cumulative performance (all closed trips, this account)\n\n")
+    if cum:
+        L.append(f"| Trips | Wins | Losses | Win rate % | Gross $ | Fees $ | NET $ | Avg win $ | "
+                 f"Avg loss $ | Expectancy $/trade | Profit factor |\n")
+        L.append("|-------|------|--------|------------|---------|--------|-------|-----------|"
+                 "------------|-------------------|---------------|\n")
+        L.append(f"| {cum.get('trips')} | {cum.get('wins')} | {cum.get('losses')} | {cum.get('win_rate')} | "
+                 f"{cum.get('gross_pnl')} | {cum.get('fees_est')} | {cum.get('net_pnl')} | "
+                 f"{cum.get('avg_win')} | {cum.get('avg_loss')} | "
+                 f"{cum.get('expectancy')} | {cum.get('profit_factor')} |\n\n")
+        L.append("_Full breakdown (by symbol, by pattern, last 20 trips): see `runs/PERFORMANCE.md`._\n\n")
+    else:
+        L.append("*Ledger unavailable this run.*\n\n")
+
+    L.append("## 7. Data-integrity checks\n\n")
+    if warnings:
+        for w in warnings:
+            L.append(f"- ⚠ {w}\n")
+    else:
+        L.append("- ✅ all fills matched, no partial fills, cash+positions == equity\n")
+    if open_lots:
+        L.append(f"- open lots carried: " + ", ".join(
+            f"{l['symbol']} {l['qty']:g}@{l['px']:g}" for l in open_lots) + "\n")
+    L.append("\n")
 
     mistakes, lessons = [], []
-    sides_traded = [o.get("side","") for o in today_orders]
-
     if not today_orders:
-        m = "Signals detected but no trades" if signals_today else "No signals detected"
-        mistakes.append(m)
-        lessons.append("Review thresholds and symbol selection" if signals_today else "Check data feed or add symbols")
-
-    if all(s == "sell" for s in sides_traded):
-        mistakes.append("Sell-only bias today")
-        lessons.append("Watch for bullish reversals to balance detection")
-
+        mistakes.append("No trades today" + (" (signals detected)" if signals_today else ""))
+    if all(o.get("side") == "sell" for o in today_orders) and today_orders:
+        mistakes.append("Sell-only day — no bullish entries executed")
+    if f["skipped_cap"]:
+        mistakes.append(f"{f['skipped_cap']} signal(s) blocked by the daily cap — candidate for a "
+                        f"quality-scaled cap if cumulative expectancy stays positive")
     for o in rejected:
-        if "wash" in (o.get("rejection_reason", "") or "").lower():
-            mistakes.append(f"Wash trade on {o['symbol']}")
-            lessons.append("Check pending orders before opposite-direction trades")
-
+        mistakes.append(f"Rejected: {o.get('symbol')} {(o.get('rejection_reason') or '')[:70]}")
     if expired:
         mistakes.append(f"{len(expired)} order(s) expired")
-        lessons.append("Consider GTC time-in-force")
+    if not warnings and not mistakes:
+        lessons.append("Clean day — no anomalies")
+    lessons.append("Judge the strategy only from PERFORMANCE.md after >=1 week of data (frequency "
+                   "decisions need win rate + expectancy, not single-day P&L)")
 
-    if not lessons:
-        lessons.append("One day not enough — keep monitoring")
+    L.append("## 8. Mistakes / flags\n\n")
+    for m in mistakes or ["None detected."]:
+        L.append(f"- {m}\n")
+    L.append("\n## 9. Lessons / next focus\n\n")
+    for x in lessons:
+        L.append(f"- {x}\n")
+    L.append("\n---\n_Bot-generated. Numbers are FIFO-realized from actual fills; unrealized marks are separate._\n")
 
-    lines = []
-    lines.append(f"# Daily Trading Journal — {today}\n\n")
-    lines.append(f"_Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_\n\n")
-    lines.append("## Account\n\n| Metric | Value |\n|--------|-------|\n")
-    lines.append(f"| Equity | ${account.get('equity','?')} |\n")
-    lines.append(f"| Cash | ${account.get('cash','?')} |\n")
-    lines.append(f"| Buying Power | ${account.get('buying_power','?')} |\n")
-    lines.append(f"| Day P&L | ${total_pl:.2f} |\n\n")
-
-    lines.append("## Trades\n\n")
-    if trade_details:
-        lines.append("| Symbol | Side | Qty | P&L | Status |\n|--------|------|-----|-----|--------|\n")
-        for t in trade_details:
-            note = f" ({t.get('note','')})" if t.get('note') else ""
-            lines.append(f"| {t['symbol']} | {t['side']} | {t['qty']} | ${t.get('pl',0):.2f} | {t['status']}{note} |\n")
-    else:
-        lines.append("*No trades today.*\n")
-
-    if open_ords:
-        lines.append("\n## Open Orders\n\n| Symbol | Side | Qty | Status |\n|--------|------|-----|--------|\n")
-        for o in open_ords:
-            lines.append(f"| {o['symbol']} | {o['side']} | {o['qty']} | {o['status']} |\n")
-
-    if signals_today:
-        lines.append("\n## Patterns Detected\n\n| Symbol | Pattern | Conf | Traded |\n|--------|---------|------|--------|\n")
-        for s in signals_today:
-            lines.append(f"| {s['symbol']} | {s['pattern']} | {s['confluence']} | {'Yes' if s.get('traded') else 'No'} |\n")
-
-    lines.append("\n## Mistakes\n\n")
-    for m in mistakes:
-        lines.append(f"- {m}\n")
-    lines.append("\n## Lessons\n\n")
-    for l in lessons:
-        lines.append(f"- {l}\n")
-    lines.append("\n---\n_Bot-generated._\n")
-
-    with open(journal_path, 'w') as f:
-        f.writelines(lines)
+    with open(journal_path, "w") as fh:
+        fh.writelines(L)
     log(f"Journal: {journal_path}", "JOURNAL")
-    pl_e = "Profit" if total_pl >= 0 else "Loss"
-    log(f"{pl_e}: ${total_pl:.2f} | {len(trade_details)} trades | {len(mistakes)} mistakes", "JOURNAL")
+    log(f"Realized today: ${realized:+.2f} | {len(trips_today)} closed | "
+        f"{len(warnings)} integrity flags", "JOURNAL")
 
 
 # ─── Entry Points ────────────────────────────────────────────────────────────
