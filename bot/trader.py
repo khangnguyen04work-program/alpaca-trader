@@ -52,11 +52,17 @@ def run_alpaca(args, quiet=True):
         log(f"JSON parse error: {e}", "CLI")
 
     # Fall back to REST API
+    # NOTE: an empty list/dict is a VALID API response (e.g. /v2/positions on a
+    # fresh account returns []). Only a dict carrying "_error" is a failure —
+    # `if result` would treat [] as failure and then crash on result.get().
     result = _rest_call(args, quiet)
-    if result and "_error" not in result:
-        return result
-    log(f"REST also failed: {result.get('_error', '?')[:120]}", "CLI")
-    return None
+    if result is None:
+        log("REST also failed: empty response", "CLI")
+        return None
+    if isinstance(result, dict) and "_error" in result:
+        log(f"REST also failed: {str(result.get('_error', '?'))[:120]}", "CLI")
+        return None
+    return result
 
 
 # ─── Config ──────────────────────────────────────────────────────────────────
