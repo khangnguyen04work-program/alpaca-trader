@@ -78,8 +78,11 @@ MAX_TRADES_PER_SYMBOL = CONFIG["strategy"].get("max_trades_per_symbol_day", 3)
 CRYPTO_SYMBOLS = CONFIG.get("crypto_symbols", [])
 CRYPTO_RISK_PCT = CONFIG["strategy"].get("crypto_risk_pct", 3.0)
 CRYPTO_TIF = CONFIG["strategy"].get("crypto_time_in_force", "gtc")
+CRYPTO_ENTRY_MODE = CONFIG["strategy"].get("crypto_entry_mode", "market_complement")
 CRYPTO_ENTRY_START = CONFIG["strategy"].get("crypto_entry_start_hour", 0)
+CRYPTO_ENTRY_START_MIN = CONFIG["strategy"].get("crypto_entry_start_minute", 0)
 CRYPTO_ENTRY_END = CONFIG["strategy"].get("crypto_entry_end_hour", 24)
+CRYPTO_ENTRY_END_MIN = CONFIG["strategy"].get("crypto_entry_end_minute", 0)
 CRYPTO_WEEKEND_ALL_DAY = CONFIG["strategy"].get("crypto_weekend_all_day", True)
 EXIT_SL_PCT = CONFIG["strategy"].get("stop_loss_pct", 2.5)
 EXIT_TP_PCT = CONFIG["strategy"].get("take_profit_pct", 4.0)
@@ -570,20 +573,50 @@ def determine_market_regime(bars):
 
 # ─── Analysis & Trading ──────────────────────────────────────────────────────
 
+_CLOCK_CACHE = {}
+
+def equity_market_open_now():
+    """True/False from Alpaca's market clock — holiday- and early-close-aware.
+    None when the clock is unreachable. Cached once per process (run)."""
+    if "open" in _CLOCK_CACHE:
+        return _CLOCK_CACHE["open"]
+    if "failed" in _CLOCK_CACHE:
+        return None
+    clk = run_alpaca(["clock"])
+    if isinstance(clk, dict) and "is_open" in clk:
+        _CLOCK_CACHE["open"] = bool(clk["is_open"])
+        return _CLOCK_CACHE["open"]
+    _CLOCK_CACHE["failed"] = True
+    return None
+
+
 def crypto_entry_allowed(now=None):
-    """ET wall-clock gate for opening NEW crypto positions.
-    Default: weekdays only 17:00→08:00 (window crosses midnight); Sat/Sun all day.
-    Exits are NEVER gated by this — stop-loss/take-profit and sell signals that
-    close a position stay active around the clock. Set start==end to disable."""
+    """Gate for opening NEW crypto positions. Exits are NEVER gated — stop-loss,
+    take-profit and sell-signal exits stay active around the clock.
+
+    mode=market_complement (default): crypto entries are allowed exactly while
+    the equity market is CLOSED per Alpaca's own clock — nights, weekends,
+    holidays, early-close days. Seamless: crypto hands off to equities at
+    9:30 ET, and takes over again the moment the equity session ends.
+
+    Fallback (mode=fixed_window, or clock unreachable): weekdays within
+    start→end ET (default 16:00→09:30, crosses midnight), all weekend."""
     now = now or datetime.now()
+    if CRYPTO_ENTRY_MODE == "market_complement":
+        open_now = equity_market_open_now()
+        if open_now is not None:
+            return not open_now
+        # clock unreachable → fall through to the fixed window
     if now.weekday() >= 5 and CRYPTO_WEEKEND_ALL_DAY:
         return True
-    start, end = CRYPTO_ENTRY_START, CRYPTO_ENTRY_END
+    start = CRYPTO_ENTRY_START * 60 + CRYPTO_ENTRY_START_MIN
+    end = CRYPTO_ENTRY_END * 60 + CRYPTO_ENTRY_END_MIN
     if start == end:
         return True  # no restriction
+    cur = now.hour * 60 + now.minute
     if start < end:
-        return start <= now.hour < end
-    return now.hour >= start or now.hour < end  # crosses midnight
+        return start <= cur < end
+    return cur >= start or cur < end  # crosses midnight
 
 
 _TODAY_ORDERS_CACHE = None
@@ -780,7 +813,11 @@ def analyze_and_trade(symbol):
         # (weekdays 17:00→08:00, all weekend). Exits — stop-loss/take-profit
         # and sell signals — are never gated; they stay active 24/7.
         if crypto and side == "buy" and not crypto_entry_allowed():
-            log(f"  outside crypto entry window ({CRYPTO_ENTRY_START:02d}:00–{CRYPTO_ENTRY_END:02d}:00 ET weekdays) — analysis only", "WINDOW")
+            if CRYPTO_ENTRY_MODE == "market_complement" and equity_market_open_now() is not None:
+                why = "equity market open — crypto hands off to equities"
+            else:
+                why = f"outside {CRYPTO_ENTRY_START:02d}:{CRYPTO_ENTRY_START_MIN:02d}–{CRYPTO_ENTRY_END:02d}:{CRYPTO_ENTRY_END_MIN:02d} ET window"
+            log(f"  crypto entries paused ({why})", "WINDOW")
             sig_record["skipped"] = "outside_entry_window"
             _save_signal(signals_path, sig_record)
             continue
