@@ -231,6 +231,24 @@ COMMITTED files, so file-only guards would silently reset between runs.
 | `journal.yml` | 4:30PM ET, Mon–Fri | Writes daily retrospective + commits repo |
 | `weekend.yml` | Every 15 min, Sat–Sun 10AM–10PM UTC | Market structure analysis |
 
+### Health check (watchdog)
+
+`healthcheck.yml` runs **daily at 13:00 UTC (09:00 ET)** and fails loudly if anything is wrong —
+GitHub emails the repo owner on a failed scheduled workflow, and the check also **files a GitHub
+issue** (`[health-check] ...`) that is **auto-closed** as soon as the system is healthy again.
+
+It verifies:
+- Alpaca credentials still work (account readable, equity > 0) — catches rotated/revoked keys
+- All four trading workflows are still **enabled** — catches GitHub's 60-day idle auto-disable
+- Each workflow had a **successful run** in its window (crypto 3h, equity/journal 4 days, weekend 8 days)
+- Crypto, equity and journal had a **schedule-triggered (autonomous) success** — catches a cron that
+  silently stopped firing while manual dispatches still work
+- A brand-new repo gets a grace period so it can't false-alarm before history exists
+
+The watchdog is deliberately **outside** the `alpaca-trader` concurrency group so it runs even when
+trading runs are stuck. It is read-only (no orders, no account changes). Run it manually anytime:
+`python3 bot/healthcheck.py` (add `HEALTHCHECK_DRY_RUN=1` to skip issue filing).
+
 ### Secrets Required
 
 | Name | Value | Where to get it |
