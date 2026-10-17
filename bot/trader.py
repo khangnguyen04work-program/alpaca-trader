@@ -985,6 +985,7 @@ def _fifo_round_trips(orders):
             "side": o.get("side"), "qty": qty, "px": px,
             "t": o.get("filled_at") or o.get("created_at") or "",
             "id": o.get("id", ""),
+            "cid": str(o.get("client_order_id") or ""),
         })
     trips, open_lots = [], []
     for sym, fs in fills.items():
@@ -1007,6 +1008,7 @@ def _fifo_round_trips(orders):
                     "symbol": sym, "qty": take,
                     "entry_t": lot["t"], "entry_px": lot["px"], "entry_id": lot["id"],
                     "exit_t": f["t"], "exit_px": f["px"], "exit_id": f["id"],
+                    "entry_cid": lot.get("cid", ""), "exit_cid": f.get("cid", ""),
                     "pnl": gross, "fee_est": fee, "pnl_net": gross - fee,
                     "pnl_pct": ((f["px"] - lot["px"]) / lot["px"] * 100.0) if lot["px"] else 0.0,
                 })
@@ -1029,6 +1031,28 @@ def _held_span(t0, t1):
         return f"{mins // 60}h{mins % 60:02d}m" if mins >= 60 else f"{mins}m"
     except Exception:
         return "?"
+
+
+_PATTERN_TOKENS = ("bullish_pin_bar", "bearish_pin_bar", "bullish_engulfing", "bearish_engulfing",
+                   "morning_star", "evening_star", "bullish_inside_bar", "bearish_inside_bar", "doji")
+
+
+def _attr_from_cid(cid):
+    """Attribute a trade leg from the order's client_order_id. This is SERVER
+    TRUTH: GitHub runners are ephemeral, so signals files can be lost — but the
+    order history (and its ids) always carries the pattern / exit reason.
+    Returns (pattern_or_empty, exit_label_or_None)."""
+    cid = str(cid or "")
+    if not cid:
+        return "", None
+    if cid.startswith("bot-exit-"):
+        reason = cid[len("bot-exit-"):].split("-")[0]
+        label = {"stop_loss": "STOP-LOSS", "take_profit": "TAKE-PROFIT"}.get(reason, reason or "?")
+        return "", label
+    for tok in _PATTERN_TOKENS:
+        if tok in cid:
+            return tok, None
+    return "", None
 
 
 PERF_PATH_NAME = "PERFORMANCE.md"
@@ -1056,7 +1080,7 @@ def _update_performance(trips_today, sig_idx, today):
            "pnl": 0.0, "fees": 0.0, "pnl_net": 0.0, "combos": {}}
     for t in trips_today:
         rec = sig_idx.get(t["entry_id"]) or {}
-        pattern = rec.get("pattern") or "unknown"
+        pattern = t.get("pattern") or rec.get("pattern") or "unknown"
         net = t.get("pnl_net", t["pnl"])
         fee = t.get("fee_est", 0.0)
         name = f"{t['symbol']}|{pattern}"
@@ -1079,7 +1103,7 @@ def _update_performance(trips_today, sig_idx, today):
     for t in trips_today:
         rec = sig_idx.get(t["entry_id"]) or {}
         perf["recent"].append({"date": today, "symbol": t["symbol"],
-                               "pattern": rec.get("pattern") or "unknown",
+                               "pattern": t.get("pattern") or rec.get("pattern") or "unknown",
                                "qty": round(t["qty"], 8), "entry_px": t["entry_px"],
                                "exit_px": t["exit_px"], "pnl": round(t["pnl"], 4)})
     perf["recent"] = perf["recent"][-300:]
@@ -1214,18 +1238,26 @@ def run_journal():
     trips_all, open_lots, warnings = _fifo_round_trips(orders)
     trips_today = [t for t in trips_all if _et_date(t["exit_t"]) == today]
 
+    # Attribute pattern + exit reason per trip: signal ledger first (richer record),
+    # then straight from the order ids (survives lost signals files).
     sig_idx = {}
     for s in signals_today:
         if isinstance(s, dict) and s.get("order_id"):
             sig_idx[s["order_id"]] = s
 
+    for t in trips_all:
+        rec = sig_idx.get(t["entry_id"]) or {}
+        pat, _ = _attr_from_cid(t.get("entry_cid", ""))
+        t["pattern"] = rec.get("pattern") or pat or "unknown"
+        erec = sig_idx.get(t["exit_id"]) or {}
+        _, label = _attr_from_cid(t.get("exit_cid", ""))
+        if not label:
+            ep = erec.get("pattern") or _attr_from_cid(t.get("exit_cid", ""))[0] or ""
+            label = f"signal: {ep}" if ep else "unknown"
+        t["exit_reason"] = label
+
     def exit_reason(t):
-        r = sig_idx.get(t["exit_id"]) or {}
-        p = (r.get("pattern") or "")
-        if p.upper().startswith("EXIT_STOP_LOSS"): return "STOP-LOSS"
-        if p.upper().startswith("EXIT_TAKE_PROFIT"): return "TAKE-PROFIT"
-        if p: return f"signal: {p}"
-        return "unknown"
+        return t.get("exit_reason") or "unknown"
 
     realized = sum(t["pnl"] for t in trips_today)
     fees_today = sum(t.get("fee_est", 0.0) for t in trips_today)
@@ -1287,12 +1319,21 @@ def run_journal():
     try:
         pos_qty = {_norm_sym(p.get("symbol", "")): float(p.get("qty", 0) or 0)
                    for p in positions if isinstance(p, dict)}
+        lot_qty = {}
         for l in open_lots:
-            got = pos_qty.get(_norm_sym(l["symbol"]))
-            if got is not None and l["qty"] > 0 and abs(got - l["qty"]) > 1e-9:
-                shrink = 100 * (1 - got / l["qty"])
-                warnings.append(f"quantity shrinkage {l['symbol']}: order filled {l['qty']:g} vs position "
-                                f"{got:g} (−{shrink:.3f}% — crypto taker fee charged in asset)")
+            k = _norm_sym(l["symbol"])
+            lot_qty[k] = lot_qty.get(k, 0.0) + l["qty"]
+        for k, lq in lot_qty.items():
+            got = pos_qty.get(k)
+            if got is None or lq <= 0:
+                continue
+            gap = 100 * (got - lq) / lq
+            if gap < -0.02:
+                warnings.append(f"quantity gap {k}: ledger lots {lq:g} vs live position {got:g} "
+                                f"({gap:+.3f}% — expected: crypto taker fee is charged in the asset)")
+            elif gap > 0.02:
+                warnings.append(f"quantity SURPLUS {k}: ledger lots {lq:g} vs live position {got:g} "
+                                f"({gap:+.3f}% — a buy may be missing from the ledger)")
     except Exception:
         pass
 
@@ -1397,7 +1438,7 @@ def run_journal():
             L.append(f"| {t['symbol']} | {_asset_class(t['symbol'])} | {t['qty']:g} | {str(t['entry_t'])[11:16]}/{t['entry_px']:g} | "
                      f"{str(t['exit_t'])[11:16]}/{t['exit_px']:g} | {_held_span(t['entry_t'], t['exit_t'])} | "
                      f"{t['pnl']:+.2f} | {t.get('fee_est',0):.2f} | {t.get('pnl_net', t['pnl']):+.2f} | "
-                     f"{t['pnl_pct']:+.2f} | {exit_reason(t)} | {er.get('pattern','?')} | "
+                     f"{t['pnl_pct']:+.2f} | {exit_reason(t)} | {t.get('pattern') or er.get('pattern','?')} | "
                      f"{er.get('confluence','?')} | {er.get('confidence_mult','?')} | "
                      f"{er.get('risk_amount','?')} | {er.get('rrr','?')} | {slip} |\n")
         wr = 100 * len(wins) / len(trips_today)

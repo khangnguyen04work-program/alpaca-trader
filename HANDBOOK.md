@@ -231,6 +231,14 @@ COMMITTED files, so file-only guards would silently reset between runs.
 | `journal.yml` | 4:30PM ET, Mon–Fri | Writes daily retrospective + commits repo |
 | `weekend.yml` | Every 15 min, Sat–Sun 10AM–10PM UTC | Market structure analysis |
 
+### Ephemeral runners: persist + server-truth attribution
+
+GitHub runners are destroyed after each run, so **every trading workflow must commit its
+`runs/` artifacts** (persist step) — otherwise signal records vanish and the journal cannot
+attribute patterns/exit reasons. Belt-and-braces: the journal also attributes from each
+order's `client_order_id` (`bot-<sym>-<pattern>-<bar>` / `bot-exit-<reason>-…`), which is
+SERVER TRUTH that survives even when files are lost.
+
 ### Health check (watchdog)
 
 `healthcheck.yml` runs **daily at 13:00 UTC (09:00 ET)** and fails loudly if anything is wrong —
