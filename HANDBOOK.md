@@ -181,7 +181,7 @@ The bot also trades **BTC/USD and ETH/USD around the clock** — nights, weekend
 | Time-in-force | GTC (crypto never closes; `day` would kill overnight orders) |
 | Quantity | **Fractional** (e.g. 0.002606 BTC — never force whole coins) |
 | Schedule | `crypto.yml`: every 30 min, 24/7/365 (runs never stop — stops stay monitored) |
-| **Entry window** | **Seamless handoff:** NEW buys allowed exactly while the **equity market is closed** (per Alpaca's clock — nights, weekends, holidays, early-close days). `crypto_entry_mode: "market_complement"`. Fallback if the clock is unreachable: + weekdays 16:00→09:30 ET, all weekend (`crypto_entry_start_hour/minure`, `crypto_entry_end_hour/minute`). Seamless: crypto takes over the moment equities close (16:00 ET), hands back at 09:30 ET. |
+| **Entry window** | **Seamless handoff:** NEW buys allowed exactly while the **equity market is closed** (per Alpaca's clock — nights, weekends, holidays, early-close days). `crypto_entry_mode: "market_complement"`. Fallback if the clock is unreachable: + weekdays 16:00→09:30 ET, all weekend (`crypto_entry_start_hour/minute`, `crypto_entry_end_hour/minute`). Seamless: crypto takes over the moment equities close (16:00 ET), hands back at 09:30 ET. |
 | Exits outside window | Stop-loss/take-profit and sell-signal exits are **never gated** — risk-reducing actions run 24/7 |
 | Data endpoint | `v1beta3/crypto/us/bars` (different from stocks) |
 | Incomplete bars | Last bar dropped if still forming (crypto never closes, so the last bar is always live) |
