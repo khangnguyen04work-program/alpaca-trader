@@ -896,6 +896,20 @@ def analyze_and_trade(symbol):
             qty = max(1, int(pos_value / candle["close"]))
 
         qty_str = f"{qty:.6f}".rstrip('0').rstrip('.') if crypto else str(qty)
+
+        if side == "sell":
+            # Exits close what we actually OWN (server truth) — a risk-sized qty
+            # can exceed the balance once crypto fees shrink the position, which
+            # Alpaca rejects (40310000 insufficient balance) and leaves the exit
+            # stuck retrying forever.
+            owned_qty = _position_qty(symbol)
+            if owned_qty <= 0:
+                log("  skip SELL — position already flat", "CASH")
+                sig_record["skipped"] = "no_position"
+                _save_signal(signals_path, sig_record)
+                continue
+            qty_str = f"{owned_qty:.6f}".rstrip('0').rstrip('.') if crypto else str(int(owned_qty))
+
         log(f"  Conf mult: {confidence_mult:.1f}x | Risk: ${pos_value:.0f} | {side.upper()} {qty_str} @ ${candle['close']:.2f} stop ${stop:.2f} target ${target:.2f} RRR {rrr:.2f}", "TRADE")
 
         # Store confidence info in signal record

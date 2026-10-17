@@ -15,6 +15,9 @@ concurrency:
   group: alpaca-trader
   cancel-in-progress: false   # queue, never cancel — cancellation mid-cycle can orphan positions
 
+permissions:
+  contents: write      # persist run artifacts (signals) back to the repo
+
 jobs:
   crypto:
     runs-on: ubuntu-latest
@@ -45,5 +48,5 @@ jobs:
           else
             git commit -m "runs: $(TZ=America/New_York date +'%Y-%m-%d %H:%M') signals"
             git pull --rebase origin main || true
-            git push origin main
+            git push origin main || { sleep 5; git pull --rebase origin main; git push origin main; }
           fi
