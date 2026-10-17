@@ -464,6 +464,14 @@ def _norm_sym(symbol):
     return symbol.replace("/", "")
 
 
+def _asset_class(sym):
+    """'crypto' or 'equity' — works for BTC/USD (orders) and BTCUSD (positions)."""
+    s = str(sym)
+    if s in CRYPTO_SYMBOLS or s.replace("/", "") in {x.replace("/", "") for x in CRYPTO_SYMBOLS}:
+        return "crypto"
+    return "equity"
+
+
 def _position_qty(sym):
     """Current held quantity for a symbol (0 if none)."""
     for p in (run_alpaca(["position", "list"]) or []):
@@ -1116,6 +1124,15 @@ def _update_performance(trips_today, sig_idx, today):
                 b["fees"] = round(b["fees"] + c.get("fees", 0.0), 4)
                 b["pnl_net"] = round(b["pnl_net"] + c.get("pnl_net", c["pnl"]), 4)
 
+    by_class = {c: {"trips": 0, "wins": 0, "losses": 0, "pnl": 0.0, "fees": 0.0, "pnl_net": 0.0}
+                for c in ("equity", "crypto")}
+    for sym, b in by_symbol.items():
+        t = by_class[_asset_class(sym)]
+        t["trips"] += b["trips"]; t["wins"] += b["wins"]; t["losses"] += b["losses"]
+        t["pnl"] = round(t["pnl"] + b["pnl"], 4)
+        t["fees"] = round(t["fees"] + b.get("fees", 0.0), 4)
+        t["pnl_net"] = round(t["pnl_net"] + b["pnl_net"], 4)
+
     lines = ["# Cumulative Performance — auto-maintained\n\n",
              f"_Updated {datetime.now().strftime('%Y-%m-%d %H:%M')} · closed round trips only "
              f"(FIFO realized P&L, ET trading days)_\n\n"]
@@ -1126,7 +1143,10 @@ def _update_performance(trips_today, sig_idx, today):
                      f"({stats['win_rate']}%). Net result: {stats['net_pnl']:+,.2f} dollars after "
                      f"{stats['fees_est']:,.2f} in fees. On average each trade "
                      f"{'earned' if stats['expectancy'] >= 0 else 'lost'} ${abs(stats['expectancy']):,.2f}. "
-                     f"{pf} A verdict needs at least a week of trades — read the trend, not a single day.\n\n")
+                     f"{pf} Split: {by_class['equity']['trips']} stock trades and "
+                     f"{by_class['crypto']['trips']} crypto trades (crypto pays ~0.25%/side in fees; "
+                     f"stocks are commission-free). A verdict needs at least a week of trades — read the "
+                     f"trend, not a single day.\n\n")
     else:
         lines.append("**In plain terms:** no trades have closed yet — the bot is still collecting its "
                      "first data. Check back after a few days.\n\n")
@@ -1138,6 +1158,14 @@ def _update_performance(trips_today, sig_idx, today):
                      ("avg_loss", "Avg loss $ (net)"), ("expectancy", "Expectancy $/trade (net)"),
                      ("profit_factor", "Profit factor (net)")):
         lines.append(f"| {label} | {stats[k]} |\n")
+    lines.append("\n## By asset class\n\n| Class | Trips | Wins | Losses | Win rate % | Gross $ | Fees $ | Net $ |\n"
+                 "|-------|-------|------|--------|------------|---------|--------|-------|\n")
+    for cls, label in (("equity", "📈 Equities (stocks)"), ("crypto", "₿ Crypto")):
+        b = by_class[cls]
+        wr = round(100 * b["wins"] / b["trips"], 1) if b["trips"] else 0.0
+        lines.append(f"| {label} | {b['trips']} | {b['wins']} | {b['losses']} | {wr} | "
+                     f"{b['pnl']:.2f} | {b.get('fees', 0):.2f} | {b['pnl_net']:.2f} |\n")
+
     lines.append("\n## By symbol\n\n| Symbol | Trips | Wins | Losses | Gross $ | Fees $ | Net $ |\n|--------|-------|------|--------|---------|--------|-------|\n")
     for sym, b in sorted(by_symbol.items(), key=lambda kv: kv[1]['pnl_net'], reverse=True):
         lines.append(f"| {sym} | {b['trips']} | {b['wins']} | {b['losses']} | {b['pnl']:.2f} | {b.get('fees',0):.2f} | {b['pnl_net']:.2f} |\n")
@@ -1150,7 +1178,7 @@ def _update_performance(trips_today, sig_idx, today):
                      f"{t['entry_px']:g} | {t['exit_px']:g} | {t['pnl']:.2f} |\n")
     lines.append(f"\n<!-- STATS_JSON\n{json.dumps(perf)}\n-->\n")
     (LOG_DIR / PERF_PATH_NAME).write_text("".join(lines))
-    return stats, week
+    return stats, week, by_class
 
 
 def run_journal():
@@ -1212,35 +1240,38 @@ def run_journal():
             pass
 
     try:
-        cum, week = _update_performance(trips_today, sig_idx, today)
+        cum, week, by_class = _update_performance(trips_today, sig_idx, today)
     except Exception as e:
         log(f"performance ledger error: {e}", "JOURNAL")
-        cum, week = {}, {}
+        cum, week, by_class = {}, {}, {}
 
     # ── signal funnel ──
-    f = {"entries_signalled": 0, "entries_traded": 0, "exits_traded": 0, "skipped_rrr": 0,
-         "skipped_confluence": 0, "skipped_cap": 0, "skipped_window": 0,
-         "no_position_to_sell": 0, "market_closed": 0, "exits_monitor": 0}
+    _FKEYS = ("entries_signalled", "entries_traded", "exits_traded", "skipped_rrr",
+              "skipped_confluence", "skipped_cap", "skipped_window", "no_position_to_sell",
+              "market_closed", "exits_monitor")
+    f = {"equity": {k: 0 for k in _FKEYS}, "crypto": {k: 0 for k in _FKEYS}}
     entries_by_symbol = {}
     for s in signals_today:
+        cls = _asset_class(s.get("symbol", ""))
         p = (s.get("pattern") or "")
         if p.startswith("EXIT_"):
-            f["exits_monitor"] += 1
+            f[cls]["exits_monitor"] += 1
             continue
         if "bullish" in p:
-            f["entries_signalled"] += 1
+            f[cls]["entries_signalled"] += 1
             if s.get("traded"):
-                f["entries_traded"] += 1
+                f[cls]["entries_traded"] += 1
                 entries_by_symbol[s.get("symbol")] = entries_by_symbol.get(s.get("symbol"), 0) + 1
         elif s.get("traded"):
-            f["exits_traded"] += 1
+            f[cls]["exits_traded"] += 1
         sk = s.get("skipped")
-        if sk == "rrr": f["skipped_rrr"] += 1
-        elif sk == "confluence": f["skipped_confluence"] += 1
-        elif sk == "daily_cap": f["skipped_cap"] += 1
-        elif sk == "outside_entry_window": f["skipped_window"] += 1
-        elif sk == "no_position": f["no_position_to_sell"] += 1
-        elif sk == "market_closed": f["market_closed"] += 1
+        if sk == "rrr": f[cls]["skipped_rrr"] += 1
+        elif sk == "confluence": f[cls]["skipped_confluence"] += 1
+        elif sk == "daily_cap": f[cls]["skipped_cap"] += 1
+        elif sk == "outside_entry_window": f[cls]["skipped_window"] += 1
+        elif sk == "no_position": f[cls]["no_position_to_sell"] += 1
+        elif sk == "market_closed": f[cls]["market_closed"] += 1
+    ft = {k: f["equity"][k] + f["crypto"][k] for k in _FKEYS}
 
     # ── integrity checks ──
     try:
@@ -1282,9 +1313,11 @@ def run_journal():
 
     plain = []
     if trips_today:
-        plain.append(f"The bot closed {len(trips_today)} trade(s) today: {len(wins)} made money, "
-                     f"{len(losses)} lost money. Net result {_m(realized_net)} after about "
-                     f"${fees_today:,.2f} in fees.")
+        n_eq = sum(1 for t in trips_today if _asset_class(t["symbol"]) == "equity")
+        n_cr = len(trips_today) - n_eq
+        plain.append(f"The bot closed {len(trips_today)} trade(s) today ({n_eq} stock, {n_cr} crypto): "
+                     f"{len(wins)} made money, {len(losses)} lost money. Net result {_m(realized_net)} after "
+                     f"about ${fees_today:,.2f} in fees.")
         best = max(trips_today, key=lambda t: t.get("pnl_net", t["pnl"]))
         plain.append(f"Best trade: {best['symbol']} {_m(best.get('pnl_net', best['pnl']))} — {_whyof(best)}.")
         if len(trips_today) > 1:
@@ -1294,15 +1327,17 @@ def run_journal():
         tail = f" It is still holding {len(positions)} open position(s)." if positions else ""
         plain.append("The bot didn't close any trades today." + tail)
 
-    if f["entries_signalled"]:
+    if ft["entries_signalled"]:
         because = []
-        if f["skipped_rrr"]: because.append(f"{f['skipped_rrr']} didn't promise enough profit for the risk")
-        if f["skipped_confluence"]: because.append(f"{f['skipped_confluence']} lacked confirmation from other signals")
-        if f["skipped_cap"]: because.append(f"{f['skipped_cap']} hit the 3-entries-per-symbol daily limit")
-        if f["skipped_window"]: because.append(f"{f['skipped_window']} were outside the crypto trading hours")
-        if f["market_closed"]: because.append(f"{f['market_closed']} appeared while the stock market was closed")
+        if ft["skipped_rrr"]: because.append(f"{ft['skipped_rrr']} didn't promise enough profit for the risk")
+        if ft["skipped_confluence"]: because.append(f"{ft['skipped_confluence']} lacked confirmation from other signals")
+        if ft["skipped_cap"]: because.append(f"{ft['skipped_cap']} hit the 3-entries-per-symbol daily limit")
+        if ft["skipped_window"]: because.append(f"{ft['skipped_window']} were outside the crypto trading hours")
+        if ft["market_closed"]: because.append(f"{ft['market_closed']} appeared while the stock market was closed")
         extra = ("; it passed on the rest because " + "; ".join(because) + ".") if because else "."
-        plain.append(f"It saw {f['entries_signalled']} buy setup(s) and acted on {f['entries_traded']}" + extra)
+        plain.append(f"It saw {ft['entries_signalled']} buy setup(s) — {f['equity']['entries_signalled']} on "
+                     f"stocks, {f['crypto']['entries_signalled']} on crypto — and acted on "
+                     f"{ft['entries_traded']}" + extra)
 
     if positions:
         try:
@@ -1327,6 +1362,9 @@ def run_journal():
     L.append(f"# Daily Trading Journal — {today}\n\n")
     L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ET · account {acct_no} · "
              f"engine: candlestick top-down (1Week/1Day/15Min) · exits first, entries second_\n\n")
+    L.append(f"_Scope: this account runs TWO loops in one journal — **equities** (8 stock symbols, market "
+             f"hours, 5% risk, no fees) and **crypto** (BTC/ETH, non-market hours, 3% risk, ~0.25%/side fees). "
+             f"Every table below is split or labelled by asset class._\n\n")
 
     L.append("## Read this first (plain English)\n\n")
     for p in plain:
@@ -1348,15 +1386,15 @@ def run_journal():
 
     L.append("## 2. Closed round trips today (realized)\n\n")
     if trips_today:
-        L.append("| Symbol | Qty | Entry (time/px) | Exit (time/px) | Held | P&L gross $ | Fee $ | "
+        L.append("| Symbol | Asset | Qty | Entry (time/px) | Exit (time/px) | Held | P&L gross $ | Fee $ | "
                  "P&L net $ | P&L % | Exit reason | Pattern | Conf | Mult | Risk $ | RRR | Slip % |\n")
-        L.append("|--------|-----|-----------------|----------------|------|-------------|-------|"
+        L.append("|--------|-------|-----|-----------------|----------------|------|-------------|-------|"
                  "-----------|-------|-------------|---------|------|------|--------|-----|--------|\n")
         for t in trips_today:
             er = sig_idx.get(t["entry_id"]) or {}
             sig_px = er.get("price")
             slip = f"{(t['entry_px'] - sig_px) / sig_px * 100:+.3f}" if sig_px else "?"
-            L.append(f"| {t['symbol']} | {t['qty']:g} | {str(t['entry_t'])[11:16]}/{t['entry_px']:g} | "
+            L.append(f"| {t['symbol']} | {_asset_class(t['symbol'])} | {t['qty']:g} | {str(t['entry_t'])[11:16]}/{t['entry_px']:g} | "
                      f"{str(t['exit_t'])[11:16]}/{t['exit_px']:g} | {_held_span(t['entry_t'], t['exit_t'])} | "
                      f"{t['pnl']:+.2f} | {t.get('fee_est',0):.2f} | {t.get('pnl_net', t['pnl']):+.2f} | "
                      f"{t['pnl_pct']:+.2f} | {exit_reason(t)} | {er.get('pattern','?')} | "
@@ -1370,18 +1408,18 @@ def run_journal():
 
     L.append("## 3. Open positions at close\n\n")
     if positions:
-        L.append("| Symbol | Qty | Entry px | Mark px | Unrealized $ | % | Market value |\n")
-        L.append("|--------|-----|----------|---------|--------------|---|--------------|\n")
+        L.append("| Symbol | Asset | Qty | Entry px | Mark px | Unrealized $ | % | Market value |\n")
+        L.append("|--------|-------|-----|----------|---------|--------------|---|--------------|\n")
         for p in positions:
-            L.append(f"| {p.get('symbol')} | {p.get('qty')} | {p.get('avg_entry_price')} | "
+            L.append(f"| {p.get('symbol')} | {_asset_class(p.get('symbol',''))} | {p.get('qty')} | {p.get('avg_entry_price')} | "
                      f"{p.get('current_price')} | {p.get('unrealized_pl')} | "
                      f"{float(p.get('unrealized_plpc',0))*100:+.2f} | {p.get('market_value')} |\n")
         L.append("\n")
     else:
         L.append("*No open positions.*\n\n")
 
-    L.append("## 4. Signal funnel (why we did / didn't trade)\n\n")
-    L.append("| Stage | Count |\n|-------|-------|\n")
+    L.append("## 4. Signal funnel — equities vs crypto (why we did / didn't trade)\n\n")
+    L.append("| Stage | 📈 Equities | ₿ Crypto | Combined |\n|-------|-------------|----------|----------|\n")
     for label, key in (("Entry signals detected", "entries_signalled"),
                        ("→ entries executed", "entries_traded"),
                        ("→ skipped: risk/reward below threshold", "skipped_rrr"),
@@ -1392,7 +1430,7 @@ def run_journal():
                        ("Monitor exits (stop-loss/take-profit)", "exits_monitor"),
                        ("Skipped: no position to sell", "no_position_to_sell"),
                        ("Skipped: market closed (equities)", "market_closed")):
-        L.append(f"| {label} | {f[key]} |\n")
+        L.append(f"| {label} | {f['equity'][key]} | {f['crypto'][key]} | {ft[key]} |\n")
     if entries_by_symbol:
         L.append("\n**Entries today vs cap:** " + " · ".join(
             f"{k} {v}/{MAX_TRADES_PER_SYMBOL}" for k, v in sorted(entries_by_symbol.items())) + "\n")
@@ -1418,7 +1456,19 @@ def run_journal():
                  f"{cum.get('gross_pnl')} | {cum.get('fees_est')} | {cum.get('net_pnl')} | "
                  f"{cum.get('avg_win')} | {cum.get('avg_loss')} | "
                  f"{cum.get('expectancy')} | {cum.get('profit_factor')} |\n\n")
-        L.append("_Full breakdown (by symbol, by pattern, last 20 trips): see `runs/PERFORMANCE.md`._\n\n")
+        L.append("_Full breakdown (by asset class, symbol, pattern, last 20 trips): see `runs/PERFORMANCE.md`._\n\n")
+        if by_class:
+            L.append("**By asset class (since records began)**\n\n")
+            L.append("| Class | Trips | Wins | Losses | Win rate % | Gross $ | Fees $ | Net $ |\n")
+            L.append("|-------|-------|------|--------|------------|---------|--------|-------|\n")
+            for cls, label in (("equity", "📈 Equities (stocks)"), ("crypto", "₿ Crypto")):
+                b = by_class.get(cls, {})
+                if not b:
+                    continue
+                wr = round(100 * b.get("wins", 0) / b["trips"], 1) if b.get("trips") else 0.0
+                L.append(f"| {label} | {b.get('trips', 0)} | {b.get('wins', 0)} | {b.get('losses', 0)} | "
+                         f"{wr} | {b.get('pnl', 0):.2f} | {b.get('fees', 0):.2f} | {b.get('pnl_net', 0):.2f} |\n")
+            L.append("\n")
     else:
         L.append("*Ledger unavailable this run.*\n\n")
 
@@ -1438,7 +1488,7 @@ def run_journal():
         mistakes.append("No trades today" + (" (signals detected)" if signals_today else ""))
     if all(o.get("side") == "sell" for o in today_orders) and today_orders:
         mistakes.append("Sell-only day — no bullish entries executed")
-    if f["skipped_cap"]:
+    if ft["skipped_cap"]:
         mistakes.append(f"{f['skipped_cap']} signal(s) blocked by the daily cap — candidate for a "
                         f"quality-scaled cap if cumulative expectancy stays positive")
     for o in rejected:

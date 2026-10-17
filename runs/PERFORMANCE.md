@@ -1,6 +1,6 @@
 # Cumulative Performance — auto-maintained
 
-_Updated 2026-10-17 01:14 · closed round trips only (FIFO realized P&L, ET trading days)_
+_Updated 2026-10-17 01:31 · closed round trips only (FIFO realized P&L, ET trading days)_
 
 **In plain terms:** no trades have closed yet — the bot is still collecting its first data. Check back after a few days.
 
@@ -18,6 +18,13 @@ _Updated 2026-10-17 01:14 · closed round trips only (FIFO realized P&L, ET trad
 | Avg loss $ (net) | 0.0 |
 | Expectancy $/trade (net) | 0.0 |
 | Profit factor (net) | None |
+
+## By asset class
+
+| Class | Trips | Wins | Losses | Win rate % | Gross $ | Fees $ | Net $ |
+|-------|-------|------|--------|------------|---------|--------|-------|
+| 📈 Equities (stocks) | 0 | 0 | 0 | 0.0 | 0.00 | 0.00 | 0.00 |
+| ₿ Crypto | 0 | 0 | 0 | 0.0 | 0.00 | 0.00 | 0.00 |
 
 ## By symbol
 
