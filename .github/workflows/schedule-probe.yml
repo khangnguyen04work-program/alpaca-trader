@@ -1,0 +1,22 @@
+name: Schedule Probe (diagnostic)
+
+# DIAGNOSTIC ONLY — temporary. Isolates whether GitHub's cron scheduler is
+# firing ANY workflow in this repo right now, independent of the trading files.
+# Safe: prints a line, touches nothing. Delete once the diagnosis is done.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: schedule-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe fired
+        run: |
+          echo "schedule probe fired — event=${{ github.event_name }} at $(date -u)"
