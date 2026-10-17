@@ -3,7 +3,7 @@ name: Weekend Analysis
 on:
   schedule:
     # Sat & Sun — every 15 min, 6AM-6PM ET
-    - cron: '*/15 10-22 * * 6,0'
+    - cron: '4,19,34,49 10-22 * * 6,0'
   workflow_dispatch:
 
 # Prevent overlapping weekend runs from stacking up

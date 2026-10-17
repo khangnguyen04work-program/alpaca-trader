@@ -3,7 +3,7 @@ name: Alpaca Daily Journal
 on:
   schedule:
     # Mon-Fri at 4:30 PM ET (20:30 UTC)
-    - cron: '30 20 * * 1-5'
+    - cron: '47 20 * * 1-5'
   workflow_dispatch:
 
 # Allow the built-in GITHUB_TOKEN to push the journal back to the repo

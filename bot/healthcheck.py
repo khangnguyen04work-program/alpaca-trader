@@ -44,13 +44,23 @@ def check(label, ok, detail=""):
         problems.append(f"{label}" + (f" ({detail})" if detail else ""))
 
 
-def gh_get(path):
-    headers = {"Accept": "application/vnd.github+json"}
-    if TOKEN:
-        headers["Authorization"] = f"Bearer {TOKEN}"
-    req = urllib.request.Request(API + path, headers=headers)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode())
+def gh_get(path, tries=3):
+    """GET with retries — transient truncation (IncompleteRead) must not turn a
+    healthy system into a false alarm."""
+    import time
+    last = None
+    for i in range(tries):
+        try:
+            headers = {"Accept": "application/vnd.github+json"}
+            if TOKEN:
+                headers["Authorization"] = f"Bearer {TOKEN}"
+            req = urllib.request.Request(API + path, headers=headers)
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return json.loads(r.read().decode())
+        except Exception as e:  # noqa: BLE001
+            last = e
+            time.sleep(3 * (i + 1))
+    raise last
 
 
 def gh_write(method, path, payload):

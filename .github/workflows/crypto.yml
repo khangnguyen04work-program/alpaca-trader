@@ -4,7 +4,7 @@ name: Alpaca Crypto Trader (24/7)
 on:
   schedule:
     # Crypto never closes — every 30 min, every day, all year
-    - cron: '*/30 * * * *'
+    - cron: '7,37 * * * *'
   workflow_dispatch:
 
 # Runs fire 24/7 so stop-losses stay monitored around the clock, but NEW entries
