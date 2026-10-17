@@ -178,6 +178,29 @@ The bot also trades **BTC/USD and ETH/USD around the clock** — nights, weekend
 
 Run manually: `python3 bot/trader.py --crypto`
 
+### 3.2 Position Exit Management (stop-loss / take-profit)
+
+Every cycle (equity and crypto), BEFORE scanning for new trades, the bot checks all
+open positions and closes any that breach the configured thresholds:
+
+| Setting | Equities | Crypto |
+|---------|----------|--------|
+| Stop-loss | −2.5% (`stop_loss_pct`) | −3.5% (`crypto_stop_loss_pct`) |
+| Take-profit | +4.0% (`take_profit_pct`) | +6.0% (`crypto_take_profit_pct`) |
+
+- Crypto positions: evaluated 24/7. Equity positions: only while the market is open.
+- Close = market order of the full position, verified by re-reading the position list
+  (an API 204 is not proof of a fill).
+- Signal-exits still work: a confirmed reverse pattern on an owned position closes it too.
+
+**Concurrency:** all trading workflows share one concurrency group with
+`cancel-in-progress: false` — runs QUEUE instead of cancelling. This stops a 2-minute
+equity run from killing a crypto cycle mid-order, and vice versa.
+
+**Signal-instance dedup:** each (symbol, pattern, bar) instance is traded at most once —
+recorded in the daily signals file. Bars stay in the scan window for ~5 candles, so
+without this the bot would re-attempt the same order every cycle (Alpaca 422 spam).
+
 ---
 
 ## 4. GitHub Actions Deployment

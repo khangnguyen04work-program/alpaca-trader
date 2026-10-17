@@ -78,6 +78,10 @@ MAX_TRADES_PER_SYMBOL = CONFIG["strategy"].get("max_trades_per_symbol_day", 3)
 CRYPTO_SYMBOLS = CONFIG.get("crypto_symbols", [])
 CRYPTO_RISK_PCT = CONFIG["strategy"].get("crypto_risk_pct", 3.0)
 CRYPTO_TIF = CONFIG["strategy"].get("crypto_time_in_force", "gtc")
+EXIT_SL_PCT = CONFIG["strategy"].get("stop_loss_pct", 2.5)
+EXIT_TP_PCT = CONFIG["strategy"].get("take_profit_pct", 4.0)
+EXIT_SL_CRYPTO_PCT = CONFIG["strategy"].get("crypto_stop_loss_pct", 3.5)
+EXIT_TP_CRYPTO_PCT = CONFIG["strategy"].get("crypto_take_profit_pct", 6.0)
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -94,10 +98,14 @@ def fetch_bars(symbol, days=15, timeframe="1Day", include_today=False):
     include_today=True  → include today (correct for 15Min: bars close every 15 min)
     Crypto symbols (contain "/") always include today — crypto trades 24/7."""
     is_crypto = "/" in symbol
-    if is_crypto:
-        include_today = True  # crypto never closes — yesterday-end would be stale
     now_utc = datetime.now(timezone.utc)
-    end = now_utc.strftime("%Y-%m-%d") if include_today else (now_utc - timedelta(days=1)).strftime("%Y-%m-%d")
+    if is_crypto:
+        # Crypto never closes. A DATE-ONLY end clips at UTC midnight (the crypto
+        # API treats it as 00:00 of that day) → data freezes until the next UTC
+        # day and stays 0-24h stale. Use a full ISO timestamp instead.
+        end = now_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
+    else:
+        end = now_utc.strftime("%Y-%m-%d") if include_today else (now_utc - timedelta(days=1)).strftime("%Y-%m-%d")
     start = (now_utc - timedelta(days=days)).strftime("%Y-%m-%d")
 
     if is_crypto:
@@ -273,10 +281,16 @@ def compute_bollinger_bands(bars, period=20):
 
 
 def identify_support_resistance_levels(bars, num_levels=3):
+    """Bucket price touches into levels. Bucket size scales with price:
+    $5 for stocks, $100 for BTC-scale prices — a fixed $5 bucket shatters
+    an $80k price into meaningless singletons."""
     touches = defaultdict(int)
     for bar in bars:
         for val in [bar["high"], bar["low"]]:
-            touches[round(val / 5) * 5] += 1
+            step = 5
+            if val > 0:
+                step = max(5, 10 ** (len(str(int(val))) - 3))
+            touches[round(val / step) * step] += 1
     return [lvl for lvl, _ in sorted(touches.items(), key=lambda x: -x[1])[:num_levels]]
 
 
@@ -423,6 +437,72 @@ def place_order(symbol, side, qty, order_type="market", tif="day",
     else:
         log("Order failed", "ORDER")
     return result
+
+
+# ─── Position Exit Management (stop-loss / take-profit) ─────────────────────
+
+def _norm_sym(symbol):
+    """Normalize symbols for comparison: positions come back as BTCUSD,
+    orders use BTC/USD."""
+    return symbol.replace("/", "")
+
+
+def _close_position(sym):
+    """Close one position via the most reliable backend available.
+    CLI first (laptop), REST second (GitHub Actions). Verified by re-reading
+    the position list — a 204 from the API is not proof the fill happened."""
+    closed_via = None
+    try:
+        if os.path.isfile(ALPACA_CLI):
+            r = subprocess.run([ALPACA_CLI, "position", "close",
+                                "--symbol-or-asset-id", sym, "--quiet"],
+                               capture_output=True, text=True, timeout=30)
+            closed_via = "cli" if r.returncode == 0 else None
+        if closed_via is None:
+            res = run_alpaca(["position", "close", "--symbol-or-asset-id", sym])
+            closed_via = "rest" if res is not None and "_error" not in (res or {}) else None
+    except Exception as e:
+        log(f"  close error for {sym}: {e}", "EXIT")
+
+    # Verify: the position should disappear from the list
+    time.sleep(2)
+    after = run_alpaca(["position", "list"]) or []
+    still_open = False
+    if isinstance(after, list):
+        still_open = any(_norm_sym(p.get("symbol", "")) == _norm_sym(sym) for p in after)
+    if still_open:
+        log(f"  close PENDING/FAILED for {sym} (via {closed_via}) — will retry next cycle", "EXIT")
+        return False
+    log(f"  closed {sym} (via {closed_via})", "EXIT")
+    return True
+
+
+def manage_open_positions():
+    """Stop-loss / take-profit enforcement. Runs at the start of every cycle.
+    - Crypto positions: evaluated 24/7
+    - Equity positions: evaluated only while the market is open
+    Thresholds come from config: stop_loss_pct/take_profit_pct (+ crypto variants)."""
+    positions = run_alpaca(["position", "list"])
+    if not isinstance(positions, list) or not positions:
+        return
+    crypto_set = {_norm_sym(s) for s in CRYPTO_SYMBOLS}
+    for p in positions:
+        sym = p.get("symbol", "")
+        try:
+            plpc = float(p.get("unrealized_plpc", 0) or 0)
+        except (TypeError, ValueError):
+            continue
+        is_crypto = _norm_sym(sym) in crypto_set
+        if not is_crypto and not is_market_session():
+            continue  # equity positions can only be closed during market hours
+        sl = EXIT_SL_CRYPTO_PCT if is_crypto else EXIT_SL_PCT
+        tp = EXIT_TP_CRYPTO_PCT if is_crypto else EXIT_TP_PCT
+        if plpc <= -(sl / 100.0):
+            log(f"  ⛔ STOP-LOSS {sym}: {plpc*100:+.2f}% <= -{sl}%", "EXIT")
+            _close_position(sym)
+        elif plpc >= (tp / 100.0):
+            log(f"  🎯 TAKE-PROFIT {sym}: {plpc*100:+.2f}% >= +{tp}%", "EXIT")
+            _close_position(sym)
 
 
 # ─── Market Hours ────────────────────────────────────────────────────────────
@@ -585,8 +665,21 @@ def analyze_and_trade(symbol):
             "strength": round(signal["strength"], 2), "confluence": cc,
             "factors": factors, "trend_dir": trend_dir,
             "htf_trend": htf_trend, "regime": regime,
-            "price": candle["close"], "traded": False
+            "price": candle["close"], "traded": False,
+            "instance": f"{symbol}|{pattern_type}|{candle['time']}"
         }
+
+        # 0) Instance dedup: this exact (symbol, pattern, bar) was already
+        #    handled in an earlier cycle. Bars stay in the scan window for up
+        #    to 5 more candles, so without this the bot re-attempts the same
+        #    order every run → Alpaca 422s (duplicate client_order_id),
+        #    misleading "Order failed" logs, and a bloated signals file.
+        try:
+            _seen = json.loads(signals_path.read_text()) if signals_path.exists() else []
+        except Exception:
+            _seen = []
+        if any(s.get("instance") == sig_record["instance"] for s in _seen):
+            continue  # silently skip — this instance was already handled
 
         log(f"  {pattern_type} | conf {cc} [{','.join(factors)}] | trend {trend_dir}", "SIGNAL")
 
@@ -721,7 +814,7 @@ def run_journal():
         with open(signals_path) as f:
             signals_today = json.load(f)
 
-    orders_raw = run_alpaca(["order", "list"])
+    orders_raw = run_alpaca(["order", "list", "--status", "all", "--limit", "200"])
     orders = (orders_raw.get("orders", orders_raw) if isinstance(orders_raw, dict)
               else (orders_raw if isinstance(orders_raw, list) else []))
     today_orders = [o for o in orders if today in o.get("created_at", "")]
@@ -862,6 +955,10 @@ def main():
     # ── Crypto mode: 24/7 trading, no market-hours gate, no journal ──
     if "--crypto" in sys.argv:
         log("CRYPTO MODE — 24/7 trading (BTC/ETH never close)", "MARKET")
+        try:
+            manage_open_positions()  # stop-loss / take-profit first
+        except Exception as e:
+            log(f"Exit monitor error: {e}", "ERROR")
         for symbol in CRYPTO_SYMBOLS:
             try:
                 analyze_and_trade(symbol)
@@ -880,6 +977,11 @@ def main():
         return
     else:
         log("Outside hours — analysis only", "MARKET")
+
+    try:
+        manage_open_positions()  # stop-loss / take-profit first
+    except Exception as e:
+        log(f"Exit monitor error: {e}", "ERROR")
 
     for symbol in SYMBOLS:
         try:

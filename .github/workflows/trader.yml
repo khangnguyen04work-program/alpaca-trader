@@ -14,7 +14,7 @@ on:
 # run in parallel with the next cron trigger and place duplicate orders.
 concurrency:
   group: alpaca-trader
-  cancel-in-progress: true
+  cancel-in-progress: false   # queue, never cancel — cancellation mid-cycle can orphan positions
 
 jobs:
   trade:

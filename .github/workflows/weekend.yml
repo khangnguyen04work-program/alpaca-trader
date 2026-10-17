@@ -9,7 +9,7 @@ on:
 # Prevent overlapping weekend runs from stacking up
 concurrency:
   group: alpaca-trader
-  cancel-in-progress: true
+  cancel-in-progress: false   # queue, never cancel — cancellation mid-cycle can orphan positions
 
 jobs:
   scan:

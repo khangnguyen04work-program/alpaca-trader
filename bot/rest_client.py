@@ -102,12 +102,21 @@ def get_crypto_bars(symbols, start, end, timeframe="15Min"):
 
 
 def get_orders(params=None):
-    r = _request("GET", PAPER_BASE, "/v2/orders", query=params or {})
+    q = {"status": "all", "limit": 200}
+    if params:
+        q.update(params)
+    r = _request("GET", PAPER_BASE, "/v2/orders", query=q)
     if isinstance(r, dict) and "_error" in r:
         return []
     if isinstance(r, dict) and "orders" in r:
         return r["orders"]
     return r if isinstance(r, list) else []
+
+
+def close_position(symbol_or_id):
+    """Liquidate an open position cleanly at market price."""
+    sym = symbol_or_id.replace("/", "%2F")
+    return _request("DELETE", PAPER_BASE, f"/v2/positions/{sym}")
 
 
 def submit_order(symbol, side, qty, order_type="market", tif="day", **kwargs):
@@ -155,6 +164,16 @@ def rest_call(args, quiet=True):
             return get_clock()
         if 'position' in cmd_lower and 'list' in cmd_lower:
             return get_positions()
+        if 'position' in cmd_lower and 'close' in cmd_lower:
+            sym = None
+            for i, a in enumerate(args):
+                if a == '--symbol-or-asset-id' and i + 1 < len(args):
+                    sym = args[i + 1]
+                elif a == '--symbol' and i + 1 < len(args):
+                    sym = args[i + 1]
+            if sym:
+                return close_position(sym)
+            return {"_error": "missing symbol"}
         if 'order' in cmd_lower and 'list' in cmd_lower:
             return get_orders()
         if 'order' in cmd_lower and 'cancel' in cmd_lower:

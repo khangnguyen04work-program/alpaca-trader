@@ -9,7 +9,7 @@ on:
 # Crypto and equity runs share one Alpaca account — serialize all trading
 concurrency:
   group: alpaca-trader
-  cancel-in-progress: true
+  cancel-in-progress: false   # queue, never cancel — cancellation mid-cycle can orphan positions
 
 jobs:
   crypto:
