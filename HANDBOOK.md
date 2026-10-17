@@ -198,8 +198,13 @@ open positions and closes any that breach the configured thresholds:
 equity run from killing a crypto cycle mid-order, and vice versa.
 
 **Signal-instance dedup:** each (symbol, pattern, bar) instance is traded at most once —
-recorded in the daily signals file. Bars stay in the scan window for ~5 candles, so
-without this the bot would re-attempt the same order every cycle (Alpaca 422 spam).
+checked against both the daily signals file and Alpaca's live order history
+(`client_order_id` match). Bars stay in the scan window for ~5 candles, so without this
+the bot would re-attempt the same order every cycle (Alpaca 422 spam).
+
+**Server-truth guards:** the daily entry cap (3 buys/symbol/rolling-24h) and instance
+dedup read Alpaca's order history, not just repo files — GitHub runners only see
+COMMITTED files, so file-only guards would silently reset between runs.
 
 ---
 
