@@ -434,6 +434,9 @@ def estimate_profit_target(candle, pattern_type, bars=None, idx=None, sr_levels=
     return round(candle["close"] - dist, 2)
 
 
+_CYCLE_SIDES = {}  # symbol -> sides placed this cycle (whipsaw / wash-trade guard)
+
+
 def place_order(symbol, side, qty, order_type="market", tif="day",
                 limit_price=None, stop_price=None, client_order_id=None):
     """Place a paper order. client_order_id gives Alpaca-side idempotency:
@@ -908,7 +911,18 @@ def analyze_and_trade(symbol):
                 sig_record["skipped"] = "no_position"
                 _save_signal(signals_path, sig_record)
                 continue
-            qty_str = f"{owned_qty:.6f}".rstrip('0').rstrip('.') if crypto else str(int(owned_qty))
+            if crypto:
+                # Floor to 6dp: "{x:.6f}" ROUNDS and can exceed the real balance by
+                # fractions of a satoshi — Alpaca rejects the exit entirely
+                # (40310000 insufficient balance) and it retries forever.
+                qty_str = f"{math.floor(owned_qty * 1e6) / 1e6:.6f}".rstrip('0').rstrip('.')
+                if qty_str in ("", "0"):
+                    log("  skip SELL — nothing sellable after truncation", "CASH")
+                    sig_record["skipped"] = "no_position"
+                    _save_signal(signals_path, sig_record)
+                    continue
+            else:
+                qty_str = str(int(owned_qty))
 
         log(f"  Conf mult: {confidence_mult:.1f}x | Risk: ${pos_value:.0f} | {side.upper()} {qty_str} @ ${candle['close']:.2f} stop ${stop:.2f} target ${target:.2f} RRR {rrr:.2f}", "TRADE")
 
@@ -944,10 +958,21 @@ def analyze_and_trade(symbol):
 
         # 2) Idempotent client_order_id (built above, near the dedup check):
         #    same (symbol, pattern, bar) re-scanned gets REJECTED by Alpaca (422).
+        #
+        # 3) One DIRECTION per symbol per cycle: a bullish entry followed by a
+        #    bearish exit in the same scan is churn — it pays two fee legs for a
+        #    round trip inside one run. Skip the opposite side until next cycle.
+        if _CYCLE_SIDES.get(symbol) and side not in _CYCLE_SIDES[symbol]:
+            log(f"  skip {side.upper()} — opposite-direction trade already placed on {symbol} this cycle", "RISK")
+            sig_record["skipped"] = "opposite_side_same_cycle"
+            _save_signal(signals_path, sig_record)
+            continue
+
         order_tif = CRYPTO_TIF if crypto else TIF
         result = place_order(symbol, side, qty_str, ORDER_TYPE, order_tif,
                              client_order_id=client_order_id)
         if result:
+            _CYCLE_SIDES.setdefault(symbol, set()).add(side)
             sig_record["traded"] = True
             sig_record["order_id"] = result.get("id", "")
             sig_record["order_status"] = result.get("status", "")
@@ -1613,6 +1638,7 @@ def main():
             manage_open_positions()  # stop-loss / take-profit first
         except Exception as e:
             log(f"Exit monitor error: {e}", "ERROR")
+        _CYCLE_SIDES.clear()
         for symbol in CRYPTO_SYMBOLS:
             try:
                 analyze_and_trade(symbol)
@@ -1637,6 +1663,7 @@ def main():
     except Exception as e:
         log(f"Exit monitor error: {e}", "ERROR")
 
+    _CYCLE_SIDES.clear()
     for symbol in SYMBOLS:
         try:
             analyze_and_trade(symbol)
