@@ -567,6 +567,40 @@ def determine_market_regime(bars):
 
 # ─── Analysis & Trading ──────────────────────────────────────────────────────
 
+_TODAY_ORDERS_CACHE = None
+
+def _today_orders_index():
+    """Single fetch per run of today's orders from Alpaca — SERVER TRUTH.
+    GitHub runners only see COMMITTED signals files, so the file-based cap and
+    dedup silently reset between runs; Alpaca's order history never does.
+    Returns {"buys": {symbol: count}, "client_ids": set} or None on failure."""
+    global _TODAY_ORDERS_CACHE
+    if _TODAY_ORDERS_CACHE is not None:
+        return _TODAY_ORDERS_CACHE
+    orders = run_alpaca(["order", "list", "--status", "all", "--limit", "500"])
+    if not isinstance(orders, list):
+        return None  # not cached — a transient failure retries next signal
+    # Rolling 24h window in UTC — order timestamps are UTC while the bot's clock
+    # is ET (TZ env). A calendar-date match silently drops every order created
+    # after 20:00 ET (=00:00 UTC); 24h rolling is also correct for 24/7 crypto.
+    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=24)
+    buys, cids = {}, set()
+    for o in orders:
+        try:
+            ts = datetime.fromisoformat((o.get("created_at") or "")[:19])
+        except Exception:
+            continue
+        if ts < cutoff:
+            continue
+        cids.add(o.get("client_order_id") or "")
+        if o.get("side") == "buy" and o.get("status") in (
+                "filled", "accepted", "new", "pending_new", "partially_filled", "held"):
+            sym = o.get("symbol") or ""
+            buys[sym] = buys.get(sym, 0) + 1
+    _TODAY_ORDERS_CACHE = {"buys": buys, "client_ids": cids}
+    return _TODAY_ORDERS_CACHE
+
+
 def is_crypto_symbol(symbol):
     """Crypto symbols contain '/' (e.g. BTC/USD). They trade 24/7."""
     return "/" in symbol
@@ -678,8 +712,12 @@ def analyze_and_trade(symbol):
             _seen = json.loads(signals_path.read_text()) if signals_path.exists() else []
         except Exception:
             _seen = []
-        if any(s.get("instance") == sig_record["instance"] for s in _seen):
-            continue  # silently skip — this instance was already handled
+        raw_id = f"bot-{symbol}-{pattern_type}-{candle['time']}"
+        client_order_id = "".join(c if c.isalnum() or c in "-_." else "-" for c in raw_id)[:128]
+        _idx = _today_orders_index()
+        if any(s.get("instance") == sig_record["instance"] for s in _seen) or \
+           (_idx is not None and client_order_id in _idx["client_ids"]):
+            continue  # silently skip — already handled (file record or live order)
 
         log(f"  {pattern_type} | conf {cc} [{','.join(factors)}] | trend {trend_dir}", "SIGNAL")
 
@@ -765,25 +803,21 @@ def analyze_and_trade(symbol):
             continue
 
         # ── Anti-runaway guards ─────────────────────────────────────────
-        # 1) Daily trade cap per symbol: prevents pyramiding the whole
-        #    account into one symbol across repeated bar scans.
-        try:
-            existing = json.loads(signals_path.read_text()) if signals_path.exists() else []
-        except Exception:
-            existing = []
-        traded_today = sum(1 for s in existing
-                           if s.get("symbol") == symbol and s.get("traded"))
+        # 1) Daily ENTRY cap per symbol — orders-based (server truth) so it
+        #    holds across workflow runs, not just within one process.
+        if _idx is not None:
+            traded_today = _idx["buys"].get(symbol, 0)
+        else:
+            traded_today = sum(1 for s in _seen
+                               if s.get("symbol") == symbol and s.get("traded"))
         if traded_today >= MAX_TRADES_PER_SYMBOL:
             log(f"  skip — daily cap {traded_today}/{MAX_TRADES_PER_SYMBOL} trades for {symbol}", "RISK")
             sig_record["skipped"] = "daily_cap"
             _save_signal(signals_path, sig_record)
             continue
 
-        # 2) Idempotent client_order_id: same (symbol, pattern, bar) re-scanned
-        #    on the next 2-min run gets REJECTED by Alpaca (422 duplicate).
-        raw_id = f"bot-{symbol}-{pattern_type}-{candle['time']}"
-        client_order_id = "".join(c if c.isalnum() or c in "-_." else "-" for c in raw_id)[:128]
-
+        # 2) Idempotent client_order_id (built above, near the dedup check):
+        #    same (symbol, pattern, bar) re-scanned gets REJECTED by Alpaca (422).
         order_tif = CRYPTO_TIF if crypto else TIF
         result = place_order(symbol, side, qty_str, ORDER_TYPE, order_tif,
                              client_order_id=client_order_id)
