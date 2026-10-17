@@ -1095,6 +1095,15 @@ def _update_performance(trips_today, sig_idx, today):
         "days_traded": len([d for d in perf["days"].values() if d["trips"] > 0]),
     }
 
+    from datetime import timedelta as _td
+    week_start = (datetime.now() - _td(days=6)).strftime("%Y-%m-%d")
+    week = {"trips": 0, "wins": 0, "losses": 0, "net": 0.0}
+    for dkey, d in perf["days"].items():
+        if dkey >= week_start:
+            week["trips"] += d["trips"]; week["wins"] += d["wins"]
+            week["losses"] += d["losses"]
+            week["net"] = round(week["net"] + d.get("pnl_net", d["pnl"]), 4)
+
     by_symbol, by_pattern = {}, {}
     for d in perf["days"].values():
         for combo, c in d.get("combos", {}).items():
@@ -1110,6 +1119,17 @@ def _update_performance(trips_today, sig_idx, today):
     lines = ["# Cumulative Performance — auto-maintained\n\n",
              f"_Updated {datetime.now().strftime('%Y-%m-%d %H:%M')} · closed round trips only "
              f"(FIFO realized P&L, ET trading days)_\n\n"]
+    if stats["trips"]:
+        pf = (f"For every $1 lost, it made ${stats['profit_factor']}." if stats["profit_factor"]
+              else "Not enough losing trades yet to compute a win/loss money ratio.")
+        lines.append(f"**In plain terms:** {stats['trips']} trades closed; {stats['wins']} made money "
+                     f"({stats['win_rate']}%). Net result: {stats['net_pnl']:+,.2f} dollars after "
+                     f"{stats['fees_est']:,.2f} in fees. On average each trade "
+                     f"{'earned' if stats['expectancy'] >= 0 else 'lost'} ${abs(stats['expectancy']):,.2f}. "
+                     f"{pf} A verdict needs at least a week of trades — read the trend, not a single day.\n\n")
+    else:
+        lines.append("**In plain terms:** no trades have closed yet — the bot is still collecting its "
+                     "first data. Check back after a few days.\n\n")
     lines.append("| Metric | Value |\n|--------|-------|\n")
     for k, label in (("days_traded", "Trading days recorded"), ("trips", "Closed round trips"),
                      ("wins", "Wins"), ("losses", "Losses"), ("win_rate", "Win rate % (net)"),
@@ -1130,7 +1150,7 @@ def _update_performance(trips_today, sig_idx, today):
                      f"{t['entry_px']:g} | {t['exit_px']:g} | {t['pnl']:.2f} |\n")
     lines.append(f"\n<!-- STATS_JSON\n{json.dumps(perf)}\n-->\n")
     (LOG_DIR / PERF_PATH_NAME).write_text("".join(lines))
-    return stats
+    return stats, week
 
 
 def run_journal():
@@ -1192,10 +1212,10 @@ def run_journal():
             pass
 
     try:
-        cum = _update_performance(trips_today, sig_idx, today)
+        cum, week = _update_performance(trips_today, sig_idx, today)
     except Exception as e:
         log(f"performance ledger error: {e}", "JOURNAL")
-        cum = {}
+        cum, week = {}, {}
 
     # ── signal funnel ──
     f = {"entries_signalled": 0, "entries_traded": 0, "exits_traded": 0, "skipped_rrr": 0,
@@ -1249,12 +1269,69 @@ def run_journal():
     expired = [o for o in today_orders if o.get("status") == "expired"]
     pending = [o for o in today_orders if o.get("status") in ("new", "accepted", "open", "held", "pending_new", "partially_filled")]
 
+    # ── plain-English layer (for non-technical reading) ──
+    def _m(x):
+        return f"{'+' if x >= 0 else '-'}${abs(x):,.2f}"
+
+    _why_map = {"STOP-LOSS": "it fell to the safety stop-loss",
+                "TAKE-PROFIT": "it reached the profit target"}
+
+    def _whyof(t):
+        r = exit_reason(t)
+        return _why_map.get(r, f"a reverse candlestick signal ended the move ({r})")
+
+    plain = []
+    if trips_today:
+        plain.append(f"The bot closed {len(trips_today)} trade(s) today: {len(wins)} made money, "
+                     f"{len(losses)} lost money. Net result {_m(realized_net)} after about "
+                     f"${fees_today:,.2f} in fees.")
+        best = max(trips_today, key=lambda t: t.get("pnl_net", t["pnl"]))
+        plain.append(f"Best trade: {best['symbol']} {_m(best.get('pnl_net', best['pnl']))} — {_whyof(best)}.")
+        if len(trips_today) > 1:
+            worst = min(trips_today, key=lambda t: t.get("pnl_net", t["pnl"]))
+            plain.append(f"Worst trade: {worst['symbol']} {_m(worst.get('pnl_net', worst['pnl']))} — {_whyof(worst)}.")
+    else:
+        tail = f" It is still holding {len(positions)} open position(s)." if positions else ""
+        plain.append("The bot didn't close any trades today." + tail)
+
+    if f["entries_signalled"]:
+        because = []
+        if f["skipped_rrr"]: because.append(f"{f['skipped_rrr']} didn't promise enough profit for the risk")
+        if f["skipped_confluence"]: because.append(f"{f['skipped_confluence']} lacked confirmation from other signals")
+        if f["skipped_cap"]: because.append(f"{f['skipped_cap']} hit the 3-entries-per-symbol daily limit")
+        if f["skipped_window"]: because.append(f"{f['skipped_window']} were outside the crypto trading hours")
+        if f["market_closed"]: because.append(f"{f['market_closed']} appeared while the stock market was closed")
+        extra = ("; it passed on the rest because " + "; ".join(because) + ".") if because else "."
+        plain.append(f"It saw {f['entries_signalled']} buy setup(s) and acted on {f['entries_traded']}" + extra)
+
+    if positions:
+        try:
+            mv = sum(float(p.get("market_value", 0) or 0) for p in positions)
+        except Exception:
+            mv = 0.0
+        plain.append(f"At the end of the day it holds {len(positions)} position(s) worth about ${mv:,.0f}, "
+                     f"currently {_m(unreal)} {'up' if unreal >= 0 else 'down'} on paper.")
+    if cum and cum.get("trips"):
+        plain.append(f"Since records began: {cum['trips']} trades closed, {cum['wins']} winners "
+                     f"({cum['win_rate']}%), net {_m(cum['net_pnl'])} after fees.")
+    else:
+        plain.append("No trades have closed yet since records began — the first days are data collection, "
+                     "not a verdict.")
+    if week and week.get("trips"):
+        plain.append(f"Last 7 days: {week['trips']} trades, {week['wins']} winners, net {_m(week['net'])}.")
+    plain.append("Every technical term below is decoded in READING-GUIDE.md at the repo root.")
+
     # ── render ──
     L = []
     acct_no = account.get("account_number", "?")
     L.append(f"# Daily Trading Journal — {today}\n\n")
     L.append(f"_Generated {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ET · account {acct_no} · "
              f"engine: candlestick top-down (1Week/1Day/15Min) · exits first, entries second_\n\n")
+
+    L.append("## Read this first (plain English)\n\n")
+    for p in plain:
+        L.append(f"- {p}\n")
+    L.append("\n")
 
     L.append("## 1. Account\n\n| Metric | Value |\n|--------|-------|\n")
     for label, key in (("Equity", "equity"), ("Cash", "cash"), ("Buying power", "buying_power"),

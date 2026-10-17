@@ -1,6 +1,8 @@
 # Cumulative Performance — auto-maintained
 
-_Updated 2026-10-17 01:04 · closed round trips only (FIFO realized P&L, ET trading days)_
+_Updated 2026-10-17 01:14 · closed round trips only (FIFO realized P&L, ET trading days)_
+
+**In plain terms:** no trades have closed yet — the bot is still collecting its first data. Check back after a few days.
 
 | Metric | Value |
 |--------|-------|

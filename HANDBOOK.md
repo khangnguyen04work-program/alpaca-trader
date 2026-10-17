@@ -248,6 +248,9 @@ COMMITTED files, so file-only guards would silently reset between runs.
 
 - `runs/journal-YYYY-MM-DD.md` — daily post-market report
 - `runs/signals-YYYY-MM-DD.json` — every signal detected (structured)
+- `runs/PERFORMANCE.md` — cumulative scoreboard; opens with an **"In plain terms"** summary
+- `READING-GUIDE.md` (repo root) — decodes every technical term; every journal opens with a
+  **plain-English "Read this first"** section, so non-technical reading needs no glossary lookup
 - **Committed back to the repo automatically** at 4:30 PM — permanent in git history
 - Artifact copies also uploaded per-run (but expire after 90 days — repo copy is the permanent one)
 
