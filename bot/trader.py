@@ -811,7 +811,10 @@ def analyze_and_trade(symbol):
         raw_id = f"bot-{symbol}-{pattern_type}-{candle['time']}"
         client_order_id = "".join(c if c.isalnum() or c in "-_." else "-" for c in raw_id)[:128]
         _idx = _today_orders_index()
-        if any(s.get("instance") == sig_record["instance"] for s in _seen) or \
+        # Skip instances already handled — but a record that ERRORED (order failed,
+        # e.g. insufficient balance) must NOT block the retry: the exit has to be
+        # able to go through on the next cycle.
+        if any(s.get("instance") == sig_record["instance"] and not s.get("error") for s in _seen) or \
            (_idx is not None and client_order_id in _idx["client_ids"]):
             continue  # silently skip — already handled (file record or live order)
 
