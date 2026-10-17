@@ -3,8 +3,9 @@ REST API client for Alpaca Trading API.
 Fallback when the Alpaca CLI is not available (e.g. GitHub Actions).
 
 Supports two auth methods (checked in order):
-  1. Bearer token from APCA_ACCESS_TOKEN env var
-  2. Basic auth from APCA_API_KEY_ID + APCA_API_SECRET_KEY env vars
+  1. API key pair from APCA_API_KEY_ID + APCA_API_SECRET_KEY env vars
+     (preferred: never expire, survive account resets/key rotation)
+  2. Bearer token from APCA_ACCESS_TOKEN env var (legacy OAuth)
 """
 
 import base64
@@ -24,12 +25,14 @@ SECRET_KEY = os.environ.get("APCA_API_SECRET_KEY", "") or os.environ.get("ALPACA
 
 def _headers():
     h = {"Content-Type": "application/json"}
-    if ACCESS_TOKEN:
-        h["Authorization"] = f"Bearer {ACCESS_TOKEN}"
-    elif API_KEY and SECRET_KEY:
+    if API_KEY and SECRET_KEY:
         # Alpaca API uses custom headers: APCA-API-KEY-ID / APCA-API-SECRET-KEY
+        # Keys take priority — a stale bearer token must never shadow fresh keys
+        # (e.g. after a paper-account reset rotates the credentials).
         h["APCA-API-KEY-ID"] = API_KEY
         h["APCA-API-SECRET-KEY"] = SECRET_KEY
+    elif ACCESS_TOKEN:
+        h["Authorization"] = f"Bearer {ACCESS_TOKEN}"
     return h
 
 

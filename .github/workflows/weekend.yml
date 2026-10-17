@@ -23,5 +23,7 @@ jobs:
         run: python3 bot/trader.py
         env:
           APCA_ACCESS_TOKEN: ${{ secrets.APCA_ACCESS_TOKEN }}
+          APCA_API_KEY_ID: ${{ secrets.APCA_API_KEY_ID }}
+          APCA_API_SECRET_KEY: ${{ secrets.APCA_API_SECRET_KEY }}
           ALPACA_BOT_DIR: ${{ github.workspace }}
           TZ: America/New_York
