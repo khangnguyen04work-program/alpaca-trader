@@ -385,3 +385,26 @@ grep "Day P&L" ~/Projects/alpaca-trader/runs/journal-*.md
 ---
 
 *Generated 2026-10-16. Powered by Hermes Agent (Nous Research), Alpaca Trading API, and The Candlestick Trading Bible by Sanyog Raut.*
+
+
+---
+
+## Account Migrations (audit log)
+
+| Date (UTC) | Event |
+|------------|-------|
+| 2026-10-16 04:39 | Account **PA3AV5HOL** established with a clean $5,000 baseline (replacing the pre-migration margin-era account). |
+| 2026-10-17 03:53 | Migrated to a **new paper account PA3BVKU76** — fresh $5,000.00, zero positions, zero history. Reason: the previous account still displayed ~$32 of P&L residue from the retired short-selling era (realized short covers + open-position marks); Alpaca has no balance-edit — only create/delete — so a new account is the only clean slate. |
+
+**Migration checklist (what was done — repeat this if the account is ever re-created):**
+
+1. Dashboard → paper account number (upper-left) → **"Open New Paper Account"** → initial balance **5000** (only settable at creation)
+2. Copy the new account's API keys → GitHub repo secrets: `APCA_API_KEY_ID` + `APCA_API_SECRET_KEY`
+   (code prefers API keys over the legacy `APCA_ACCESS_TOKEN` bearer — see `rest_client._headers()`)
+3. Local CLI: `./bin/alpaca profile login --api-key` (interactive prompts; stores `api_key`/`secret_key` in `~/.config/alpaca/profiles/paper.yaml`)
+4. **Re-apply the cash-only locks** (fresh accounts default to 4x margin + shorting on):
+   `./bin/alpaca account config set --no-shorting true --max-margin-multiplier 1`
+5. Verify: `account get` → equity $5,000.00, `buying_power` == `cash`, multiplier 1
+6. Old account: retire via the same upper-left menu → **"Account Settings"** → **"Delete Account"** (optional; git journals preserve its full history)
+
+**Effect on the bot:** the orders-based dedup/cap index reads the new (empty) order history — caps reset naturally; instance dedup is unaffected (signals files live in the repo). The bot resumed trading within minutes (first BTC/ETH entries at 2026-10-17 00:02 ET).
