@@ -1572,7 +1572,7 @@ def run_journal():
     if all(o.get("side") == "sell" for o in today_orders) and today_orders:
         mistakes.append("Sell-only day — no bullish entries executed")
     if ft["skipped_cap"]:
-        mistakes.append(f"{f['skipped_cap']} signal(s) blocked by the daily cap — candidate for a "
+        mistakes.append(f"{ft['skipped_cap']} signal(s) blocked by the daily cap — candidate for a "
                         f"quality-scaled cap if cumulative expectancy stays positive")
     for o in rejected:
         mistakes.append(f"Rejected: {o.get('symbol')} {(o.get('rejection_reason') or '')[:70]}")
