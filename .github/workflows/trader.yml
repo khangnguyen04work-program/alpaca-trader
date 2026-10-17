@@ -3,7 +3,7 @@ name: Alpaca Paper Trader
 on:
   schedule:
     # ─── Market hours: every 2 min, Mon–Fri 9:30AM–4PM ET (13:30–20:00 UTC) ───
-    - cron: '1-59\/2 13-19 * * 1-5'
+    - cron: '*/2 13-19 * * 1-5'
     # ─── Pre-market: every 15 min, 8:00–9:30AM ET (12:00–13:29 UTC) ───
     - cron: '9,24,39,54 12-13 * * 1-5'
     # ─── After-hours: every 15 min, 4:00–8:00PM ET (20:00–23:59 UTC) ───
