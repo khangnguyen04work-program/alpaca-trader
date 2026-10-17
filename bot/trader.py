@@ -75,6 +75,9 @@ TF_CONTEXT = CONFIG["strategy"]["timeframes"]["context"]
 TF_ENTRY = CONFIG["strategy"]["timeframes"]["entry"]
 CONFIDENCE_MULT_MAX = CONFIG["strategy"].get("confidence_mult_max", 2.0)
 MAX_TRADES_PER_SYMBOL = CONFIG["strategy"].get("max_trades_per_symbol_day", 3)
+CRYPTO_SYMBOLS = CONFIG.get("crypto_symbols", [])
+CRYPTO_RISK_PCT = CONFIG["strategy"].get("crypto_risk_pct", 3.0)
+CRYPTO_TIF = CONFIG["strategy"].get("crypto_time_in_force", "gtc")
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -88,26 +91,72 @@ def log(msg, section="TRADER"):
 def fetch_bars(symbol, days=15, timeframe="1Day", include_today=False):
     """Fetch OHLC bars for given timeframe.
     include_today=False → end at yesterday (correct for 1Week/1Day: today's bar incomplete)
-    include_today=True  → include today (correct for 15Min: bars close every 15 min)"""
+    include_today=True  → include today (correct for 15Min: bars close every 15 min)
+    Crypto symbols (contain "/") always include today — crypto trades 24/7."""
+    is_crypto = "/" in symbol
+    if is_crypto:
+        include_today = True  # crypto never closes — yesterday-end would be stale
     now_utc = datetime.now(timezone.utc)
     end = now_utc.strftime("%Y-%m-%d") if include_today else (now_utc - timedelta(days=1)).strftime("%Y-%m-%d")
     start = (now_utc - timedelta(days=days)).strftime("%Y-%m-%d")
 
-    result = run_alpaca(["data", "bars", "--symbol", symbol,
-                         "--start", start, "--end", end,
-                         "--timeframe", timeframe])
-    if result and "bars" in result and len(result["bars"]) >= 2:
-        return result["bars"]
+    if is_crypto:
+        args = ["data", "crypto", "bars", "--symbols", symbol,
+                "--start", start, "--end", end, "--timeframe", timeframe]
+    else:
+        args = ["data", "bars", "--symbol", symbol,
+                "--start", start, "--end", end, "--timeframe", timeframe]
+
+    result = run_alpaca(args)
+    if result and "bars" in result:
+        bars = result["bars"]
+        # Crypto CLI/REST return {"bars": {"BTC/USD": [...]}} — normalize to a flat list
+        if isinstance(bars, dict):
+            bars = next(iter(bars.values()), [])
+        if len(bars) >= 2:
+            if is_crypto:
+                bars = _drop_incomplete_crypto_bars(bars, timeframe)
+            return bars
 
     # Shorter range fallback for higher timeframes
     for d in [min(days, 10), 7, 5, 3]:
         s = (now_utc - timedelta(days=d)).strftime("%Y-%m-%d")
-        result = run_alpaca(["data", "bars", "--symbol", symbol,
-                             "--start", s, "--end", end,
-                             "--timeframe", timeframe])
-        if result and "bars" in result and len(result["bars"]) >= 2:
-            return result["bars"]
+        if is_crypto:
+            args_fb = ["data", "crypto", "bars", "--symbols", symbol,
+                       "--start", s, "--end", end, "--timeframe", timeframe]
+        else:
+            args_fb = ["data", "bars", "--symbol", symbol,
+                       "--start", s, "--end", end, "--timeframe", timeframe]
+        result = run_alpaca(args_fb)
+        if result and "bars" in result:
+            bars = result["bars"]
+            if isinstance(bars, dict):
+                bars = next(iter(bars.values()), [])
+            if len(bars) >= 2:
+                if is_crypto:
+                    bars = _drop_incomplete_crypto_bars(bars, timeframe)
+                return bars
     return []
+
+
+_TF_MINUTES = {"1Min": 1, "5Min": 5, "15Min": 15, "30Min": 30, "1Hour": 60,
+               "2Hour": 120, "4Hour": 240, "1Day": 1440, "1Week": 10080}
+
+
+def _drop_incomplete_crypto_bars(bars, timeframe):
+    """Crypto market never closes, so the LAST bar is usually still forming.
+    A pattern on an incomplete bar is unreliable — drop it. The bar's `t` is
+    its OPEN time; it is complete once t + timeframe has passed."""
+    mins = _TF_MINUTES.get(timeframe)
+    if not mins or not bars:
+        return bars
+    try:
+        last_open = datetime.fromisoformat(bars[-1]["t"].replace("Z", "+00:00"))
+        if last_open + timedelta(minutes=mins) > datetime.now(timezone.utc):
+            return bars[:-1]
+    except Exception:
+        pass
+    return bars
 
 
 # ─── Technical Analysis ──────────────────────────────────────────────────────
@@ -438,12 +487,18 @@ def determine_market_regime(bars):
 
 # ─── Analysis & Trading ──────────────────────────────────────────────────────
 
+def is_crypto_symbol(symbol):
+    """Crypto symbols contain '/' (e.g. BTC/USD). They trade 24/7."""
+    return "/" in symbol
+
+
 def analyze_and_trade(symbol):
     """Full top-down multi-timeframe analysis per the book.
     1. Weekly/daily: market structure, regime, S/R levels
-    2. 4H: entry signals at key levels
+    2. 15Min: entry signals at key levels
     3. Trade only when all timeframes align."""
     log(f"Top-down analysis of {symbol}...", "ANALYSIS")
+    crypto = is_crypto_symbol(symbol)
 
     # Phase 1: Higher TF — Market structure
     weekly = fetch_bars(symbol, days=90, timeframe=TF_STRUCTURE)
@@ -563,7 +618,8 @@ def analyze_and_trade(symbol):
                 _save_signal(signals_path, sig_record)
                 continue
 
-        if not is_market_session():
+        # Crypto trades 24/7 — the equity market-hours gate does not apply
+        if not crypto and not is_market_session():
             log("  market closed — analysis only", "MARKET")
             _save_signal(signals_path, sig_record)
             continue
@@ -580,18 +636,33 @@ def analyze_and_trade(symbol):
         confidence_mult = calc_confidence_mult(
             pattern_type, signal["strength"], cc, rrr, htf_trend, trend_dir
         )
-        pos_value, _ = calc_position_size(account, MAX_RISK_PCT, confidence_mult)
-        qty = max(1, int(pos_value / candle["close"]))
+        if crypto:
+            risk_pct = CRYPTO_RISK_PCT
+        else:
+            risk_pct = MAX_RISK_PCT
+        pos_value, _ = calc_position_size(account, risk_pct, confidence_mult)
+        if crypto:
+            # Crypto supports fractional quantities — never force integer shares
+            # (1 BTC ≈ $82k would dwarf the whole account)
+            qty = round(pos_value / candle["close"], 6)
+            notional = qty * candle["close"]
+            if notional < 10:  # Alpaca crypto minimum order size
+                log(f"  skip — notional ${notional:.2f} below crypto minimum", "RISK")
+                _save_signal(signals_path, sig_record)
+                continue
+        else:
+            qty = max(1, int(pos_value / candle["close"]))
 
-        log(f"  Conf mult: {confidence_mult:.1f}x | Risk: ${pos_value:.0f} | {side.upper()} {qty} @ ${candle['close']:.2f} stop ${stop:.2f} target ${target:.2f} RRR {rrr:.2f}", "TRADE")
+        qty_str = f"{qty:.6f}".rstrip('0').rstrip('.') if crypto else str(qty)
+        log(f"  Conf mult: {confidence_mult:.1f}x | Risk: ${pos_value:.0f} | {side.upper()} {qty_str} @ ${candle['close']:.2f} stop ${stop:.2f} target ${target:.2f} RRR {rrr:.2f}", "TRADE")
 
         # Store confidence info in signal record
         sig_record["confidence_mult"] = round(confidence_mult, 2)
         sig_record["risk_amount"] = round(pos_value, 2)
         sig_record["rrr"] = round(rrr, 2)
-        sig_record["qty"] = qty
+        sig_record["qty"] = qty_str
 
-        if qty < 1:
+        if not crypto and qty < 1:
             _save_signal(signals_path, sig_record)
             continue
 
@@ -620,7 +691,8 @@ def analyze_and_trade(symbol):
         raw_id = f"bot-{symbol}-{pattern_type}-{candle['time']}"
         client_order_id = "".join(c if c.isalnum() or c in "-_." else "-" for c in raw_id)[:128]
 
-        result = place_order(symbol, side, qty, ORDER_TYPE, TIF,
+        order_tif = CRYPTO_TIF if crypto else TIF
+        result = place_order(symbol, side, qty_str, ORDER_TYPE, order_tif,
                              client_order_id=client_order_id)
         if result:
             sig_record["traded"] = True
@@ -786,6 +858,19 @@ def main():
         sys.exit(1)
 
     log("Backend OK", "INIT")
+
+    # ── Crypto mode: 24/7 trading, no market-hours gate, no journal ──
+    if "--crypto" in sys.argv:
+        log("CRYPTO MODE — 24/7 trading (BTC/ETH never close)", "MARKET")
+        for symbol in CRYPTO_SYMBOLS:
+            try:
+                analyze_and_trade(symbol)
+            except Exception as e:
+                log(f"Error on {symbol}: {e}", "ERROR")
+                import traceback
+                log(traceback.format_exc(), "ERROR")
+        log("Crypto cycle complete.", "DONE")
+        return
 
     if is_market_session():
         log("Market OPEN — trading", "MARKET")

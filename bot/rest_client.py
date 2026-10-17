@@ -85,6 +85,22 @@ def get_bars(symbol, start, end, timeframe="1Day"):
     return None
 
 
+def get_crypto_bars(symbols, start, end, timeframe="15Min"):
+    """Fetch crypto bars via v1beta3 endpoint. Returns {"bars": [...]} for a single symbol,
+    normalized to the same shape as stocks get_bars (flat list of OHLCV dicts)."""
+    sym_str = ",".join(symbols) if isinstance(symbols, list) else symbols
+    q = {"symbols": sym_str, "start": start, "end": end, "timeframe": timeframe}
+    r = _request("GET", DATA_BASE, "/v1beta3/crypto/us/bars", query=q)
+    if isinstance(r, dict) and "_error" not in r:
+        raw = r.get("bars", {})
+        if isinstance(raw, dict):
+            # keyed by symbol → flatten to the first/only symbol's list
+            for v in raw.values():
+                return {"bars": v}
+        return {"bars": raw if isinstance(raw, list) else []}
+    return None
+
+
 def get_orders(params=None):
     r = _request("GET", PAPER_BASE, "/v2/orders", query=params or {})
     if isinstance(r, dict) and "_error" in r:
@@ -166,13 +182,17 @@ def rest_call(args, quiet=True):
                 return submit_order(symbol, side, qty, order_type, tif, **kwargs)
             return {"_error": "missing required order params"}
         if 'data' in cmd_lower and 'bars' in cmd_lower:
+            is_crypto = 'crypto' in cmd_lower
             symbol, start, end, timeframe = None, None, None, "1Day"
+            flag = '--symbols' if is_crypto else '--symbol'
             for i, a in enumerate(args):
-                if a == '--symbol' and i+1 < len(args): symbol = args[i+1]
+                if a == flag and i+1 < len(args): symbol = args[i+1]
                 elif a == '--start' and i+1 < len(args): start = args[i+1]
                 elif a == '--end' and i+1 < len(args): end = args[i+1]
                 elif a == '--timeframe' and i+1 < len(args): timeframe = args[i+1]
             if symbol and start and end:
+                if is_crypto:
+                    return get_crypto_bars(symbol, start, end, timeframe)
                 return get_bars(symbol, start, end, timeframe)
             return {"_error": "missing required bar params"}
 

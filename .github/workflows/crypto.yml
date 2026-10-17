@@ -1,0 +1,27 @@
+name: Alpaca Crypto Trader (24/7)
+
+on:
+  schedule:
+    # Crypto never closes — every 30 min, every day, all year
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+# Crypto and equity runs share one Alpaca account — serialize all trading
+concurrency:
+  group: alpaca-trader
+  cancel-in-progress: true
+
+jobs:
+  crypto:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run crypto trader
+        run: python3 bot/trader.py --crypto
+        env:
+          APCA_ACCESS_TOKEN: ${{ secrets.APCA_ACCESS_TOKEN }}
+          ALPACA_BOT_DIR: ${{ github.workspace }}
+          TZ: America/New_York

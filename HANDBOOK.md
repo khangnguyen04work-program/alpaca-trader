@@ -160,6 +160,24 @@ With aggressive settings (5% base, 3.0× mult, 8 symbols, 15Min entry):
 
 **Risk:** Days with 5+ losing trades are possible. At 5% base risk, that's -12.5% day. The account has survived this — the confidence multiplier helps by betting bigger on stronger signals.
 
+### 3.1 24/7 Crypto Trading (added 2026-10-16)
+
+The bot also trades **BTC/USD and ETH/USD around the clock** — nights, weekends, holidays:
+
+| Setting | Value |
+|---------|-------|
+| Symbols | BTC/USD, ETH/USD (config `crypto_symbols`) |
+| Base risk | 3% (config `crypto_risk_pct`) — lower than equities due to volatility |
+| Time-in-force | GTC (crypto never closes; `day` would kill overnight orders) |
+| Quantity | **Fractional** (e.g. 0.002606 BTC — never force whole coins) |
+| Schedule | `crypto.yml`: every 30 min, 24/7/365 |
+| Data endpoint | `v1beta3/crypto/us/bars` (different from stocks) |
+| Incomplete bars | Last bar dropped if still forming (crypto never closes, so the last bar is always live) |
+| Market-hours gate | **Bypassed** — the `is_market_session()` check applies to equities only |
+| All guards | Same: cash-only, daily cap 3/symbol, idempotent order IDs, confluence, RRR |
+
+Run manually: `python3 bot/trader.py --crypto`
+
 ---
 
 ## 4. GitHub Actions Deployment

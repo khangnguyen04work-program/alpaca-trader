@@ -4,11 +4,14 @@
     "SPY", "NVDA", "TSLA", "META",
     "AAPL", "GOOG", "AMZN", "MSFT"
   ],
+  "crypto_symbols": ["BTC/USD", "ETH/USD"],
   "strategy": {
     "min_risk_reward_ratio": 0.5,
     "max_risk_per_trade_pct": 5.0,
+    "crypto_risk_pct": 3.0,
     "confirmation_mode": "off",
     "time_in_force": "day",
+    "crypto_time_in_force": "gtc",
     "order_type": "market",
     "required_confluence_factors": 1,
     "confidence_mult_max": 3.0,
