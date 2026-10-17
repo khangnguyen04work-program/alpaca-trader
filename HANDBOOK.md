@@ -21,22 +21,32 @@
 
 ```
 GITHUB ACTIONS (cloud) — the ONLY trading brain
-    │  cron workflows:
-    │  • trader (every 2 min, market hours)
-    │  • journal (4:30 PM ET daily)
-    │  • weekend analysis (every 15 min, Sat-Sun)
+    │  cron workflows (one shared concurrency group, queue-not-cancel):
+    │  • crypto       (every 30 min, 24/7/365 — BTC/ETH)
+    │  • trader       (every 2 min, market hours; 15 min pre/after)
+    │  • weekend      (every 15 min, Sat-Sun)
+    │  • journal      (4:30 PM ET, Mon-Fri)
     │
     │  Runs 24/7 regardless of laptop state
     │  Uses: bot/rest_client.py (REST API)
     ▼
 ALPACA PAPER API
-    Account: $5,000 cash · Buy-only · No margin
+    Account: $5,000 cash · Buy-only · No margin · No shorting
 ```
+
+**Two trading loops, one account:**
+| Loop | Symbols | When | Cadence |
+|------|---------|------|---------|
+| Equities | SPY NVDA TSLA META AAPL GOOG AMZN MSFT | Market hours (+pre/after analysis) | every 2 min |
+| Crypto | BTC/USD ETH/USD | 24/7/365 | every 30 min |
 
 ### Decision Pipeline (inside trader.py)
 
 ```
-trader.py ─── main() ─── analyze_and_trade(symbol)
+trader.py ─── main()
+    │            ├─ manage_open_positions()  ← FIRST: stop-loss/take-profit on any
+    │            │     open position beyond threshold (equity −2.5%/+4%, crypto −3.5%/+6%)
+    │            └─ for each symbol ─── analyze_and_trade(symbol)
     │                         │
     │                    ┌────┴────┐
     │                    │         │
@@ -214,9 +224,10 @@ COMMITTED files, so file-only guards would silently reset between runs.
 
 | Workflow | Trigger | What it does |
 |----------|---------|-------------|
-| `trader.yml` | Every 2 min during market hours (9:30AM–4PM ET), Mon–Fri + 10-min pre/after-hours | Analyzes + trades |
-| `journal.yml` | 4:30PM ET, Mon–Fri | Writes daily retrospective |
-| `weekend.yml` | Every 15 min, Sat–Sun 6AM–6PM ET | Market structure analysis |
+| `crypto.yml` | Every 30 min, 24/7/365 | Trades BTC/USD + ETH/USD (fractional, GTC) |
+| `trader.yml` | Every 2 min during market hours (9:30AM–4PM ET), Mon–Fri + 15-min pre/after-hours | Analyzes + trades equities |
+| `journal.yml` | 4:30PM ET, Mon–Fri | Writes daily retrospective + commits repo |
+| `weekend.yml` | Every 15 min, Sat–Sun 10AM–10PM UTC | Market structure analysis |
 
 ### Secrets Required
 
@@ -252,12 +263,13 @@ GitHub Actions free tier: **2,000 minutes/month** for private repos. This bot us
 
 | File | Role | Lines |
 |------|------|-------|
-| `bot/trader.py` | **Main engine** — analysis, trading, journal | 760+ |
-| `bot/rest_client.py` | **REST API fallback** (no CLI binary needed) | 200+ |
-| `config.json` | **Configuration** — symbols, risk, timeframes | 25 |
-| `.github/workflows/trader.yml` | CI cron — trades every 2 min market hours + 10-min pre/after | 26 |
-| `.github/workflows/journal.yml` | CI cron — journal at 4:30 PM | 24 |
-| `.github/workflows/weekend.yml` | CI cron — weekend analysis every 15 min | 22 |
+| `bot/trader.py` | **Main engine** — exit mgmt, analysis, trading, journal | ~1030 |
+| `bot/rest_client.py` | **REST API fallback** (no CLI binary needed) | ~220 |
+| `config.json` | **Configuration** — symbols, risk, timeframes, exit thresholds | 30 |
+| `.github/workflows/crypto.yml` | CI cron — crypto trades every 30 min, 24/7 | 27 |
+| `.github/workflows/trader.yml` | CI cron — equity trades every 2 min market hours | 32 |
+| `.github/workflows/journal.yml` | CI cron — journal at 4:30 PM | 44 |
+| `.github/workflows/weekend.yml` | CI cron — weekend analysis every 15 min | 27 |
 | `README.md` | Setup guide | — |
 
 ### Data Flow (from graph analysis)
