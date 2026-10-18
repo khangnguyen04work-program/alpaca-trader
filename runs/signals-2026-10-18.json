@@ -765,5 +765,92 @@
     "rrr": 1.03,
     "qty": "0.659008",
     "skipped": "daily_cap"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81474.8,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-18T22:15:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 215.01,
+    "rrr": 0.88,
+    "qty": "0.010203",
+    "skipped": "daily_cap"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2385.075,
+    "traded": true,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-18T22:15:00Z",
+    "confidence_mult": 2.3,
+    "risk_amount": 176.61,
+    "rrr": 0.79,
+    "qty": "0.659008",
+    "order_id": "cdd352b4-c205-489c-8156-d589a215a927",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.93,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2385.075,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-10-18T22:15:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 6.24,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2394.415,
+    "traded": false,
+    "instance": "ETH/USD|bullish_engulfing|2026-10-18T22:30:00Z",
+    "confidence_mult": 3.0,
+    "risk_amount": 230.36,
+    "rrr": 0.64,
+    "qty": "0.096209",
+    "skipped": "opposite_side_same_cycle"
   }
 ]
