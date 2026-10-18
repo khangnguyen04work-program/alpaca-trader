@@ -472,5 +472,161 @@
     "rrr": 0.8,
     "qty": "0.659008",
     "skipped": "daily_cap"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81058.6705,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-18T17:15:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.88,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81058.6705,
+    "traded": false,
+    "instance": "BTC/USD|bearish_inside_bar|2026-10-18T17:15:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81051.855,
+    "traded": true,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-18T17:30:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 284.66,
+    "rrr": 1.16,
+    "qty": "0.003512",
+    "order_id": "d0442cbc-20e4-4167-99ad-481bb7e055d1",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.76,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81087.891,
+    "traded": true,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-18T17:45:00Z",
+    "confidence_mult": 2.56,
+    "risk_amount": 259.95,
+    "rrr": 0.71,
+    "qty": "0.003206",
+    "order_id": "b04856e8-6367-4623-bd66-0f27d74c0002",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81079.83,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-18T18:00:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 284.66,
+    "rrr": 0.7,
+    "qty": "0.006701",
+    "skipped": "opposite_side_same_cycle"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81065.096,
+    "traded": true,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-18T18:15:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 284.66,
+    "rrr": 0.77,
+    "qty": "0.003511",
+    "order_id": "71bc6bc8-524c-49de-87fc-d0fc36592459",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2366.93,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-10-18T17:45:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 215.01,
+    "rrr": 0.92,
+    "qty": "0.090838",
+    "skipped": "daily_cap"
   }
 ]
