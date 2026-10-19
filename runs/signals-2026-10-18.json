@@ -852,5 +852,141 @@
     "rrr": 0.64,
     "qty": "0.096209",
     "skipped": "opposite_side_same_cycle"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82009.896,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-18T23:45:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 346.86,
+    "rrr": 0.82,
+    "qty": "0.004229",
+    "skipped": "daily_cap"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82034.92,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-19T00:00:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 346.86,
+    "rrr": 0.95,
+    "qty": "0.010203",
+    "skipped": "daily_cap"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82080.3945,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-19T00:15:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 346.86,
+    "rrr": 0.71,
+    "qty": "0.004226",
+    "skipped": "daily_cap"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2407.045,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-19T00:00:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2406.751,
+    "traded": true,
+    "instance": "ETH/USD|bullish_pin_bar|2026-10-19T00:15:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 346.86,
+    "rrr": 0.74,
+    "qty": "0.144119",
+    "order_id": "a3ebc170-93c3-431c-9099-4ce72972422a",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2413.725,
+    "traded": true,
+    "instance": "ETH/USD|morning_star|2026-10-19T00:30:00Z",
+    "confidence_mult": 3.0,
+    "risk_amount": 371.63,
+    "rrr": 0.69,
+    "qty": "0.153967",
+    "order_id": "b5e5aa94-4182-4b4b-9a2f-812718dc20a8",
+    "order_status": "pending_new"
   }
 ]
