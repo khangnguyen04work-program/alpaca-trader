@@ -1,37 +1,55 @@
 {
-  "paper_env": true,
-  "symbols": [
-    "SPY", "NVDA", "TSLA", "META",
-    "AAPL", "GOOG", "AMZN", "MSFT"
-  ],
-  "crypto_symbols": ["BTC/USD", "ETH/USD"],
-  "strategy": {
-    "min_risk_reward_ratio": 0.5,
-    "max_risk_per_trade_pct": 5.0,
-    "crypto_risk_pct": 3.0,
-    "stop_loss_pct": 2.5,
-    "take_profit_pct": 4.0,
-    "crypto_stop_loss_pct": 3.5,
-    "crypto_take_profit_pct": 6.0,
-    "confirmation_mode": "off",
-    "time_in_force": "day",
-    "crypto_time_in_force": "gtc",
-    "crypto_fee_rate": 0.0025,
-    "crypto_entry_mode": "market_complement",
-    "crypto_entry_start_hour": 16,
-    "crypto_entry_start_minute": 0,
-    "crypto_entry_end_hour": 9,
-    "crypto_entry_end_minute": 30,
-    "crypto_weekend_all_day": true,
-    "order_type": "market",
-    "required_confluence_factors": 1,
-    "confidence_mult_max": 3.0,
-    "max_trades_per_symbol_day": 3,
-    "timeframes": {
-      "structure": "1Week",
-      "context": "1Day",
-      "entry": "15Min"
-    }
+ "paper_env": true,
+ "symbols": [
+  "SPY",
+  "NVDA",
+  "TSLA",
+  "META",
+  "AAPL",
+  "GOOG",
+  "AMZN",
+  "MSFT"
+ ],
+ "crypto_symbols": [
+  "BTC/USD",
+  "ETH/USD"
+ ],
+ "strategy": {
+  "min_risk_reward_ratio": 0.5,
+  "max_risk_per_trade_pct": 5.0,
+  "crypto_risk_pct": 3.0,
+  "stop_loss_pct": 2.5,
+  "take_profit_pct": 4.0,
+  "crypto_stop_loss_pct": 3.5,
+  "crypto_take_profit_pct": 6.0,
+  "confirmation_mode": "off",
+  "time_in_force": "day",
+  "crypto_time_in_force": "gtc",
+  "crypto_fee_rate": 0.0025,
+  "crypto_entry_mode": "market_complement",
+  "crypto_entry_start_hour": 16,
+  "crypto_entry_start_minute": 0,
+  "crypto_entry_end_hour": 9,
+  "crypto_entry_end_minute": 30,
+  "crypto_weekend_all_day": true,
+  "order_type": "market",
+  "required_confluence_factors": 1,
+  "confidence_mult_max": 3.0,
+  "max_trades_per_symbol_day": 3,
+  "timeframes": {
+   "structure": "1Week",
+   "context": "1Day",
+   "entry": "15Min"
   },
-  "moving_averages": [8, 21]
+  "exit_signal_gate_pct": 1.5,
+  "entry_cooldown_hours": 4,
+  "max_position_value_pct_per_symbol": 10.0,
+  "require_htf_alignment": true,
+  "crypto_min_risk_reward_ratio": 1.0,
+  "crypto_required_confluence_factors": 2
+ },
+ "moving_averages": [
+  8,
+  21
+ ]
 }

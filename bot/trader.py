@@ -97,6 +97,12 @@ EXIT_SL_PCT = CONFIG["strategy"].get("stop_loss_pct", 2.5)
 EXIT_TP_PCT = CONFIG["strategy"].get("take_profit_pct", 4.0)
 EXIT_SL_CRYPTO_PCT = CONFIG["strategy"].get("crypto_stop_loss_pct", 3.5)
 EXIT_TP_CRYPTO_PCT = CONFIG["strategy"].get("crypto_take_profit_pct", 6.0)
+EXIT_SIGNAL_GATE_PCT = CONFIG["strategy"].get("exit_signal_gate_pct", 1.5)
+ENTRY_COOLDOWN_HOURS = CONFIG["strategy"].get("entry_cooldown_hours", 4)
+MAX_POSITION_VALUE_PCT = CONFIG["strategy"].get("max_position_value_pct_per_symbol", 10.0)
+REQUIRE_HTF_ALIGNMENT = CONFIG["strategy"].get("require_htf_alignment", False)
+CRYPTO_MIN_RRR = CONFIG["strategy"].get("crypto_min_risk_reward_ratio")
+CRYPTO_MIN_CONFLUENCE = CONFIG["strategy"].get("crypto_required_confluence_factors")
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -680,7 +686,7 @@ def _today_orders_index():
     # is ET (TZ env). A calendar-date match silently drops every order created
     # after 20:00 ET (=00:00 UTC); 24h rolling is also correct for 24/7 crypto.
     cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=24)
-    buys, cids = {}, set()
+    buys, cids, last_sells = {}, set(), {}
     for o in orders:
         try:
             ts = datetime.fromisoformat((o.get("created_at") or "")[:19])
@@ -693,7 +699,11 @@ def _today_orders_index():
                 "filled", "accepted", "new", "pending_new", "partially_filled", "held"):
             sym = o.get("symbol") or ""
             buys[sym] = buys.get(sym, 0) + 1
-    _TODAY_ORDERS_CACHE = {"buys": buys, "client_ids": cids}
+        if o.get("side") == "sell" and o.get("status") == "filled":
+            sym = o.get("symbol") or ""
+            if ts > last_sells.get(sym, ts):
+                last_sells[sym] = ts
+    _TODAY_ORDERS_CACHE = {"buys": buys, "client_ids": cids, "last_sells": last_sells}
     return _TODAY_ORDERS_CACHE
 
 
@@ -709,6 +719,10 @@ def analyze_and_trade(symbol):
     3. Trade only when all timeframes align."""
     log(f"Top-down analysis of {symbol}...", "ANALYSIS")
     crypto = is_crypto_symbol(symbol)
+    # Crypto quality gates (config) fall back to the shared equity thresholds
+    eff_min_rrr = CRYPTO_MIN_RRR if (crypto and CRYPTO_MIN_RRR is not None) else MIN_RRR
+    eff_min_conf = (CRYPTO_MIN_CONFLUENCE if (crypto and CRYPTO_MIN_CONFLUENCE is not None)
+                    else MIN_CONFLUENCE)
 
     # Phase 1: Higher TF — Market structure
     weekly = fetch_bars(symbol, days=90, timeframe=TF_STRUCTURE)
@@ -820,8 +834,8 @@ def analyze_and_trade(symbol):
 
         log(f"  {pattern_type} | conf {cc} [{','.join(factors)}] | trend {trend_dir}", "SIGNAL")
 
-        if cc < MIN_CONFLUENCE:
-            log(f"  skip (need {MIN_CONFLUENCE} conf)", "SIGNAL")
+        if cc < eff_min_conf:
+            log(f"  skip (need {eff_min_conf} conf)", "SIGNAL")
             sig_record["skipped"] = "confluence"
             _save_signal(signals_path, sig_record)
             continue
@@ -831,6 +845,15 @@ def analyze_and_trade(symbol):
         elif pattern_type in ("bearish_pin_bar", "bearish_engulfing", "evening_star", "bearish_inside_bar"):
             side = "sell"
         else:
+            _save_signal(signals_path, sig_record)
+            continue
+
+        # HTF alignment (crypto): never buy against the higher-timeframe trend —
+        # reversal patterns need a trend to work with; fighting a downtrend is
+        # how accounts bleed in chop.
+        if crypto and REQUIRE_HTF_ALIGNMENT and side == "buy" and htf_trend == "downtrend":
+            log("  skip BUY — higher-timeframe trend is downtrend", "TREND")
+            sig_record["skipped"] = "htf_misaligned"
             _save_signal(signals_path, sig_record)
             continue
 
@@ -849,6 +872,27 @@ def analyze_and_trade(symbol):
             if not owned:
                 log("  skip SELL — don't own shares to sell", "CASH")
                 sig_record["skipped"] = "no_position"
+                _save_signal(signals_path, sig_record)
+                continue
+
+        # Profit-gated signal exits (crypto): ONE bearish candle is not a reason
+        # to sell. Exit early only on a MEANINGFUL move; between the gates, hold
+        # and let the stop-loss / take-profit manage. This removes chop-whipsaw
+        # churn (15/15 historical exits were noise-driven signal sells).
+        if side == "sell" and crypto and EXIT_SIGNAL_GATE_PCT > 0:
+            plpc = 0.0
+            for p in (pos_check if isinstance(pos_check, list) else []):
+                if _norm_sym(p.get("symbol", "")) == _norm_sym(symbol):
+                    try:
+                        plpc = float(p.get("unrealized_plpc", 0) or 0)
+                    except (TypeError, ValueError):
+                        plpc = 0.0
+                    break
+            gate = EXIT_SIGNAL_GATE_PCT / 100.0
+            if -gate < plpc < gate:
+                log(f"  skip SELL — bearish signal but move only {plpc*100:+.2f}% "
+                    f"(gate ±{EXIT_SIGNAL_GATE_PCT:g}%); holding for stop/target", "EXIT")
+                sig_record["skipped"] = "exit_not_significant"
                 _save_signal(signals_path, sig_record)
                 continue
 
@@ -939,8 +983,8 @@ def analyze_and_trade(symbol):
             _save_signal(signals_path, sig_record)
             continue
 
-        if rrr < MIN_RRR:
-            log(f"  skip RRR {rrr:.2f} < {MIN_RRR}", "TRADE")
+        if rrr < eff_min_rrr:
+            log(f"  skip RRR {rrr:.2f} < {eff_min_rrr}", "TRADE")
             sig_record["skipped"] = "rrr"
             _save_signal(signals_path, sig_record)
             continue
@@ -958,6 +1002,31 @@ def analyze_and_trade(symbol):
             sig_record["skipped"] = "daily_cap"
             _save_signal(signals_path, sig_record)
             continue
+
+        # 4) Re-entry cooldown (crypto): after a full exit, wait before buying
+        #    the same symbol again — kills the sell-low / rebuy-high loop.
+        if crypto and side == "buy" and ENTRY_COOLDOWN_HOURS > 0 and _idx is not None:
+            last_sell = (_idx.get("last_sells") or {}).get(symbol)
+            if last_sell:
+                mins_ago = (datetime.now(timezone.utc).replace(tzinfo=None) - last_sell).total_seconds() / 60.0
+                if mins_ago < ENTRY_COOLDOWN_HOURS * 60:
+                    log(f"  skip BUY — cooldown: exited {mins_ago/60:.1f}h ago (< {ENTRY_COOLDOWN_HOURS:g}h)", "RISK")
+                    sig_record["skipped"] = "cooldown"
+                    _save_signal(signals_path, sig_record)
+                    continue
+
+        # 5) Total exposure cap per symbol (crypto): per-entry risk sizing lets a
+        #    position silently stack across days — cap what ONE symbol may hold.
+        if crypto and side == "buy" and MAX_POSITION_VALUE_PCT > 0:
+            owned_qty = _position_qty(symbol)
+            cur_val = owned_qty * candle["close"]
+            cap = float(account.get("equity", 0) or 0) * MAX_POSITION_VALUE_PCT / 100.0
+            if cur_val + notional > cap:
+                log(f"  skip BUY — exposure cap: ${cur_val:.0f} held + ${notional:.0f} new exceeds "
+                    f"{MAX_POSITION_VALUE_PCT:g}% of equity (${cap:.0f})", "RISK")
+                sig_record["skipped"] = "exposure_cap"
+                _save_signal(signals_path, sig_record)
+                continue
 
         # 2) Idempotent client_order_id (built above, near the dedup check):
         #    same (symbol, pattern, bar) re-scanned gets REJECTED by Alpaca (422).
