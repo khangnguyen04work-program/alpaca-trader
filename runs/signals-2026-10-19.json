@@ -124,5 +124,91 @@
     "traded": false,
     "instance": "ETH/USD|bearish_pin_bar|2026-10-19T04:45:00Z",
     "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.71,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82585.97,
+    "traded": false,
+    "instance": "BTC/USD|bullish_inside_bar|2026-10-19T05:15:00Z",
+    "confidence_mult": 2.01,
+    "risk_amount": 205.11,
+    "rrr": 0.66,
+    "qty": "0.002484",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82576.17,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-19T05:30:00Z",
+    "confidence_mult": 2.3,
+    "risk_amount": 235.2,
+    "rrr": 0.64,
+    "qty": "0.010203",
+    "skipped": "daily_cap"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.61,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2424.3,
+    "traded": false,
+    "instance": "ETH/USD|bullish_inside_bar|2026-10-19T05:15:00Z",
+    "confidence_mult": 2.41,
+    "risk_amount": 246.2,
+    "rrr": 0.75,
+    "qty": "0.101554",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2425.55,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-19T05:30:00Z",
+    "skipped": "exit_not_significant"
   }
 ]
