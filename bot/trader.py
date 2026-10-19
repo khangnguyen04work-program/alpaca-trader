@@ -983,7 +983,11 @@ def analyze_and_trade(symbol):
             _save_signal(signals_path, sig_record)
             continue
 
-        if rrr < eff_min_rrr:
+        if side != "sell" and rrr < eff_min_rrr:
+            # RRR is an ENTRY-quality bar. Exits of owned positions are risk
+            # management — the profit-gate above decides if a signal exit is
+            # meaningful; blocking a profit-lock because the bearish setup's
+            # own RRR is low would trap winners.
             log(f"  skip RRR {rrr:.2f} < {eff_min_rrr}", "TRADE")
             sig_record["skipped"] = "rrr"
             _save_signal(signals_path, sig_record)
