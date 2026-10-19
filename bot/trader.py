@@ -1049,6 +1049,12 @@ def analyze_and_trade(symbol):
                              client_order_id=client_order_id)
         if result:
             _CYCLE_SIDES.setdefault(symbol, set()).add(side)
+            # Keep the in-run orders index current: the cached snapshot predates
+            # this fill, and a stale count let same-run signals bypass the daily
+            # cap (4 NVDA buys vs cap 3 on 2026-10-19).
+            if _TODAY_ORDERS_CACHE is not None and side == "buy":
+                _TODAY_ORDERS_CACHE["buys"][symbol] = _TODAY_ORDERS_CACHE["buys"].get(symbol, 0) + 1
+                _TODAY_ORDERS_CACHE["client_ids"].add(client_order_id)
             sig_record["traded"] = True
             sig_record["order_id"] = result.get("id", "")
             sig_record["order_status"] = result.get("status", "")
