@@ -31,13 +31,13 @@ jobs:
         run: |
           git config user.name "alpaca-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add runs/journal-*.md runs/signals-*.json
+          git add runs/          # everything the run touched, incl. PERFORMANCE.md
           if git diff --cached --quiet; then
             echo "No new journal changes"
           else
             git commit -m "journal: $(TZ=America/New_York date +%Y-%m-%d)"
             git pull --rebase origin main || true
-            git push origin main
+            git push origin main || { sleep 5; git pull --rebase origin main; git push origin main; }
           fi
       - name: Upload journal artifact (90-day convenience copy)
         uses: actions/upload-artifact@v4
