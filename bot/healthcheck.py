@@ -29,7 +29,9 @@ DRY = os.environ.get("HEALTHCHECK_DRY_RUN") == "1"
 API = "https://api.github.com"
 
 # workflow file -> max hours since its last successful run
-WINDOWS_H = {"crypto.yml": 3, "trader.yml": 96, "journal.yml": 96, "weekend.yml": 192}
+# crypto: GitHub's throttled scheduler delivers 2-5h gaps on this repo (documented
+# platform issue for new repos) — a 3h window false-alarms on healthy days.
+WINDOWS_H = {"crypto.yml": 6, "trader.yml": 96, "journal.yml": 96, "weekend.yml": 192}
 
 # Workflows that must ALSO show AUTONOMOUS (schedule-triggered) runs. This catches
 # a broken/never-registered cron even while manual dispatches still succeed.
