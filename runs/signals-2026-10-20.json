@@ -1391,5 +1391,75 @@
     "traded": false,
     "instance": "ETH/USD|bearish_pin_bar|2026-10-20T21:15:00Z",
     "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 3.6,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 83017.705,
+    "traded": false,
+    "instance": "BTC/USD|bullish_engulfing|2026-10-20T22:45:00Z"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 1.3,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82925.405,
+    "traded": false,
+    "instance": "BTC/USD|bullish_engulfing|2026-10-20T23:30:00Z"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 82940.9935,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-20T23:45:00Z"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2446.809,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-20T23:45:00Z",
+    "skipped": "exit_not_significant"
   }
 ]
