@@ -1,0 +1,86 @@
+[
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80850.36,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-24T03:30:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80876.369,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-24T03:45:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 46.59,
+    "rrr": 0.67,
+    "qty": "0.000576",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.38,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80788.965,
+    "traded": false,
+    "instance": "BTC/USD|bullish_inside_bar|2026-10-24T04:30:00Z",
+    "confidence_mult": 2.18,
+    "risk_amount": 36.27,
+    "rrr": 0.81,
+    "qty": "0.000449",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.74,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2378.0725,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-24T04:00:00Z",
+    "skipped": "exit_not_significant"
+  }
+]
