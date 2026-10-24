@@ -1521,5 +1521,85 @@
     "price": 2396.7325,
     "traded": false,
     "instance": "ETH/USD|doji|2026-10-23T21:45:00Z"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.81,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80885.309,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-23T23:30:00Z",
+    "confidence_mult": 2.61,
+    "risk_amount": 43.37,
+    "rrr": 0.64,
+    "qty": "0.000536",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_engulfing",
+    "strength": 1.16,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80837.942,
+    "traded": false,
+    "instance": "BTC/USD|bearish_engulfing|2026-10-24T00:00:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.1,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2378.277,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-10-24T00:00:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "evening_star",
+    "strength": 1.24,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2373.041,
+    "traded": false,
+    "instance": "ETH/USD|evening_star|2026-10-24T00:15:00Z",
+    "skipped": "exit_not_significant"
   }
 ]
