@@ -615,6 +615,13 @@ def manage_open_positions():
 # ─── Market Hours ────────────────────────────────────────────────────────────
 
 def is_market_session():
+    """US equity session per ALPACA'S OWN CLOCK — weekend- and holiday-aware.
+    The naive ET time-window check alone placed real equity orders on a SATURDAY
+    (they queued for Monday's open and froze $771 of cash). Falls back to the
+    time window only when the clock API is unreachable."""
+    open_now = equity_market_open_now()
+    if open_now is not None:
+        return open_now
     now = datetime.now()
     return now.replace(hour=9, minute=30) <= now <= now.replace(hour=16, minute=0)
 
