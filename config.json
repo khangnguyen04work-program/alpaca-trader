@@ -46,7 +46,12 @@
   "max_position_value_pct_per_symbol": 10.0,
   "require_htf_alignment": true,
   "crypto_min_risk_reward_ratio": 1.0,
-  "crypto_required_confluence_factors": 2
+  "crypto_required_confluence_factors": 2,
+  "crypto_entry_order_type": "limit",
+  "crypto_signal_exit_order_type": "limit",
+  "crypto_maker_offset_pct": 0.05,
+  "crypto_maker_fee_rate": 0.0015,
+  "crypto_limit_ttl_hours": 24
  },
  "moving_averages": [
   8,

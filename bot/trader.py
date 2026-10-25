@@ -86,8 +86,12 @@ CRYPTO_SYMBOLS = CONFIG.get("crypto_symbols", [])
 CRYPTO_RISK_PCT = CONFIG["strategy"].get("crypto_risk_pct", 3.0)
 CRYPTO_TIF = CONFIG["strategy"].get("crypto_time_in_force", "gtc")
 CRYPTO_ENTRY_MODE = CONFIG["strategy"].get("crypto_entry_mode", "market_complement")
-CRYPTO_FEE_RATE = CONFIG["strategy"].get("crypto_fee_rate", 0.0025)  # taker fee, charged in asset
-                                                                    # (observed: 0.2499%/side)
+CRYPTO_FEE_RATE = CONFIG["strategy"].get("crypto_fee_rate", 0.0025)    # taker (observed 0.2499%/side)
+CRYPTO_MAKER_FEE_RATE = CONFIG["strategy"].get("crypto_maker_fee_rate", 0.0015)  # resting limits
+CRYPTO_ENTRY_ORDER_TYPE = CONFIG["strategy"].get("crypto_entry_order_type", "market")
+CRYPTO_EXIT_ORDER_TYPE = CONFIG["strategy"].get("crypto_signal_exit_order_type", "market")
+CRYPTO_MAKER_OFFSET_PCT = CONFIG["strategy"].get("crypto_maker_offset_pct", 0.05)
+CRYPTO_LIMIT_TTL_HOURS = CONFIG["strategy"].get("crypto_limit_ttl_hours", 24)
 CRYPTO_ENTRY_START = CONFIG["strategy"].get("crypto_entry_start_hour", 0)
 CRYPTO_ENTRY_START_MIN = CONFIG["strategy"].get("crypto_entry_start_minute", 0)
 CRYPTO_ENTRY_END = CONFIG["strategy"].get("crypto_entry_end_hour", 24)
@@ -443,6 +447,52 @@ def estimate_profit_target(candle, pattern_type, bars=None, idx=None, sr_levels=
 _CYCLE_SIDES = {}  # symbol -> sides placed this cycle (whipsaw / wash-trade guard)
 
 
+def _maker_limit_price(close, side):
+    """Resting (non-marketable) limit: buys slightly BELOW the last price, sells
+    slightly ABOVE. A marketable limit crosses the book and pays the TAKER fee —
+    pointless. Offsetting by CRYPTO_MAKER_OFFSET_PCT keeps the order resting so
+    it earns the MAKER fee (0.15% vs 0.25%)."""
+    off = (CRYPTO_MAKER_OFFSET_PCT / 100.0) * close
+    return round(close - off if side == "buy" else close + off, 2)
+
+
+def _cancel_open_sell_limits(sym):
+    """Cancel resting SELL limits for a symbol before a MARKET close — otherwise
+    a resting exit + a stop-loss market close could double-sell the position."""
+    if _norm_sym(sym) not in {_norm_sym(s) for s in CRYPTO_SYMBOLS}:
+        return
+    opens = run_alpaca(["order", "list", "--status", "open", "--limit", "50"])
+    if not isinstance(opens, list):
+        return
+    for o in opens:
+        if (_norm_sym(o.get("symbol", "")) == _norm_sym(sym)
+                and o.get("side") == "sell" and o.get("type") == "limit" and o.get("id")):
+            log(f"  cancelling resting sell limit {str(o.get('id'))[:12]} before market close", "EXIT")
+            run_alpaca(["order", "cancel", "--order-id", o.get("id")])
+
+
+def _cancel_stale_crypto_limits():
+    """TTL sweep: cancel resting crypto LIMIT orders older than the TTL — a stale
+    entry limit filling days later could stack exposure past the caps."""
+    if CRYPTO_LIMIT_TTL_HOURS <= 0:
+        return
+    opens = run_alpaca(["order", "list", "--status", "open", "--limit", "50"])
+    if not isinstance(opens, list):
+        return
+    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=CRYPTO_LIMIT_TTL_HOURS)
+    for o in opens:
+        sym = o.get("symbol", "")
+        if _norm_sym(sym) not in {_norm_sym(s) for s in CRYPTO_SYMBOLS} or o.get("type") != "limit":
+            continue
+        try:
+            ts = datetime.fromisoformat((o.get("created_at") or "")[:19])
+        except Exception:
+            continue
+        if ts < cutoff and o.get("id"):
+            log(f"  TTL cancel: resting crypto limit from {ts:%m-%d %H:%M} ({o.get('side')} {o.get('qty')})", "ORDER")
+            run_alpaca(["order", "cancel", "--order-id", o.get("id")])
+
+
 def place_order(symbol, side, qty, order_type="market", tif="day",
                 limit_price=None, stop_price=None, client_order_id=None):
     """Place a paper order. client_order_id gives Alpaca-side idempotency:
@@ -506,6 +556,7 @@ def _close_position(sym, reason="manual", qty=None, plpc=None):
     qty_str = f"{abs(qty):.6f}".rstrip('0').rstrip('.') if is_crypto else str(int(abs(qty)))
     tif = CRYPTO_TIF if is_crypto else TIF
     cid = f"bot-exit-{reason}-{_norm_sym(sym)}-{datetime.now().strftime('%Y-%m-%dT%H%M')}"
+    _cancel_open_sell_limits(sym)  # a resting exit limit + this market close = double sell
     order = place_order(sym, "sell", qty_str, ORDER_TYPE, tif, client_order_id=cid)
     order_id = (order or {}).get("id") if isinstance(order, dict) else None
 
@@ -895,6 +946,7 @@ def analyze_and_trade(symbol):
                 sig_record["skipped"] = "exit_not_significant"
                 _save_signal(signals_path, sig_record)
                 continue
+            sig_record["exit_plpc"] = round(plpc * 100, 2)  # used to pick the exit order type
 
         # Crypto trades 24/7 — the equity market-hours gate does not apply
         if not crypto and not is_market_session():
@@ -1045,8 +1097,22 @@ def analyze_and_trade(symbol):
             continue
 
         order_tif = CRYPTO_TIF if crypto else TIF
-        result = place_order(symbol, side, qty_str, ORDER_TYPE, order_tif,
-                             client_order_id=client_order_id)
+        if crypto:
+            # Maker orders (crypto) — rest slightly off the last price to earn the
+            # 0.15% maker fee instead of the 0.25% taker. ASYMMETRY on exits:
+            # profit-locks rest as limits (a better fill is a bonus; the +6% TP
+            # backstops), loss-cuts stay MARKET (never wait for a fill on a loser).
+            pl100 = sig_record.get("exit_plpc") or 0.0
+            otype = (CRYPTO_ENTRY_ORDER_TYPE if side == "buy"
+                     else (CRYPTO_EXIT_ORDER_TYPE if pl100 > 0 else "market"))
+        else:
+            otype = ORDER_TYPE
+        limit_price = (_maker_limit_price(candle["close"], side)
+                       if (crypto and otype == "limit") else None)
+        result = place_order(symbol, side, qty_str, otype, order_tif,
+                             limit_price=limit_price, client_order_id=client_order_id)
+        if limit_price:
+            sig_record["limit_price"] = limit_price
         if result:
             _CYCLE_SIDES.setdefault(symbol, set()).add(side)
             # Keep the in-run orders index current: the cached snapshot predates
@@ -1107,6 +1173,7 @@ def _fifo_round_trips(orders):
             "t": o.get("filled_at") or o.get("created_at") or "",
             "id": o.get("id", ""),
             "cid": str(o.get("client_order_id") or ""),
+            "otype": o.get("type", "market"),
         })
     trips, open_lots = [], []
     for sym, fs in fills.items():
@@ -1124,7 +1191,9 @@ def _fifo_round_trips(orders):
                 # Crypto taker fee is charged IN ASSET terms (~0.25% per side): the
                 # position receives less than the order's filled_qty. Fill-to-fill
                 # P&L therefore OVERSTATES results unless the fee is subtracted.
-                fee = CRYPTO_FEE_RATE * (lot["px"] + f["px"]) * take if "/" in sym else 0.0
+                r_in = CRYPTO_MAKER_FEE_RATE if lot.get("otype") == "limit" else CRYPTO_FEE_RATE
+                r_out = CRYPTO_MAKER_FEE_RATE if f.get("otype") == "limit" else CRYPTO_FEE_RATE
+                fee = (r_in * lot["px"] + r_out * f["px"]) * take if "/" in sym else 0.0
                 trips.append({
                     "symbol": sym, "qty": take,
                     "entry_t": lot["t"], "entry_px": lot["px"], "entry_id": lot["id"],
@@ -1542,7 +1611,7 @@ def run_journal():
     except Exception:
         pass
     L.append(f"| Realized today, gross fill-to-fill | ${realized:+.2f} |\n")
-    L.append(f"| Estimated fees today (crypto {CRYPTO_FEE_RATE*100:.2f}%/side) | ${-fees_today:+.2f} |\n")
+    L.append(f"| Estimated fees today (crypto maker {CRYPTO_MAKER_FEE_RATE*100:.2f}% / taker {CRYPTO_FEE_RATE*100:.2f}%) | ${-fees_today:+.2f} |\n")
     L.append(f"| Realized today, NET of fees | ${realized_net:+.2f} |\n")
     L.append(f"| Unrealized on open positions | ${unreal:+.2f} |\n\n")
 
@@ -1716,6 +1785,10 @@ def main():
     # ── Crypto mode: 24/7 trading, no market-hours gate, no journal ──
     if "--crypto" in sys.argv:
         log("CRYPTO MODE — 24/7 trading (BTC/ETH never close)", "MARKET")
+        try:
+            _cancel_stale_crypto_limits()  # resting limits older than TTL
+        except Exception as e:
+            log(f"Limit TTL sweep error: {e}", "ERROR")
         try:
             manage_open_positions()  # stop-loss / take-profit first
         except Exception as e:
