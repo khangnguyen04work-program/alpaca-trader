@@ -522,5 +522,30 @@
     "rrr": 0.75,
     "qty": "0.029418",
     "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 0.54,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80494.5845,
+    "traded": true,
+    "instance": "BTC/USD|bullish_engulfing|2026-10-25T16:30:00Z",
+    "confidence_mult": 2.34,
+    "risk_amount": 53.98,
+    "rrr": 1.0,
+    "qty": "0.000671",
+    "limit_price": 80454.34,
+    "order_id": "bb7ce4ff-cf81-4801-abe0-d33fd7d5a1e5",
+    "order_status": "pending_new"
   }
 ]
