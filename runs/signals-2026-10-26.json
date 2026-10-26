@@ -155,5 +155,49 @@
     "limit_price": 2310.26,
     "order_id": "f51851cc-9f96-44b3-80f0-84afb65aba9e",
     "order_status": "pending_new"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80208.6255,
+    "traded": true,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-26T12:45:00Z",
+    "exit_plpc": -1.76,
+    "confidence_mult": 2.8,
+    "risk_amount": 52.54,
+    "rrr": 0.78,
+    "qty": "0.002497",
+    "order_id": "90c4606b-e13d-455c-9c93-b0b522f235f5",
+    "order_status": "pending_new"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.93,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 79561.7655,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-26T13:45:00Z",
+    "skipped": "outside_entry_window"
   }
 ]
