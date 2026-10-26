@@ -897,5 +897,43 @@
     "traded": false,
     "instance": "MSFT|bearish_engulfing|2026-10-26T18:45:00Z",
     "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.55,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 79871.615,
+    "traded": false,
+    "instance": "BTC/USD|bearish_inside_bar|2026-10-26T19:45:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.69,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2314.5005,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-10-26T19:45:00Z",
+    "skipped": "exit_not_significant"
   }
 ]
