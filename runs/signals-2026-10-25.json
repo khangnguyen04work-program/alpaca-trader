@@ -854,5 +854,171 @@
     "instance": "ETH/USD|bearish_engulfing|2026-10-25T22:45:00Z",
     "exit_plpc": -3.06,
     "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80059.055,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-10-26T00:45:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 60.09,
+    "rrr": 0.7,
+    "qty": "0.000751",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "doji",
+    "strength": 0.47,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80059.055,
+    "traded": false,
+    "instance": "BTC/USD|doji|2026-10-26T00:45:00Z"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.69,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 79885.3795,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-26T01:15:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_engulfing",
+    "strength": 1.06,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2326.2205,
+    "traded": false,
+    "instance": "ETH/USD|bearish_engulfing|2026-10-26T00:30:00Z",
+    "exit_plpc": -3.67,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2326.785,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-10-26T00:45:00Z",
+    "confidence_mult": 2.8,
+    "risk_amount": 60.09,
+    "rrr": 0.66,
+    "qty": "0.025825",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2321.727,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-26T01:15:00Z",
+    "exit_plpc": -3.67,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "doji",
+    "strength": 0.74,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2321.727,
+    "traded": false,
+    "instance": "ETH/USD|doji|2026-10-26T01:15:00Z"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 0.03,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2321.727,
+    "traded": true,
+    "instance": "ETH/USD|bullish_engulfing|2026-10-26T01:15:00Z",
+    "confidence_mult": 1.83,
+    "risk_amount": 39.25,
+    "rrr": 1.13,
+    "qty": "0.016906",
+    "limit_price": 2320.57,
+    "order_id": "e4e7507e-dfa4-4eca-9265-624846a983d9",
+    "order_status": "pending_new"
   }
 ]
