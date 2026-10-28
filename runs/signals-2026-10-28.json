@@ -1657,5 +1657,169 @@
     "rrr": 0.72,
     "qty": "1",
     "skipped": "daily_cap"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.94,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81022.825,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-28T20:30:00Z",
+    "exit_plpc": 1.66,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 5.57,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81265.175,
+    "traded": false,
+    "instance": "BTC/USD|bullish_engulfing|2026-10-28T20:45:00Z",
+    "confidence_mult": 3.0,
+    "risk_amount": 53.37,
+    "rrr": 0.64,
+    "qty": "0.000657",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "morning_star",
+    "strength": 1.51,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81265.175,
+    "traded": false,
+    "instance": "BTC/USD|morning_star|2026-10-28T20:45:00Z",
+    "confidence_mult": 3.0,
+    "risk_amount": 53.37,
+    "rrr": 0.64,
+    "qty": "0.000657",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_engulfing",
+    "strength": 4.16,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 81122.689,
+    "traded": false,
+    "instance": "BTC/USD|bearish_engulfing|2026-10-28T21:15:00Z",
+    "exit_plpc": 1.66,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2350.5215,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-28T20:30:00Z",
+    "exit_plpc": 2.14,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "doji",
+    "strength": 0.12,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2350.5215,
+    "traded": false,
+    "instance": "ETH/USD|doji|2026-10-28T20:30:00Z"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2359.44,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-28T21:00:00Z",
+    "exit_plpc": 2.14,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2356.335,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-10-28T21:15:00Z",
+    "exit_plpc": 2.14,
+    "skipped": "no_position"
   }
 ]
