@@ -312,5 +312,214 @@
     "rrr": 0.96,
     "qty": "0.060394",
     "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80460.0345,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-28T16:00:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.78,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80460.0345,
+    "traded": false,
+    "instance": "BTC/USD|bullish_inside_bar|2026-10-28T16:00:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "evening_star",
+    "strength": 0.19,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80332.23,
+    "traded": false,
+    "instance": "BTC/USD|evening_star|2026-10-28T16:30:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 2.45,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80500.55,
+    "traded": false,
+    "instance": "BTC/USD|bullish_engulfing|2026-10-28T16:45:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80500.55,
+    "traded": false,
+    "instance": "BTC/USD|morning_star|2026-10-28T16:45:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.4,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80398.065,
+    "traded": false,
+    "instance": "BTC/USD|bearish_inside_bar|2026-10-28T17:00:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.67,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2331.013,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-10-28T16:00:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.97,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2329.765,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-10-28T16:15:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 1.67,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2332.1865,
+    "traded": false,
+    "instance": "ETH/USD|bullish_engulfing|2026-10-28T16:45:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2332.1865,
+    "traded": false,
+    "instance": "ETH/USD|morning_star|2026-10-28T16:45:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.64,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2330.0775,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-10-28T17:00:00Z",
+    "skipped": "exit_not_significant"
   }
 ]
