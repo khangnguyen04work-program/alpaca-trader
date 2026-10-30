@@ -102,5 +102,46 @@
     "instance": "ETH/USD|evening_star|2026-10-30T05:45:00Z",
     "exit_plpc": -3.19,
     "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.97,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2234.8305,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-10-30T12:00:00Z",
+    "confidence_mult": 2.27,
+    "risk_amount": 60.46,
+    "rrr": 0.86,
+    "qty": "0.027053",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "evening_star",
+    "strength": 0.47,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2227.5,
+    "traded": false,
+    "instance": "ETH/USD|evening_star|2026-10-30T12:30:00Z",
+    "exit_plpc": -3.72,
+    "skipped": "no_position"
   }
 ]
