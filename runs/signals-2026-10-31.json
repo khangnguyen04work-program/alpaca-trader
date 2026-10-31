@@ -1,0 +1,22 @@
+[
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.71,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 77229.91,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-10-31T08:15:00Z",
+    "exit_plpc": -3.9,
+    "skipped": "no_position"
+  }
+]
