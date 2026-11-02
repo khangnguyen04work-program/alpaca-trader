@@ -1,0 +1,88 @@
+[
+  {
+    "symbol": "BTC/USD",
+    "pattern": "morning_star",
+    "strength": 1.24,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 78343.93,
+    "traded": false,
+    "instance": "BTC/USD|morning_star|2026-11-02T05:30:00Z",
+    "confidence_mult": 3.0,
+    "risk_amount": 102.44,
+    "rrr": 0.65,
+    "qty": "0.001308",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2293.515,
+    "traded": false,
+    "instance": "ETH/USD|morning_star|2026-11-02T05:30:00Z",
+    "confidence_mult": 3.0,
+    "risk_amount": 102.44,
+    "rrr": 0.64,
+    "qty": "0.044667",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.3,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2289.019,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-11-02T05:45:00Z",
+    "exit_plpc": 2.27,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "evening_star",
+    "strength": 2.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2286,
+    "traded": false,
+    "instance": "ETH/USD|evening_star|2026-11-02T06:00:00Z",
+    "exit_plpc": 2.27,
+    "skipped": "no_position"
+  }
+]
