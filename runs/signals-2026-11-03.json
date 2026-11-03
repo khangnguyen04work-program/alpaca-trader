@@ -124,5 +124,83 @@
     "rrr": 0.64,
     "qty": "0.045559",
     "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 77470.2,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-11-03T13:30:00Z",
+    "skipped": "exit_not_significant"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 6.21,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2288.775,
+    "traded": false,
+    "instance": "ETH/USD|bullish_engulfing|2026-11-03T13:15:00Z",
+    "skipped": "outside_entry_window"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2290.453,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-11-03T13:30:00Z",
+    "exit_plpc": 2.34,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.99,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2280.692,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-11-03T14:15:00Z",
+    "exit_plpc": 2.34,
+    "skipped": "no_position"
   }
 ]
