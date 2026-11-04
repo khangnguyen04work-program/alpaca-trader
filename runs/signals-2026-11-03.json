@@ -1276,5 +1276,24 @@
     "instance": "ETH/USD|evening_star|2026-11-03T19:45:00Z",
     "exit_plpc": 2.56,
     "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "evening_star",
+    "strength": 0.13,
+    "confluence": 4,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 77340.9,
+    "traded": false,
+    "instance": "BTC/USD|evening_star|2026-11-03T23:45:00Z",
+    "skipped": "exit_not_significant"
   }
 ]
