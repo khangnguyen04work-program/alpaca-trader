@@ -1110,5 +1110,88 @@
     "traded": false,
     "instance": "MSFT|bearish_pin_bar|2026-11-04T20:15:00Z",
     "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80051.895,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-11-04T20:45:00Z",
+    "confidence_mult": 2.3,
+    "risk_amount": 203.21,
+    "rrr": 0.82,
+    "qty": "0.002538",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.69,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 80158.51,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-11-04T21:45:00Z",
+    "confidence_mult": 1.99,
+    "risk_amount": 175.54,
+    "rrr": 0.85,
+    "qty": "0.00219",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2416.35,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-11-04T21:45:00Z",
+    "confidence_mult": 2.3,
+    "risk_amount": 203.21,
+    "rrr": 0.95,
+    "qty": "0.084097",
+    "skipped": "rrr"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "doji",
+    "strength": 0.1,
+    "confluence": 3,
+    "factors": [
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 2416.35,
+    "traded": false,
+    "instance": "ETH/USD|doji|2026-11-04T21:45:00Z"
   }
 ]
