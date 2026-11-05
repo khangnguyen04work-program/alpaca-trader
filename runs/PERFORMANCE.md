@@ -1,6 +1,6 @@
 # Cumulative Performance — auto-maintained
 
-_Updated 2026-11-04 19:51 · closed round trips only (FIFO realized P&L, ET trading days)_
+_Updated 2026-11-04 20:03 · closed round trips only (FIFO realized P&L, ET trading days)_
 
 **In plain terms:** 178 trades closed; 68 made money (38.2%). Net result: +33.42 dollars after 31.70 in fees. On average each trade earned $0.19. For every $1 lost, it made $1.094. Split: 133 stock trades and 45 crypto trades (crypto pays ~0.25%/side in fees; stocks are commission-free). A verdict needs at least a week of trades — read the trend, not a single day.
 
