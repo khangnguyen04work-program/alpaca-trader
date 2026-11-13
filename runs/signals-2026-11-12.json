@@ -1423,5 +1423,132 @@
     "price": 2014.073,
     "traded": false,
     "instance": "ETH/USD|doji|2026-11-12T21:00:00Z"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.3,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 70887.7085,
+    "traded": false,
+    "instance": "BTC/USD|bearish_inside_bar|2026-11-13T01:30:00Z",
+    "exit_plpc": -8.49,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 70866.225,
+    "traded": false,
+    "instance": "BTC/USD|bullish_pin_bar|2026-11-13T01:45:00Z",
+    "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.13,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 2008.94,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-11-13T01:30:00Z",
+    "exit_plpc": -18.02,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 2009.4675,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-11-13T01:45:00Z",
+    "exit_plpc": -18.02,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.93,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 2009.4675,
+    "traded": false,
+    "instance": "ETH/USD|bullish_inside_bar|2026-11-13T01:45:00Z",
+    "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.86,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 1997.745,
+    "traded": false,
+    "instance": "ETH/USD|bearish_pin_bar|2026-11-13T02:15:00Z",
+    "exit_plpc": -18.02,
+    "skipped": "no_position"
   }
 ]
