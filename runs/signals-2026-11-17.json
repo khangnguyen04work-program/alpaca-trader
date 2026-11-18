@@ -822,5 +822,89 @@
     "traded": false,
     "instance": "MSFT|bullish_pin_bar|2026-11-17T20:45:00Z",
     "skipped": "market_closed"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bullish_engulfing",
+    "strength": 0.61,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 64328.365,
+    "traded": false,
+    "instance": "BTC/USD|bullish_engulfing|2026-11-18T02:00:00Z",
+    "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "morning_star",
+    "strength": 1.24,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 64513.4605,
+    "traded": false,
+    "instance": "BTC/USD|morning_star|2026-11-18T02:15:00Z",
+    "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.77,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 1803.366,
+    "traded": false,
+    "instance": "ETH/USD|bullish_pin_bar|2026-11-18T02:00:00Z",
+    "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "morning_star",
+    "strength": 1.27,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 1808.45,
+    "traded": false,
+    "instance": "ETH/USD|morning_star|2026-11-18T02:15:00Z",
+    "skipped": "htf_misaligned"
   }
 ]
