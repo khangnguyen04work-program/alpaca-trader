@@ -100,5 +100,91 @@
     "traded": false,
     "instance": "ETH/USD|bullish_pin_bar|2026-11-25T11:30:00Z",
     "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 60169.115,
+    "traded": false,
+    "instance": "BTC/USD|bearish_pin_bar|2026-11-25T21:00:00Z",
+    "exit_plpc": -21.74,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "BTC/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.62,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal",
+      "touching_upper_band"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 60244.455,
+    "traded": false,
+    "instance": "BTC/USD|bearish_inside_bar|2026-11-25T21:30:00Z",
+    "exit_plpc": -21.74,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.54,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 1687.7375,
+    "traded": false,
+    "instance": "ETH/USD|bearish_inside_bar|2026-11-25T21:30:00Z",
+    "exit_plpc": -30.63,
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "ETH/USD",
+    "pattern": "evening_star",
+    "strength": 1.25,
+    "confluence": 6,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned",
+      "touching_upper_band"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 1684.2125,
+    "traded": false,
+    "instance": "ETH/USD|evening_star|2026-11-25T21:45:00Z",
+    "exit_plpc": -30.63,
+    "skipped": "no_position"
   }
 ]
