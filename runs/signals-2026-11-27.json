@@ -163,5 +163,610 @@
     "traded": false,
     "instance": "ETH/USD|bullish_pin_bar|2026-11-27T15:00:00Z",
     "skipped": "htf_misaligned"
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bearish_pin_bar",
+    "strength": 0.85,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 726.05,
+    "traded": false,
+    "instance": "SPY|bearish_pin_bar|2026-11-27T17:00:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bullish_engulfing",
+    "strength": 3.65,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 728.86,
+    "traded": false,
+    "instance": "SPY|bullish_engulfing|2026-11-27T17:45:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 728.35,
+    "traded": false,
+    "instance": "SPY|doji|2026-11-27T18:15:00Z"
+  },
+  {
+    "symbol": "SPY",
+    "pattern": "bearish_inside_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 728.35,
+    "traded": false,
+    "instance": "SPY|bearish_inside_bar|2026-11-27T18:15:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.77,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 149.13,
+    "traded": false,
+    "instance": "NVDA|bullish_pin_bar|2026-11-27T17:30:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 150.42,
+    "traded": false,
+    "instance": "NVDA|doji|2026-11-27T18:00:00Z"
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "bearish_inside_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 150.42,
+    "traded": false,
+    "instance": "NVDA|bearish_inside_bar|2026-11-27T18:00:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "NVDA",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 149.52,
+    "traded": false,
+    "instance": "NVDA|doji|2026-11-27T18:45:00Z"
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "bullish_engulfing",
+    "strength": 2.59,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 400.3,
+    "traded": false,
+    "instance": "TSLA|bullish_engulfing|2026-11-27T17:45:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "TSLA",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 397.76,
+    "traded": false,
+    "instance": "TSLA|doji|2026-11-27T18:45:00Z"
+  },
+  {
+    "symbol": "META",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.05,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 627.61,
+    "traded": false,
+    "instance": "META|bearish_inside_bar|2026-11-27T17:30:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "META",
+    "pattern": "bullish_engulfing",
+    "strength": 1.21,
+    "confluence": 5,
+    "factors": [
+      "htf_downtrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 629.995,
+    "traded": false,
+    "instance": "META|bullish_engulfing|2026-11-27T17:45:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.49,
+    "confluence": 4,
+    "factors": [
+      "htf_uptrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 357.6,
+    "traded": false,
+    "instance": "AAPL|bearish_inside_bar|2026-11-27T17:00:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bullish_inside_bar",
+    "strength": 0.18,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 357.96,
+    "traded": false,
+    "instance": "AAPL|bullish_inside_bar|2026-11-27T17:15:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "morning_star",
+    "strength": 1.05,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 358.44,
+    "traded": false,
+    "instance": "AAPL|morning_star|2026-11-27T17:30:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bullish_pin_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 358.57,
+    "traded": false,
+    "instance": "AAPL|bullish_pin_bar|2026-11-27T17:45:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 358.68,
+    "traded": false,
+    "instance": "AAPL|doji|2026-11-27T18:00:00Z"
+  },
+  {
+    "symbol": "AAPL",
+    "pattern": "bearish_inside_bar",
+    "strength": 1.0,
+    "confluence": 5,
+    "factors": [
+      "htf_uptrend",
+      "trends_aligned",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "uptrend",
+    "regime": "trending",
+    "price": 358.68,
+    "traded": false,
+    "instance": "AAPL|bearish_inside_bar|2026-11-27T18:00:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "evening_star",
+    "strength": 0.05,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 271.07,
+    "traded": false,
+    "instance": "GOOG|evening_star|2026-11-27T17:00:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_engulfing",
+    "strength": 1.79,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 271.57,
+    "traded": false,
+    "instance": "GOOG|bullish_engulfing|2026-11-27T17:15:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_engulfing",
+    "strength": 1.05,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 271.135,
+    "traded": false,
+    "instance": "GOOG|bearish_engulfing|2026-11-27T17:30:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bullish_engulfing",
+    "strength": 2.2,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "downtrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 272.28,
+    "traded": false,
+    "instance": "GOOG|bullish_engulfing|2026-11-27T17:45:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 272.4,
+    "traded": false,
+    "instance": "GOOG|bearish_pin_bar|2026-11-27T18:00:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "GOOG",
+    "pattern": "doji",
+    "strength": 0.9,
+    "confluence": 3,
+    "factors": [
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "ranging",
+    "regime": "ranging",
+    "price": 272.4,
+    "traded": false,
+    "instance": "GOOG|doji|2026-11-27T18:00:00Z"
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "morning_star",
+    "strength": 2.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 254.75,
+    "traded": false,
+    "instance": "AMZN|morning_star|2026-11-27T17:15:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "AMZN",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 254.29,
+    "traded": false,
+    "instance": "AMZN|doji|2026-11-27T18:30:00Z"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_pin_bar",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 491.04,
+    "traded": false,
+    "instance": "MSFT|bearish_pin_bar|2026-11-27T17:00:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bearish_inside_bar",
+    "strength": 0.8,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 491.04,
+    "traded": false,
+    "instance": "MSFT|bearish_inside_bar|2026-11-27T17:00:00Z",
+    "skipped": "no_position"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_engulfing",
+    "strength": 7.88,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 491.56,
+    "traded": false,
+    "instance": "MSFT|bullish_engulfing|2026-11-27T17:15:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_pin_bar",
+    "strength": 0.97,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 491.43,
+    "traded": false,
+    "instance": "MSFT|bullish_pin_bar|2026-11-27T17:30:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "bullish_engulfing",
+    "strength": 5.12,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "trend_aligned"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 492.66,
+    "traded": false,
+    "instance": "MSFT|bullish_engulfing|2026-11-27T17:45:00Z",
+    "skipped": "market_closed"
+  },
+  {
+    "symbol": "MSFT",
+    "pattern": "doji",
+    "strength": 1.0,
+    "confluence": 4,
+    "factors": [
+      "htf_downtrend",
+      "near_support_resistance",
+      "near_8ma",
+      "countertrend_reversal"
+    ],
+    "trend_dir": "uptrend",
+    "htf_trend": "downtrend",
+    "regime": "trending",
+    "price": 493.85,
+    "traded": false,
+    "instance": "MSFT|doji|2026-11-27T18:15:00Z"
   }
 ]
